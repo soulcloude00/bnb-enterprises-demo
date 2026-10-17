@@ -484,7 +484,7 @@ function updateEmissives() {
   for (const [k, m] of Object.entries(M)) {
     if (!m || !m.userData) continue;
     const e = m.userData.emis; if (!e) continue;
-    if (e === 'win') m.emissiveIntensity = LM.win * tierK * (m.userData.k || 1);
+    if (e === 'win') m.emissiveIntensity = LM.win * tierK * (m.userData.k || 1) * (quality === 'high' ? 1 : .42);
     else if (e === 'lamp') m.emissiveIntensity = .15 + LM.lamps;
     else if (e === 'pool') m.emissiveIntensity = LM.pool;
     else if (e === 'city') m.emissiveIntensity = LM.city;
@@ -617,7 +617,7 @@ function setQuality(q) {
   renderer.shadowMap.type = q === 'low' ? T.PCFShadowMap : T.PCFSoftShadowMap;
   setShadowRes();
   for (const m of Object.values(M)) if (m && m.userData && m.userData.glass) setGlassQ(m);
-  if (grass) grass.visible = q !== 'low';
+  updateEmissives();
   const done = () => { buildComposer(); resize(); renderer.shadowMap.needsUpdate = true; dirty = true; };
   if (q !== 'low' && !PP) loadPP().then(done).catch(done); else done();
 }
@@ -732,7 +732,8 @@ function texd(key, set, p, Ctor) {
 }
 function setGlassQ(m) {
   const hi = quality === 'high';
-  m.transmission = hi ? 1 : 0; m.transparent = !hi; m.opacity = hi ? 1 : m.userData.op; m.depthWrite = hi; m.needsUpdate = true;
+  if (!m.userData.c0) m.userData.c0 = m.color.getHex();
+  m.transmission = hi ? 1 : 0; m.transparent = !hi; m.opacity = hi ? 1 : m.userData.op * .7; m.depthWrite = hi; m.color.set(hi ? m.userData.c0 : 0x7d929c); m.needsUpdate = true;
 }
 function glassMat(key, color, op = .28, rough = .03) {
   if (M[key]) return M[key];

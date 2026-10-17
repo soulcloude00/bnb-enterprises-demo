@@ -23,7 +23,8 @@ function texd(key, set, p, Ctor) {
 }
 function setGlassQ(m) {
   const hi = quality === 'high';
-  m.transmission = hi ? 1 : 0; m.transparent = !hi; m.opacity = hi ? 1 : m.userData.op; m.depthWrite = hi; m.needsUpdate = true;
+  if (!m.userData.c0) m.userData.c0 = m.color.getHex();
+  m.transmission = hi ? 1 : 0; m.transparent = !hi; m.opacity = hi ? 1 : m.userData.op * .7; m.depthWrite = hi; m.color.set(hi ? m.userData.c0 : 0x7d929c); m.needsUpdate = true;
 }
 function glassMat(key, color, op = .28, rough = .03) {
   if (M[key]) return M[key];

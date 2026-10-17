@@ -136,7 +136,7 @@ function updateEmissives() {
   for (const [k, m] of Object.entries(M)) {
     if (!m || !m.userData) continue;
     const e = m.userData.emis; if (!e) continue;
-    if (e === 'win') m.emissiveIntensity = LM.win * tierK * (m.userData.k || 1);
+    if (e === 'win') m.emissiveIntensity = LM.win * tierK * (m.userData.k || 1) * (quality === 'high' ? 1 : .42);
     else if (e === 'lamp') m.emissiveIntensity = .15 + LM.lamps;
     else if (e === 'pool') m.emissiveIntensity = LM.pool;
     else if (e === 'city') m.emissiveIntensity = LM.city;
@@ -269,7 +269,7 @@ function setQuality(q) {
   renderer.shadowMap.type = q === 'low' ? T.PCFShadowMap : T.PCFSoftShadowMap;
   setShadowRes();
   for (const m of Object.values(M)) if (m && m.userData && m.userData.glass) setGlassQ(m);
-  if (grass) grass.visible = q !== 'low';
+  updateEmissives();
   const done = () => { buildComposer(); resize(); renderer.shadowMap.needsUpdate = true; dirty = true; };
   if (q !== 'low' && !PP) loadPP().then(done).catch(done); else done();
 }
