@@ -17,7 +17,11 @@ Static demo site for **B&B Enterprises (Burman and Burman Enterprises)**, a Bang
 - Source: `_build/consult-src/*.js` (concatenated into `assets/js/consult.js` by `_build/build.py`), styles in `assets/css/consult.css`.
 - Three.js r169 is vendored in `assets/vendor/three-0.169.0/` (MIT) and only loads when the overlay opens.
 - Front-end only: nothing is submitted. The WhatsApp number (`WA_NUMBER` in `01-ui.js`) is a **placeholder**.
-- QA scripts: `_build/qa_consult.py`, `_build/qa_extra.py` (headless Chrome + SwiftShader).
+- 12 questions, incl. a **Design** step: 3 variants per building type (distinct massing/rooflines), with thumbnails rendered from the live 3D scene (SVG elevation fallback without WebGL).
+- Look: textured PBR materials, transmission glass (high tier), HDRI reflections, ACES, soft shadows, GTAO, bloom, tilt-shift/vignette grade; Day / Golden hour / Night toggle.
+- Quality tiers high/medium/low chosen per device and stepped down automatically if FPS < ~42; force one with `consult.html?q=high|medium|low`.
+- Textures (ambientCG) and HDRI (Poly Haven) are CC0 and vendored in `assets/tex/` — see `assets/tex/CREDITS.txt`.
+- QA scripts: `_build/qa_consult.py`, `_build/qa_extra.py`, `_build/qa_extra2.py`, `_build/qa_v2.py`, `_build/qa_v2b.py` (headless Chrome + SwiftShader).
 
 ## Track Record page (`track-record.html`) — "standout" sections
 - Source: `_build/standout.py` (content + sample data), styles `assets/css/standout.css`, behaviour in `assets/js/site.js`.

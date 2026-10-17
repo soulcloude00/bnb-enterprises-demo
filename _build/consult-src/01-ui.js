@@ -15,6 +15,7 @@ const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': 
 const Q = [
   { id: 'type', label: 'Project', title: 'What do you want to <em>build?</em>', sub: 'Choose the closest fit — everything can be refined with our team.', hint: 'Sets the massing of the model.',
     opts: [['villa', 'Villa', 'Independent luxury home'], ['apartment', 'Apartment building', 'Multi-family residential'], ['commercial', 'Commercial', 'Offices, retail or mixed-use'], ['row', 'Row houses', 'A terrace of homes'], ['farm', 'Farmhouse', 'Weekend or estate living'], ['unsure', 'Not sure yet', 'We’ll help you decide']] },
+  { id: 'variant', label: 'Design', kind: 'variant', title: 'Choose a <em>design</em>', sub: 'Three distinct directions — each with its own silhouette. Materials and finish come next.', hint: 'The whole massing and roofline change.' },
   { id: 'plot', label: 'Plot', title: 'How large is your <em>plot?</em>', sub: 'Width × depth, in feet.', hint: 'The plot and footprint rescale to match.',
     opts: [['30x40', '30 × 40', '1,200 sq ft'], ['30x50', '30 × 50', '1,500 sq ft'], ['40x60', '40 × 60', '2,400 sq ft'], ['60x80', '60 × 80', '4,800 sq ft'], ['acre', '1 acre +', '43,560 sq ft and above'], ['custom', 'Custom', 'Enter your dimensions']] },
   { id: 'loc', label: 'Location', title: 'Where in <em>Bangalore?</em>', sub: 'Roughly is fine.', hint: 'The surroundings change around your plot.',
@@ -36,21 +37,33 @@ const Q = [
              ['budget', 'Approximate budget range', [['b1', 'Under ₹1 Cr'], ['b3', '₹1 – 3 Cr'], ['b10', '₹3 – 10 Cr'], ['b10p', '₹10 Cr +'], ['bx', 'Prefer to discuss']]]] },
   { id: 'contact', label: 'Contact', kind: 'contact', title: 'How should we <em>reach you?</em>', sub: 'Nothing is sent from this page — your details only prefill your brief.' },
 ];
+// design variants per building type: [id, name, description, suggested style]
+const VARIANTS = {
+  villa: [['cantilever', 'Cantilever Modern', 'Floating volumes over a glass pavilion', 'modern'], ['courtyard', 'Courtyard Tropical', 'Low wings wrapped around a planted court', 'tropical'], ['palladian', 'Classic Palladian', 'Symmetry, a columned portico and pediment', 'classic']],
+  apartment: [['tower', 'Glass Tower', 'A slender tower on a glazed podium', 'glass'], ['terraced', 'Terraced Green', 'Stepped floors with planted terraces', 'modern'], ['deco', 'Art Deco', 'Vertical fins and a stepped crown', 'classic']],
+  commercial: [['podium', 'Podium & Tower', 'Retail podium with an offset tower', 'glass'], ['campus', 'Low-rise Campus', 'Twin blocks linked by a glass atrium', 'modern'], ['twist', 'Sculpted Twist', 'Floor plates that rotate as they rise', 'glass']],
+  row: [['gabled', 'Gabled Terrace', 'Street-facing gables, front porches', 'indian'], ['staggered', 'Staggered Modern', 'Alternating heights and depths', 'modern'], ['sawtooth', 'Sawtooth Mews', 'Mono-pitch roofs and front courts', 'tropical']],
+  farm: [['ranch', 'Long Ranch', 'Long and low with a deep verandah', 'tropical'], ['barn', 'Modern Barn', 'Twin timber barns with glazed gables', 'modern'], ['hacienda', 'Hacienda Courtyard', 'Tiled wings around a fountain court', 'indian']],
+  unsure: [['compact', 'Compact', 'One efficient, simple volume', 'modern'], ['spread', 'Spread Out', 'Low, wide and garden-facing', 'tropical'], ['stacked', 'Stacked', 'Offset volumes with more height', 'glass']],
+};
+const variantsOf = t => VARIANTS[t] || [];
+const variantRow = (st = S) => variantsOf(st.type).find(v => v[0] === st.variant) || null;
+const LIGHTS = [['day', 'Day'], ['golden', 'Golden hour'], ['night', 'Night']];
 const TIMES = [['morning', 'Morning'], ['afternoon', 'Afternoon'], ['evening', 'Evening'], ['any', 'Any time']];
 const QI = Object.fromEntries(Q.map((q, i) => [q.id, i]));
 const optLabel = (id, v) => { const q = Q[QI[id]]; const o = q && q.opts && q.opts.find(o => o[0] === v); return o ? o[1] : ''; };
 const groupLabel = (g, v) => { const gr = Q[QI.plan].groups.find(x => x[0] === g); const o = gr[2].find(o => o[0] === v); return o ? o[1] : ''; };
 
 /* ------------------------------------------------------------------ state */
-const KEY = 'bnb-consult-v1';
-let S = { extras: [] }, step = -1;
-try { const j = JSON.parse(sessionStorage.getItem(KEY) || 'null'); if (j && j.S) { S = Object.assign({ extras: [] }, j.S); step = clamp(j.step | 0, -1, Q.length); } } catch (e) {}
+const KEY = 'bnb-consult-v2';
+let S = { extras: [], light: 'golden' }, step = -1;
+try { const j = JSON.parse(sessionStorage.getItem(KEY) || 'null'); if (j && j.S) { S = Object.assign({ extras: [], light: 'golden' }, j.S); step = clamp(j.step | 0, -1, Q.length); } } catch (e) {}
 const save = () => { try { sessionStorage.setItem(KEY, JSON.stringify({ S, step })); } catch (e) {} };
 
-function plotFt() {
+function plotFt(st = S) {
   const m = { '30x40': [30, 40], '30x50': [30, 50], '40x60': [40, 60], '60x80': [60, 80], 'acre': [200, 218] };
-  if (S.plot === 'custom') return [clamp(+S.cw || 40, 15, 1500), clamp(+S.cd || 60, 15, 1500)];
-  return m[S.plot] || [40, 60];
+  if (st.plot === 'custom') return [clamp(+st.cw || 40, 15, 1500), clamp(+st.cd || 60, 15, 1500)];
+  return m[st.plot] || [40, 60];
 }
 function plotLabel() {
   if (!S.plot) return '';
@@ -65,6 +78,7 @@ function valid(i) {
   if (q.kind === 'plan') return !!(S.timeline && S.budget);
   if (q.kind === 'contact') return contactErrors().length === 0;
   if (q.id === 'plot' && S.plot === 'custom') return +S.cw >= 15 && +S.cd >= 15;
+  if (q.kind === 'variant') return !!variantRow();
   return !!S[q.id];
 }
 function contactErrors() {

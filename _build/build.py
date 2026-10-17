@@ -542,7 +542,7 @@ consult=f'''
 <section class="phero cxpage">
  <div class="hero-media"><img src="{IMG}stock-architecture.jpg" alt="Contemporary architecture at dusk"></div><div class="hero-frame" aria-hidden="true"></div>
  <div class="wrap"><div class="crumbs"><a href="index.html">Home</a><span>/</span>Build your vision</div><p class="eyebrow">Request a consultation</p><h1>Build your <em>vision</em></h1>
- <p class="sub">Answer 11 short questions and watch a 3D concept of your project rise on its plot — then share the brief with our team on WhatsApp or download it.</p>
+ <p class="sub">Answer 12 short questions, pick one of three designs and watch a 3D concept of your project rise on its plot — then share the brief with our team on WhatsApp or download it.</p>
  <div class="ctas"><a class="btn" href="consult.html" data-consult>Start the configurator <span class="arr"></span></a><a class="btn ghost" href="contact.html">Prefer a simple form?</a></div>
  <noscript><p class="small" style="margin-top:24px">The 3D configurator needs JavaScript. Please use the <a class="gold" href="contact.html">enquiry form</a> instead.</p></noscript></div>
  <span class="credit">Illustrative · Unsplash</span>

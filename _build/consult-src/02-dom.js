@@ -14,6 +14,7 @@ function mount() {
     <canvas class="cx-canvas" role="img" aria-label="3D preview of your project"></canvas>
     <div class="cx-fallback" hidden>${FALLBACK_SVG}<p><b>3D preview unavailable</b>This device or browser can’t show the 3D model. Your answers still build your brief.</p></div>
     <div class="cx-top"><div class="cx-brand"><span class="mono">B<i>&amp;</i>B</span><span class="cx-bt">Build your vision</span></div></div>
+    <div class="cx-light" role="group" aria-label="Preview lighting">${LIGHTS.map(([v, l]) => `<button type="button" data-light="${v}" aria-pressed="${S.light === v}">${l}</button>`).join('')}</div>
     <div class="cx-hud" aria-hidden="true"></div>
     <div class="cx-hint" aria-hidden="true">Drag to rotate · Scroll or pinch to zoom</div>
     <div class="cx-load" aria-hidden="true"><i></i><span>Preparing your site…</span></div>
@@ -45,6 +46,12 @@ function mount() {
   bodyEl.addEventListener('change', onChange);
   bodyEl.addEventListener('input', onInput);
   bodyEl.addEventListener('click', onBodyClick);
+  root.querySelector('.cx-light').addEventListener('click', e => {
+    const b = e.target.closest('[data-light]'); if (!b) return;
+    S.light = b.dataset.light; save();
+    root.querySelectorAll('[data-light]').forEach(x => x.setAttribute('aria-pressed', String(x === b)));
+    if (threeOK) { applyLight(S.light); if (step === QI.variant) requestThumbs(); } liveEl.textContent = 'Lighting: ' + b.textContent;
+  });
 }
 
 function onKey(e) {
@@ -80,7 +87,9 @@ function onChange(e) {
   const t = e.target; if (!t.name) return;
   if (t.type === 'radio') {
     S[t.name] = t.value;
-    if (t.name === 'type') { if (S.floors === 'hr' && S.type !== 'apartment') S.floors = null; }
+    if (t.name === 'type') { if (S.floors === 'hr' && S.type !== 'apartment') S.floors = null; if (!variantRow()) S.variant = null; if (S.styleAuto) { S.style = null; S.styleAuto = false; } }
+    if (t.name === 'variant' && S.styleAuto) { S.style = null; S.styleAuto = false; }
+    if (t.name === 'style') S.styleAuto = false;
     if (t.name === 'plot') { const c = bodyEl.querySelector('.cx-custom'); if (c) { c.hidden = t.value !== 'custom'; if (t.value === 'custom') c.querySelector('input').focus(); } }
   } else if (t.type === 'checkbox' && t.name === 'extras') {
     S.extras = [...bodyEl.querySelectorAll('input[name=extras]:checked')].map(x => x.value);
@@ -98,7 +107,7 @@ function onBodyClick(e) {
   const a = b.dataset.act;
   if (a === 'begin') go(0);
   else if (a === 'edit') go(+b.dataset.i);
-  else if (a === 'restart') { S = { extras: [] }; save(); go(0); }
+  else if (a === 'restart') { S = { extras: [], light: S.light || 'golden' }; save(); go(0); }
   else if (a === 'download') download(b);
 }
 
@@ -110,7 +119,9 @@ function cardsHTML(name, opts, type, sel) {
   }).join('');
 }
 function go(i, opts = {}) {
-  step = clamp(i, -1, Q.length); save();
+  step = clamp(i, -1, Q.length);
+  if (step === QI.style && !S.style && variantRow()) { S.style = variantRow()[3]; S.styleAuto = true; }
+  save();
   renderStep(opts.noFocus);
   update3D(true);
 }
@@ -127,7 +138,7 @@ function renderStep(noFocus) {
       <p class="eyebrow">Build your vision</p>
       <h2 id="cx-title" tabindex="-1">Shape your project. <em>See it rise.</em></h2>
       <p class="cx-lead">Answer ${n} short questions and watch a 3D model of your project take shape on its plot — then share the brief with our team.</p>
-      <ul class="cx-feats"><li><b>${n}</b><span>quick questions</span></li><li><b>3D</b><span>live model</span></li><li><b>~2</b><span>minutes</span></li></ul>
+      <ul class="cx-feats"><li><b>${n}</b><span>quick questions</span></li><li><b>3D</b><span>live model</span></li><li><b>~3</b><span>minutes</span></li></ul>
       <button class="btn cx-begin" type="button" data-act="begin">Begin <span class="arr"></span></button>
       <p class="cx-fine">Illustrative concept only — not a design, drawing or quotation.</p></div>`;
   } else if (step >= n) {
@@ -137,7 +148,11 @@ function renderStep(noFocus) {
     const q = Q[step];
     stepEl.innerHTML = `<b>${String(step + 1).padStart(2, '0')}</b> / ${String(n).padStart(2, '0')} <span>· ${q.label}</span>`;
     h = `<h2 id="cx-title" tabindex="-1">${q.title}</h2>${q.sub ? `<p class="cx-sub">${q.sub}</p>` : ''}`;
-    if (q.kind === 'multi') {
+    if (q.kind === 'variant') {
+      const vs = variantsOf(S.type);
+      h += vs.length ? `<fieldset class="cx-grid cx-vgrid"><legend class="sr">${q.label}</legend>${vs.map(([v, l, dsc, st], i) => `<label class="cx-opt cx-vopt"><input type="radio" name="variant" value="${v}"${S.variant === v ? ' checked' : ''}><span class="cx-card"><span class="cx-thumb" data-v="${v}" aria-hidden="true"><i></i></span><span class="cx-ix" aria-hidden="true">${String.fromCharCode(65 + i)} · ${optLabel('style', st)}</span><b>${l}</b><small>${dsc}</small></span></label>`).join('')}</fieldset>`
+        : `<p class="cx-sub">Please choose what you want to build first.</p>`;
+    } else if (q.kind === 'multi') {
       h += `<fieldset class="cx-grid multi"><legend class="sr">${q.label}</legend>${cardsHTML('extras', q.opts, 'checkbox', S.extras)}</fieldset>`;
     } else if (q.kind === 'plan') {
       h += q.groups.map(([g, lg, o]) => `<fieldset class="cx-chips"><legend>${lg}</legend><div>${o.map(([v, l]) => `<label class="cx-chip"><input type="radio" name="${g}" value="${v}"${S[g] === v ? ' checked' : ''}><span>${l}</span></label>`).join('')}</div></fieldset>`).join('');
@@ -151,12 +166,14 @@ function renderStep(noFocus) {
         <p class="cx-fine">Front-end demo — nothing is submitted or stored on a server.</p></div>`;
     } else {
       const opts = q.id === 'floors' ? floorOpts() : q.opts;
+      if (q.id === 'style' && variantRow()) h += `<p class="cx-suggest"><span>Suggested for ${variantRow()[1]}:</span> ${optLabel('style', variantRow()[3])}</p>`;
       h += `<fieldset class="cx-grid${q.id === 'cons' || q.id === 'tier' ? ' one' : ''}"><legend class="sr">${q.label}</legend>${cardsHTML(q.id, opts, 'radio', S[q.id])}</fieldset>`;
       if (q.id === 'plot') h += `<div class="cx-custom" ${S.plot === 'custom' ? '' : 'hidden'}><div class="fld"><label for="cx-cw">Width (ft)</label><input id="cx-cw" name="cw" inputmode="numeric" value="${esc(S.cw)}" placeholder="e.g. 50"></div><span aria-hidden="true">×</span><div class="fld"><label for="cx-cd">Depth (ft)</label><input id="cx-cd" name="cd" inputmode="numeric" value="${esc(S.cd)}" placeholder="e.g. 80"></div></div>`;
     }
     if (q.hint) h += `<p class="cx-hintq"><i aria-hidden="true"></i>In 3D — ${q.hint}</p>`;
   }
   bodyEl.innerHTML = `<div class="cx-pane">${h}</div>`;
+  if (step >= 0 && step < n && Q[step].kind === 'variant') requestThumbs();
   bodyEl.scrollTop = 0;
   refreshNav();
   if (!noFocus) { const t = bodyEl.querySelector('#cx-title'); if (t) t.focus({ preventScroll: true }); }
@@ -180,7 +197,7 @@ function refreshNav() {
 function rows() {
   const ex = (S.extras || []).map(v => optLabel('extras', v));
   return [
-    ['type', 'Build', optLabel('type', S.type)], ['plot', 'Plot', plotLabel()], ['loc', 'Location', optLabel('loc', S.loc)],
+    ['type', 'Build', optLabel('type', S.type)], ['variant', 'Design', (variantRow() || [])[1]], ['plot', 'Plot', plotLabel()], ['loc', 'Location', optLabel('loc', S.loc)],
     ['floors', 'Floors', optLabel('floors', S.floors)], ['cons', 'Construction', optLabel('cons', S.cons)], ['tier', 'Finish', optLabel('tier', S.tier)],
     ['style', 'Style', optLabel('style', S.style)], ['park', 'Parking', optLabel('park', S.park)], ['extras', 'Extras', ex.length ? ex.join(', ') : 'None'],
     ['plan', 'Timeline', groupLabel('timeline', S.timeline)], ['plan', 'Budget range', groupLabel('budget', S.budget)],
@@ -210,7 +227,7 @@ function briefText() {
 function waLink() { return `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(briefText())}`; }
 function renderHud() {
   if (!hudEl) return;
-  const bits = [optLabel('type', S.type), S.plot && plotLabel(), S.floors && optLabel('floors', S.floors), S.style && optLabel('style', S.style), S.tier && optLabel('tier', S.tier)].filter(Boolean);
+  const bits = [optLabel('type', S.type), variantRow() && variantRow()[1], S.plot && plotLabel(), S.floors && optLabel('floors', S.floors), S.style && optLabel('style', S.style), S.tier && optLabel('tier', S.tier)].filter(Boolean);
   hudEl.innerHTML = bits.length ? bits.map(b => `<span>${esc(b)}</span>`).join('') : '<span>Empty plot · awaiting your vision</span>';
 }
 

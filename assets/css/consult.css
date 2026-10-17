@@ -181,3 +181,32 @@ html.cx-lock,html.cx-lock body{overflow:hidden}
 @media (prefers-reduced-motion:reduce){
   .cx,.cx *{animation:none!important;transition:none!important}
 }
+
+/* lighting toggle */
+.cx-light{position:absolute;left:50%;top:24px;transform:translateX(-50%);z-index:4;display:flex;padding:3px;border:1px solid var(--line);border-radius:40px;background:rgba(10,11,14,.55);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
+.cx-light[hidden]{display:none}
+.cx-light button{appearance:none;border:0;background:none;color:var(--mute);font:600 10.5px/1 var(--sans);letter-spacing:.16em;text-transform:uppercase;padding:10px 15px;border-radius:40px;cursor:pointer;transition:color .3s,background .3s}
+.cx-light button:hover{color:var(--ivory)}
+.cx-light button[aria-pressed="true"]{background:linear-gradient(135deg,var(--gold-2,#e6cc98),var(--gold));color:#121010}
+.cx-light button:focus-visible{outline:1px solid var(--gold-2,#e6cc98);outline-offset:2px}
+.cx.no3d .cx-light{display:none}
+/* design (variant) cards with rendered thumbnails */
+.cx-vgrid{grid-template-columns:1fr}
+.cx-vopt .cx-card{display:grid;grid-template-columns:132px 1fr;grid-template-rows:auto auto 1fr;column-gap:16px;row-gap:3px;padding:10px 40px 10px 10px;min-height:0}
+.cx-thumb{grid-row:1/4;position:relative;display:block;width:132px;aspect-ratio:3/2;overflow:hidden;background:radial-gradient(120% 100% at 50% 100%,#2a2219,#10141c);border:1px solid rgba(244,239,230,.08)}
+.cx-thumb img,.cx-thumb svg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+.cx-thumb img{animation:cxfade .5s var(--ease) both}
+@keyframes cxfade{from{opacity:0}to{opacity:1}}
+.cx-vopt .cx-ix{margin:6px 0 0;padding:0}
+.cx-vopt .cx-card b{font-size:22px}
+.cx-vopt .cx-card::after{top:50%;margin-top:-8px}
+.cx-opt input:checked+.cx-card .cx-thumb{border-color:rgba(201,169,110,.6)}
+.cx-suggest{margin:-6px 0 16px;font-size:12px;color:var(--ivory-2);letter-spacing:.02em}
+.cx-suggest span{color:var(--gold);font-weight:600;letter-spacing:.14em;text-transform:uppercase;font-size:10.5px;margin-right:6px}
+@media (max-width:860px),(max-height:520px) and (max-width:960px){
+  .cx-light{top:auto;bottom:62px;left:16px;transform:none}
+  .cx-light button{padding:8px 11px;font-size:9.5px;letter-spacing:.12em}
+  .cx-vopt .cx-card{grid-template-columns:104px 1fr;column-gap:12px;padding:8px 34px 8px 8px}
+  .cx-thumb{width:104px}
+  .cx-vopt .cx-card b{font-size:18px}
+}

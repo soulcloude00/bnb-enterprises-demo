@@ -1,0 +1,12 @@
+CC0 textures from ambientCG.com (resized to 512/256 px):
+plaster: Plaster001
+concrete: Concrete034
+siding: WoodSiding008
+deck: Wood049
+stone: Rock030
+paving: PavingStones131
+lawn: Grass004
+tileroof: RoofingTiles006
+slate: RoofingTiles002
+pooltile: Tiles107
+HDRI: qwantani_sunset_puresky (1k) by Poly Haven, CC0 — polyhaven.com
