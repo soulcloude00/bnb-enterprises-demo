@@ -28,10 +28,12 @@
   }
 
   // count-up
+  // sample "days since" counters (accident-free days) — computed from data-since
+  d.querySelectorAll('[data-since]').forEach(function(el){ var t0=new Date(el.dataset.since+'T00:00:00'); var n=Math.max(0,Math.floor((Date.now()-t0)/864e5)); el.dataset.count=n; el.textContent=n.toLocaleString('en-IN'); });
   var nums=d.querySelectorAll('[data-count]');
   function run(el){
-    var t=parseFloat(el.dataset.count), fmt=el.dataset.fmt==='comma', start=null, dur=1800;
-    function f(n){n=Math.round(n);return fmt?n.toLocaleString('en-IN'):String(n);}
+    var t=parseFloat(el.dataset.count), fmt=el.dataset.fmt==='comma', dec=parseInt(el.dataset.dec||'0',10), start=null, dur=1800;
+    function f(n){if(dec) return n.toFixed(dec); n=Math.round(n);return fmt?n.toLocaleString('en-IN'):String(n);}
     if(reduce){el.textContent=f(t);return;}
     function step(ts){ if(!start) start=ts; var p=Math.min((ts-start)/dur,1); p=1-Math.pow(1-p,3); el.textContent=f(t*p); if(p<1) requestAnimationFrame(step); }
     requestAnimationFrame(step);
@@ -118,6 +120,39 @@
   });
   d.addEventListener('pointerover',function(e){ if(e.target.closest&&e.target.closest('[data-consult]')) cxLoad().catch(function(){}); },{passive:true});
   if(cxPage) cxOpen(false);
+
+  // before / after slider
+  d.querySelectorAll('.ba').forEach(function(ba){
+    var r=ba.querySelector('input'); if(!r) return;
+    function set(){ ba.style.setProperty('--x',r.value+'%'); }
+    function at(e){ var b=ba.getBoundingClientRect(); r.value=Math.max(0,Math.min(100,(e.clientX-b.left)/b.width*100)); set(); }
+    var drag=false;
+    ba.addEventListener('dragstart',function(e){ e.preventDefault(); });
+    ba.addEventListener('pointerdown',function(e){ if(e.button>0) return; e.preventDefault(); drag=true; at(e); try{ba.setPointerCapture(e.pointerId);}catch(_){} });
+    ba.addEventListener('pointermove',function(e){ if(drag) at(e); });
+    ['pointerup','pointercancel','lostpointercapture'].forEach(function(t){ ba.addEventListener(t,function(){ drag=false; }); });
+    r.addEventListener('input',set); set();
+  });
+
+  // time-lapse sequence (auto-advances while visible; paused under reduced motion)
+  d.querySelectorAll('.tlapse').forEach(function(tl){
+    var fr=[].slice.call(tl.querySelectorAll('.tl-f')), dots=[].slice.call(tl.querySelectorAll('.tl-dots button')), bar=tl.querySelector('.tl-prog span'), btn=tl.querySelector('.tl-play'), i=0, timer=null, playing=!reduce, vis=false;
+    function show(k){ i=(k+fr.length)%fr.length; fr.forEach(function(f,j){f.classList.toggle('on',j===i);}); dots.forEach(function(b,j){ if(j===i) b.setAttribute('aria-current','true'); else b.removeAttribute('aria-current'); }); if(bar) bar.style.width=(fr.length>1?i/(fr.length-1)*100:100)+'%'; var nx=fr[(i+1)%fr.length].querySelector('img'); if(nx&&nx.loading==='lazy') nx.loading='eager'; }
+    function tick(){ clearTimeout(timer); if(playing&&vis) timer=setTimeout(function(){ show(i+1); tick(); }, i===fr.length-1?2600:1500); }
+    function ui(){ btn.setAttribute('aria-pressed',playing?'true':'false'); btn.setAttribute('aria-label',playing?'Pause time-lapse':'Play time-lapse'); }
+    btn.addEventListener('click',function(){ playing=!playing; ui(); tick(); });
+    dots.forEach(function(b,j){ b.addEventListener('click',function(){ playing=false; ui(); show(j); tick(); }); });
+    if('IntersectionObserver' in window){ new IntersectionObserver(function(es){ vis=es[0].isIntersecting; tick(); },{threshold:.35}).observe(tl); } else { vis=true; }
+    ui(); show(0); tick();
+  });
+
+  // track-record sub-nav: highlight the section in view
+  var sn=d.querySelectorAll('.subnav a');
+  if(sn.length&&'IntersectionObserver' in window){
+    var map={}; sn.forEach(function(a){ map[a.getAttribute('href').slice(1)]=a; });
+    var so=new IntersectionObserver(function(es){ es.forEach(function(en){ if(en.isIntersecting){ sn.forEach(function(a){a.classList.remove('on');}); var a=map[en.target.id]; if(a){ a.classList.add('on'); if(a.parentNode.scrollTo) a.parentNode.scrollTo({left:a.offsetLeft-24,behavior:reduce?'auto':'smooth'}); } } }); },{rootMargin:'-45% 0px -50% 0px'});
+    Object.keys(map).forEach(function(id){ var s=d.getElementById(id); if(s) so.observe(s); });
+  }
 
   var y=d.getElementById('yr'); if(y) y.textContent=new Date().getFullYear();
 })();

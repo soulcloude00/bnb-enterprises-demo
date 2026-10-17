@@ -15,6 +15,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/css/site.css">
 <link rel="stylesheet" href="assets/css/consult.css">
+<link rel="stylesheet" href="assets/css/standout.css">
 <script>document.documentElement.classList.add('js')</script>
 </head>
 <body>
@@ -22,11 +23,11 @@
 <header class="hdr">
  <div class="wrap">
   <a class="brand" href="index.html" aria-label="B&amp;B Enterprises — home"><span class="mono">B<i>&amp;</i>B</span><span class="wm"><b>Enterprises</b><span>Real Estate Construction</span></span></a>
-  <nav class="nav" aria-label="Primary"><a href="index.html">Home</a><a href="projects.html">Projects</a><a href="services.html">Services</a><a href="about.html" aria-current="page">About</a><a class="btn" href="consult.html" data-consult>Request a consultation</a></nav>
+  <nav class="nav" aria-label="Primary"><a href="index.html">Home</a><a href="projects.html">Projects</a><a href="services.html">Services</a><a href="track-record.html">Track Record</a><a href="about.html" aria-current="page">About</a><a class="btn" href="consult.html" data-consult>Request a consultation</a></nav>
   <button class="burger" aria-label="Menu" aria-expanded="false" aria-controls="mnav"><span></span><span></span><span></span></button>
  </div>
 </header>
-<nav class="mnav" id="mnav" aria-label="Mobile"><a href="index.html">Home<small>01</small></a><a href="projects.html">Projects<small>02</small></a><a href="services.html">Services<small>03</small></a><a href="about.html">About<small>04</small></a><a href="contact.html">Contact<small>05</small></a><a href="consult.html" data-consult>Build your vision<small>3D</small></a><div class="mfoot">B&amp;B Enterprises · Rooted in Bangalore</div></nav>
+<nav class="mnav" id="mnav" aria-label="Mobile"><a href="index.html">Home<small>01</small></a><a href="projects.html">Projects<small>02</small></a><a href="services.html">Services<small>03</small></a><a href="track-record.html">Track Record<small>04</small></a><a href="about.html">About<small>05</small></a><a href="contact.html">Contact<small>06</small></a><a href="consult.html" data-consult>Build your vision<small>3D</small></a><div class="mfoot">B&amp;B Enterprises · Rooted in Bangalore</div></nav>
 <main id="main">
 <section class="phero short">
  <div class="hero-media"><img src="assets/img/stock-site-aerial.jpg" alt="Aerial view of a construction site"></div><div class="hero-frame" aria-hidden="true"></div>
@@ -120,8 +121,8 @@
     <p class="tagl">Built on experience.<br>Reaching higher.</p>
     <p class="small">Burman and Burman Enterprises — a family construction enterprise, rooted in Bangalore.</p>
    </div>
-   <div><h5>Explore</h5><ul><li><a href="index.html">Home</a></li><li><a href="projects.html">Projects</a></li><li><a href="services.html">Services</a></li><li><a href="about.html">About</a></li><li><a href="contact.html">Contact</a></li></ul></div>
-   <div><h5>Expertise</h5><ul><li><a href="services.html#mivan">Mivan construction</a></li><li><a href="services.html#block">Block construction</a></li><li><a href="projects.html#completed">Completed work</a></li></ul></div>
+   <div><h5>Explore</h5><ul><li><a href="index.html">Home</a></li><li><a href="projects.html">Projects</a></li><li><a href="services.html">Services</a></li><li><a href="track-record.html">Track Record</a></li><li><a href="about.html">About</a></li><li><a href="contact.html">Contact</a></li></ul></div>
+   <div><h5>Expertise</h5><ul><li><a href="services.html#mivan">Mivan construction</a></li><li><a href="services.html#block">Block construction</a></li><li><a href="projects.html#completed">Completed work</a></li><li><a href="track-record.html#live-sites">Live sites</a></li><li><a href="track-record.html#profile">Company profile (PDF)</a></li></ul></div>
    <div><h5>Reach us</h5><ul>
     <li>Phone <span class="ph">Placeholder</span></li><li>Email <span class="ph">Placeholder</span></li><li>Office address, Bangalore <span class="ph">Placeholder</span></li>
     <li><a href="consult.html" data-consult>Request a consultation →</a></li></ul></div>
@@ -132,7 +133,7 @@
   </div>
  </div>
 </footer>
-<button class="wa" type="button" data-placeholder-msg="WhatsApp number to be added — placeholder. In the live site this opens a WhatsApp chat with B&B Enterprises." aria-label="Chat on WhatsApp (number to be added)"><span class="wi"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91C21.95 6.45 17.5 2 12.04 2zm5.8 14.03c-.24.68-1.42 1.3-1.95 1.35-.5.05-1.13.07-1.83-.12-.42-.13-.96-.31-1.65-.61-2.9-1.25-4.79-4.17-4.94-4.36-.14-.19-1.18-1.57-1.18-3s.75-2.13 1.02-2.42c.26-.29.58-.36.77-.36h.55c.18 0 .42-.07.65.5.24.58.82 2 .89 2.15.07.14.12.31.02.5-.1.19-.14.31-.29.48-.14.17-.3.37-.43.5-.14.14-.29.3-.13.59.17.29.74 1.22 1.59 1.98 1.09.97 2.01 1.27 2.3 1.42.29.14.46.12.62-.07.17-.19.72-.84.91-1.13.19-.29.38-.24.65-.14.26.1 1.68.79 1.97.94.29.14.48.22.55.34.07.12.07.7-.17 1.38z"/></svg></span><span class="wt">WhatsApp</span></button>
+<a class="wa" href="https://wa.me/910000000000?text=Hello%20B%26B%20Enterprises%20%E2%80%94%20I%20would%20like%20a%20construction%20quote%20for%20my%20project." target="_blank" rel="noopener" aria-label="Get a quote in 24 hours on WhatsApp — placeholder number +91 00000 00000"><span class="wi"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91C21.95 6.45 17.5 2 12.04 2zm5.8 14.03c-.24.68-1.42 1.3-1.95 1.35-.5.05-1.13.07-1.83-.12-.42-.13-.96-.31-1.65-.61-2.9-1.25-4.79-4.17-4.94-4.36-.14-.19-1.18-1.57-1.18-3s.75-2.13 1.02-2.42c.26-.29.58-.36.77-.36h.55c.18 0 .42-.07.65.5.24.58.82 2 .89 2.15.07.14.12.31.02.5-.1.19-.14.31-.29.48-.14.17-.3.37-.43.5-.14.14-.29.3-.13.59.17.29.74 1.22 1.59 1.98 1.09.97 2.01 1.27 2.3 1.42.29.14.46.12.62-.07.17-.19.72-.84.91-1.13.19-.29.38-.24.65-.14.26.1 1.68.79 1.97.94.29.14.48.22.55.34.07.12.07.7-.17 1.38z"/></svg></span><span class="wt"><b>Get a quote in 24 hours</b><small>WhatsApp · <span class="sd">Placeholder no.</span></small></span><span class="wt-m">Quote in 24h</span></a>
 <script src="assets/js/site.js" defer></script>
 </body>
 </html>

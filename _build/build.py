@@ -1,11 +1,14 @@
-import os, html
+import os, html, sys
+sys.path.insert(0,os.path.dirname(os.path.abspath(__file__)))
+from standout import SD, WA_NUM, WA_DISPLAY, home_teaser, home_testimonials, track_page
 OUT=os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 IMG="assets/img/"
 PH=lambda t="Placeholder": f'<span class="ph">{t}</span>'
 WA_SVG='<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91C21.95 6.45 17.5 2 12.04 2zm5.8 14.03c-.24.68-1.42 1.3-1.95 1.35-.5.05-1.13.07-1.83-.12-.42-.13-.96-.31-1.65-.61-2.9-1.25-4.79-4.17-4.94-4.36-.14-.19-1.18-1.57-1.18-3s.75-2.13 1.02-2.42c.26-.29.58-.36.77-.36h.55c.18 0 .42-.07.65.5.24.58.82 2 .89 2.15.07.14.12.31.02.5-.1.19-.14.31-.29.48-.14.17-.3.37-.43.5-.14.14-.29.3-.13.59.17.29.74 1.22 1.59 1.98 1.09.97 2.01 1.27 2.3 1.42.29.14.46.12.62-.07.17-.19.72-.84.91-1.13.19-.29.38-.24.65-.14.26.1 1.68.79 1.97.94.29.14.48.22.55.34.07.12.07.7-.17 1.38z"/></svg>'
+WA_HREF="https://wa.me/"+WA_NUM+"?text="+__import__("urllib.parse").parse.quote("Hello B&B Enterprises — I would like a construction quote for my project.")
 WA_MSG="WhatsApp number to be added — placeholder. In the live site this opens a WhatsApp chat with B&B Enterprises."
 
-NAV=[("index.html","Home"),("projects.html","Projects"),("services.html","Services"),("about.html","About")]
+NAV=[("index.html","Home"),("projects.html","Projects"),("services.html","Services"),("track-record.html","Track Record"),("about.html","About")]
 
 def head(title,desc):
     return f'''<!doctype html>
@@ -25,6 +28,7 @@ def head(title,desc):
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/css/site.css">
 <link rel="stylesheet" href="assets/css/consult.css">
+<link rel="stylesheet" href="assets/css/standout.css">
 <script>document.documentElement.classList.add('js')</script>
 </head>
 '''
@@ -55,8 +59,8 @@ def footer():
     <p class="tagl">Built on experience.<br>Reaching higher.</p>
     <p class="small">Burman and Burman Enterprises — a family construction enterprise, rooted in Bangalore.</p>
    </div>
-   <div><h5>Explore</h5><ul><li><a href="index.html">Home</a></li><li><a href="projects.html">Projects</a></li><li><a href="services.html">Services</a></li><li><a href="about.html">About</a></li><li><a href="contact.html">Contact</a></li></ul></div>
-   <div><h5>Expertise</h5><ul><li><a href="services.html#mivan">Mivan construction</a></li><li><a href="services.html#block">Block construction</a></li><li><a href="projects.html#completed">Completed work</a></li></ul></div>
+   <div><h5>Explore</h5><ul><li><a href="index.html">Home</a></li><li><a href="projects.html">Projects</a></li><li><a href="services.html">Services</a></li><li><a href="track-record.html">Track Record</a></li><li><a href="about.html">About</a></li><li><a href="contact.html">Contact</a></li></ul></div>
+   <div><h5>Expertise</h5><ul><li><a href="services.html#mivan">Mivan construction</a></li><li><a href="services.html#block">Block construction</a></li><li><a href="projects.html#completed">Completed work</a></li><li><a href="track-record.html#live-sites">Live sites</a></li><li><a href="track-record.html#profile">Company profile (PDF)</a></li></ul></div>
    <div><h5>Reach us</h5><ul>
     <li>Phone {PH()}</li><li>Email {PH()}</li><li>Office address, Bangalore {PH()}</li>
     <li><a href="consult.html" data-consult>Request a consultation →</a></li></ul></div>
@@ -67,7 +71,7 @@ def footer():
   </div>
  </div>
 </footer>
-<button class="wa" type="button" data-placeholder-msg="{WA_MSG}" aria-label="Chat on WhatsApp (number to be added)"><span class="wi">{WA_SVG}</span><span class="wt">WhatsApp</span></button>
+<a class="wa" href="{WA_HREF}" target="_blank" rel="noopener" aria-label="Get a quote in 24 hours on WhatsApp — placeholder number {WA_DISPLAY}"><span class="wi">{WA_SVG}</span><span class="wt"><b>Get a quote in 24 hours</b><small>WhatsApp · <span class="sd">Placeholder no.</span></small></span><span class="wt-m">Quote in 24h</span></a>
 <script src="assets/js/site.js" defer></script>
 </body>
 </html>
@@ -181,6 +185,8 @@ home=f'''
  <div class="marquee"><ul><li>Keya</li><li>Adarsh</li><li>Brigade</li><li>Sumadhura</li><li>MVN</li></ul><ul aria-hidden="true"><li>Keya</li><li>Adarsh</li><li>Brigade</li><li>Sumadhura</li><li>MVN</li></ul><ul aria-hidden="true"><li>Keya</li><li>Adarsh</li><li>Brigade</li><li>Sumadhura</li><li>MVN</li></ul><ul aria-hidden="true"><li>Keya</li><li>Adarsh</li><li>Brigade</li><li>Sumadhura</li><li>MVN</li></ul></div>
 </section>
 
+{home_teaser()}
+
 <section class="sec ivory on-ivory">
  <div class="wrap">
   <div class="sec-head"><div><p class="eyebrow rv">Why B&amp;B</p><h2 class="rv">The contractor developers <em>keep returning to</em></h2></div><p class="rv d1">What a developer needs from a construction partner is simple to say and hard to deliver: certainty. This is how we provide it.</p></div>
@@ -217,16 +223,7 @@ home=f'''
  </div>
 </section>
 
-<section class="sec">
- <div class="wrap">
-  <div class="sec-head"><div><p class="eyebrow rv">In their words</p><h2 class="rv">What our partners <em>say</em></h2></div><p class="rv d1">{PH("Sample testimonials")} Real quotes from developers and site partners will replace these before launch.</p></div>
-  <div class="testi">
-   <figure class="quote rv">{PH("Sample")}<blockquote>Sample testimonial — a short quote from a developer partner about quality, pace and reliability on site will appear here.</blockquote><cite>Name, Designation — Developer (placeholder)</cite></figure>
-   <figure class="quote rv d1">{PH("Sample")}<blockquote>Sample testimonial — a project head describing how B&amp;B handled a Mivan high-rise cycle will appear here.</blockquote><cite>Name, Designation — Developer (placeholder)</cite></figure>
-   <figure class="quote rv d2">{PH("Sample")}<blockquote>Sample testimonial — a note on workforce, safety and handover experience will appear here.</blockquote><cite>Name, Designation — Developer (placeholder)</cite></figure>
-  </div>
- </div>
-</section>
+{home_testimonials()}
 {cta()}
 '''
 page("index.html","B&amp;B Enterprises — Real Estate Construction, Bangalore","B&B Enterprises (Burman and Burman Enterprises) — a Bangalore family construction contractor with 20+ years and a 5,000+ workforce, specialising in Mivan and block construction for leading developers.",home)
@@ -353,7 +350,7 @@ services=f'''
     <li>Accurate, smooth concrete surfaces that reduce plastering and rework</li>
     <li>Consistent quality across every floor and every tower</li>
    </ul>
-   <p class="small rv">Typical cycle time, tower heights handled and formwork sets owned {PH("To confirm")}</p>
+   <p class="small rv">Typical cycle time, tower heights handled and formwork sets owned {PH("To confirm")} · <a class="gold" href="track-record.html#mivan-speed">See sample speed numbers →</a></p>
    <a class="btn rv d2" href="consult.html" data-consult>Discuss a Mivan project <span class="arr"></span></a>
   </div>
  </section>
@@ -496,7 +493,7 @@ contact=f'''
    <dl class="rv d1">
     <div><dt>Phone</dt><dd>+91 — {PH()}</dd></div>
     <div><dt>Email</dt><dd>— {PH()}</dd></div>
-    <div><dt>WhatsApp</dt><dd><button class="link" style="background:none;border-width:0 0 1px;cursor:pointer" type="button" data-placeholder-msg="{WA_MSG}">Chat on WhatsApp</button>{PH()}</dd></div>
+    <div><dt>WhatsApp</dt><dd><a class="link" href="{WA_HREF}" target="_blank" rel="noopener">Get a quote in 24 hours</a>{SD("Placeholder no. "+WA_DISPLAY)}</dd></div>
     <div><dt>Office</dt><dd>Bangalore {PH("Full address")}</dd></div>
     <div><dt>Hours</dt><dd>— {PH()}</dd></div>
    </dl>
@@ -552,6 +549,9 @@ consult=f'''
 </section>
 '''
 page("consult.html","Build your vision — Request a Consultation — B&amp;B Enterprises","Configure your villa, apartment building, commercial project, row houses or farmhouse in 3D and share the brief with B&B Enterprises, Bangalore.",consult,cur="consult.html",battr=' data-consult-page')
+
+# ---------- TRACK RECORD (standout sections) ----------
+page("track-record.html","Track Record — Why B&amp;B — B&amp;B Enterprises","B&B Enterprises track record: live project tracker, Mivan speed, safety, workforce, equipment, quality checks and company profile. Demo with sample data.",track_page()+cta("tl-08.jpg","Put this track record <em>to work</em> on your project."))
 
 # ---------- 404 ----------
 page("404.html","Page not found — B&amp;B Enterprises","Page not found.",f'''<section class="phero"><div class="hero-media"><img src="{IMG}hero-towers.jpg" alt=""></div><div class="hero-frame"></div><div class="wrap"><p class="eyebrow">404</p><h1>This floor isn&rsquo;t <em>built yet.</em></h1><p class="sub">The page you were looking for doesn&rsquo;t exist.</p><div style="margin-top:36px"><a class="btn" href="index.html">Return home <span class="arr"></span></a></div></div></section>''',cur="")

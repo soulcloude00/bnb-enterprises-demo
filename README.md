@@ -18,3 +18,11 @@ Static demo site for **B&B Enterprises (Burman and Burman Enterprises)**, a Bang
 - Three.js r169 is vendored in `assets/vendor/three-0.169.0/` (MIT) and only loads when the overlay opens.
 - Front-end only: nothing is submitted. The WhatsApp number (`WA_NUMBER` in `01-ui.js`) is a **placeholder**.
 - QA scripts: `_build/qa_consult.py`, `_build/qa_extra.py` (headless Chrome + SwiftShader).
+
+## Track Record page (`track-record.html`) — "standout" sections
+- Source: `_build/standout.py` (content + sample data), styles `assets/css/standout.css`, behaviour in `assets/js/site.js`.
+- Sections: live project tracker, Mivan speed, safety record, before/after + time-lapse, builder testimonials, workforce, equipment & capacity, quality checks, company-profile download. Home shows a teaser of the first three.
+- **Everything tagged "Sample data" / "Sample testimonial — not a real quote" / "Illustrative photos" is invented example content** and must be replaced with B&B's real records (or removed) before launch.
+- Sticky "Get a quote in 24 hours" WhatsApp CTA on every page uses the **placeholder** number `WA_NUM` in `_build/standout.py` (also `WA_NUMBER` in `_build/consult-src/01-ui.js`).
+- Company profile PDF: `python3 _build/profile.py` → `assets/docs/bnb-company-profile-SAMPLE.pdf` (+ cover thumbnail). Marked SAMPLE on every page.
+- Construction progress / time-lapse photos are illustrative stock from Wikimedia Commons (not B&B sites): Biswarup Ganguly (CC BY 3.0/4.0, Forum Atmosphere, Kolkata), Saad Akhtar (CC BY 2.0), WTF Formwork (CC BY-SA 3.0). Credited on the page.
