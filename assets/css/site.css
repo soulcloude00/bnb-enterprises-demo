@@ -295,6 +295,9 @@ section{position:relative}
 .nextp:hover h3{color:var(--gold-2)}
 
 /* about */
+.about-flow .about-story{margin-bottom:clamp(72px,10vw,120px)}
+.about-belief{padding:clamp(48px,7vw,96px) 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line);margin-bottom:clamp(72px,10vw,120px)}
+.about-values{margin-bottom:0}
 .story-img{position:relative;aspect-ratio:4/5;overflow:hidden}
 .story-img img{width:100%;height:100%;object-fit:cover;filter:saturate(.7)}
 .story-img::after{content:"";position:absolute;inset:18px;border:1px solid rgba(230,204,152,.4)}
@@ -303,13 +306,20 @@ section{position:relative}
 .value{background:var(--ink);padding:clamp(36px,4vw,60px)}
 .value .vn{font-family:var(--serif);font-size:62px;font-weight:300;color:var(--gold);line-height:1;margin-bottom:26px;font-style:italic}
 .value h4{font-size:30px;margin-bottom:14px}
-.leaders{display:grid;grid-template-columns:1.2fr 1fr 1fr;gap:28px}
-.leader .portrait{aspect-ratio:4/5;background:radial-gradient(80% 70% at 50% 35%,#24221e,#0f0f10);border:1px solid var(--line);display:grid;place-items:center;position:relative;overflow:hidden}
-.leader .portrait .ini{font-family:var(--serif);font-size:96px;font-weight:300;color:var(--gold);letter-spacing:.04em}
-.leader .portrait .ph{position:absolute;left:16px;bottom:16px}
-.leader h4{font-size:30px;margin:22px 0 4px}
-.leader .role{font-size:11.5px;letter-spacing:.22em;text-transform:uppercase;color:var(--gold)}
-.leader p{margin-top:12px;font-size:14.5px}
+.team{display:grid;grid-template-columns:repeat(4,1fr);gap:24px}
+.member .portrait{aspect-ratio:4/5;background:radial-gradient(80% 70% at 50% 35%,#24221e,#0f0f10);border:1px solid var(--line);display:grid;place-items:center;position:relative;overflow:hidden}
+.member .portrait .ini{font-family:var(--serif);font-size:clamp(64px,5vw,96px);font-weight:300;color:var(--gold);letter-spacing:.04em}
+.member .portrait.silhouette{background:radial-gradient(70% 60% at 50% 40%,#1c1a17,#0a0a0b);border-style:dashed;border-color:rgba(201,169,110,.35)}
+.member .portrait.silhouette .ini{opacity:0;font-size:0}
+.member .portrait.silhouette::before{content:"";position:absolute;width:42%;aspect-ratio:1;border-radius:50%;border:1.5px solid rgba(201,169,110,.45);top:28%;left:50%;transform:translateX(-50%)}
+.member .portrait.silhouette::after{content:"";position:absolute;width:58%;height:32%;border:1.5px solid rgba(201,169,110,.4);border-bottom:0;border-radius:50% 50% 0 0;bottom:14%;left:50%;transform:translateX(-50%)}
+.member h4{font-size:clamp(22px,2vw,28px);margin:22px 0 4px}
+.member .role{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold)}
+.member p{margin-top:12px;font-size:14px;color:var(--mute)}
+.member.placeholder h4,.member.placeholder .role{opacity:.85}
+.team-teaser{display:flex;align-items:flex-end;justify-content:space-between;gap:40px;flex-wrap:wrap}
+.team-teaser h2{max-width:16ch;margin-bottom:18px}
+.team-teaser p{max-width:48ch;margin:0}
 .timeline{position:relative;max-width:900px;margin:0 auto}
 .timeline::before{content:"";position:absolute;left:140px;top:0;bottom:0;width:1px;background:var(--line)}
 .tl{display:grid;grid-template-columns:140px 1fr;gap:0;padding:0 0 54px}
@@ -400,9 +410,9 @@ section{position:relative}
   .step{display:grid;grid-template-columns:61px 1fr;gap:0 26px;padding:0 0 36px}
   .step .dot{margin:0;grid-row:span 2}
   .ftr-top{grid-template-columns:1fr 1fr}
-  .leaders{grid-template-columns:1fr 1fr}
-  .leaders .leader:first-child{grid-column:span 2}
-  .leaders .leader:first-child .portrait{aspect-ratio:16/10}
+  .team{grid-template-columns:1fr 1fr}
+  .team .member:first-child{grid-column:span 2}
+  .team .member:first-child .portrait{aspect-ratio:16/10}
 }
 @media (max-width:860px){
   body{font-size:15.5px}
@@ -441,9 +451,9 @@ section{position:relative}
   .frow{grid-template-columns:1fr}
   .meta{grid-template-columns:1fr}
   .meta div:nth-child(odd){padding-right:0}
-  .leaders{grid-template-columns:1fr}
-  .leaders .leader:first-child{grid-column:auto}
-  .leaders .leader:first-child .portrait{aspect-ratio:4/5}
+  .team{grid-template-columns:1fr}
+  .team .member:first-child{grid-column:auto}
+  .team .member:first-child .portrait{aspect-ratio:4/5}
   .pillars{grid-template-columns:1fr}
   .pillar,.pillar+.pillar{padding:36px 0 18px;border-right:0}
   .ftr-top{grid-template-columns:1fr}

@@ -143,7 +143,7 @@ home=f'''
 <section class="sec promise">
  <div class="wrap">
   <p class="eyebrow center rv">Burman and Burman Enterprises</p>
-  <p class="lead rv">For about two decades, B&amp;B has built the structures that Bangalore&rsquo;s developers put their names on — <em>towers, villas and homes</em> delivered with discipline, scale and a family&rsquo;s sense of responsibility.</p>
+  <p class="lead rv">For 20+ years, B&amp;B has built the structures that Bangalore&rsquo;s developers put their names on — <em>towers, villas and homes</em> delivered with discipline, scale and a family&rsquo;s sense of responsibility.</p>
   <div class="sig rv d1"><span class="orn"></span><small>A family enterprise. Looking ahead.</small></div>
  </div>
 </section>
@@ -151,12 +151,12 @@ home=f'''
 <section class="sec tight" style="padding-top:0">
  <div class="wrap">
   <div class="stats">
-   <div class="stat rv"><div class="n">~<span data-count="20">20</span></div><div class="lbl">Years in construction</div></div>
+   <div class="stat rv"><div class="n"><span data-count="20">20</span><sup>+</sup></div><div class="lbl">Years in construction</div></div>
    <div class="stat rv d1"><div class="n"><span data-count="50">50</span><sup>+</sup></div><div class="lbl">Completed projects</div></div>
-   <div class="stat rv d2"><div class="n"><span data-count="5000" data-fmt="comma">5,000</span></div><div class="lbl">Strong workforce</div></div>
+   <div class="stat rv d2"><div class="n"><span data-count="5000" data-fmt="comma">5,000</span><sup>+</sup></div><div class="lbl">Workforce</div></div>
    <div class="stat rv d3"><div class="n"><span data-count="2">2</span></div><div class="lbl">Core construction systems</div></div>
   </div>
-  <p class="stats-note">Figures from B&amp;B&rsquo;s own draft · to be confirmed before launch.</p>
+  <p class="stats-note">Completed projects &amp; construction systems · to be confirmed before launch.</p>
  </div>
 </section>
 
@@ -186,8 +186,8 @@ home=f'''
   <div class="pillars">
    <div class="pillar rv"><div class="ic">{icons["family"]}</div><h4>A family name on every site</h4><p>Founder-led and family-run. Decisions are made close to the work, and accountability never gets delegated away.</p></div>
    <div class="pillar rv d1"><div class="ic">{icons["formwork"]}</div><h4>Systemised Mivan expertise</h4><p>Aluminium-formwork construction run as a disciplined, repeatable cycle — the backbone of fast, consistent high-rise delivery.</p></div>
-   <div class="pillar rv d2"><div class="ic">{icons["people"]}</div><h4>Workforce at real scale</h4><p>A 5,000-strong workforce lets us mobilise quickly and run multiple fronts without compromising supervision.</p></div>
-   <div class="pillar rv d3"><div class="ic">{icons["rise"]}</div><h4>Two decades, 50+ projects</h4><p>From independent villas to high-rise towers — experience earned across Bangalore&rsquo;s most demanding sites.</p></div>
+   <div class="pillar rv d2"><div class="ic">{icons["people"]}</div><h4>Workforce at real scale</h4><p>A 5,000+ workforce lets us mobilise quickly and run multiple fronts without compromising supervision.</p></div>
+   <div class="pillar rv d3"><div class="ic">{icons["rise"]}</div><h4>20+ years, 50+ projects</h4><p>From independent villas to high-rise towers — experience earned across Bangalore&rsquo;s most demanding sites.</p></div>
   </div>
  </div>
 </section>
@@ -205,6 +205,17 @@ home=f'''
  </div>
 </section>
 
+<section class="sec night">
+ <div class="wrap team-teaser">
+  <div>
+   <p class="eyebrow rv">Core Team</p>
+   <h2 class="rv">The family <em>behind the work</em></h2>
+   <p class="rv d1">Led by Founder &amp; Managing Director Prakash Burman — with 20+ years in construction and a 5,000+ workforce across Bangalore.</p>
+  </div>
+  <a class="btn ghost rv d1" href="about.html#core-team">Meet the Core Team <span class="arr"></span></a>
+ </div>
+</section>
+
 <section class="sec">
  <div class="wrap">
   <div class="sec-head"><div><p class="eyebrow rv">In their words</p><h2 class="rv">What our partners <em>say</em></h2></div><p class="rv d1">{PH("Sample testimonials")} Real quotes from developers and site partners will replace these before launch.</p></div>
@@ -217,7 +228,7 @@ home=f'''
 </section>
 {cta()}
 '''
-page("index.html","B&amp;B Enterprises — Real Estate Construction, Bangalore","B&B Enterprises (Burman and Burman Enterprises) — a Bangalore family construction contractor specialising in Mivan and block construction for leading developers.",home)
+page("index.html","B&amp;B Enterprises — Real Estate Construction, Bangalore","B&B Enterprises (Burman and Burman Enterprises) — a Bangalore family construction contractor with 20+ years and a 5,000+ workforce, specialising in Mivan and block construction for leading developers.",home)
 
 # ---------- PROJECTS ----------
 cards=""
@@ -374,8 +385,8 @@ services=f'''
 <section class="sec night">
  <div class="wrap center">
   <p class="eyebrow center rv">Capacity</p>
-  <h2 class="rv" style="max-width:18ch;margin:0 auto 30px">A <em>5,000-strong</em> workforce, ready to mobilise.</h2>
-  <p class="rv d1" style="max-width:620px;margin:0 auto">Scale is what lets a contractor keep its promises when programmes tighten. Our workforce and two decades of site experience let us run multiple fronts while keeping supervision close.</p>
+  <h2 class="rv" style="max-width:18ch;margin:0 auto 30px">A <em>5,000+</em> workforce, ready to mobilise.</h2>
+  <p class="rv d1" style="max-width:620px;margin:0 auto">Scale is what lets a contractor keep its promises when programmes tighten. Our 5,000+ workforce and 20+ years of site experience let us run multiple fronts while keeping supervision close.</p>
  </div>
 </section>
 {cta("stock-dusk-villa.jpg")}
@@ -386,49 +397,73 @@ page("services.html","Services — Mivan &amp; Block Construction — B&amp;B En
 about=f'''
 <section class="phero short">
  <div class="hero-media"><img src="{IMG}stock-site-aerial.jpg" alt="Aerial view of a construction site"></div><div class="hero-frame" aria-hidden="true"></div>
- <div class="wrap"><div class="crumbs"><a href="index.html">Home</a><span>/</span>About</div><p class="eyebrow">Our story</p><h1>A family enterprise. <em>Looking ahead.</em></h1><p class="sub">Burman and Burman Enterprises — rooted in Bangalore, built over two decades on site.</p></div>
+ <div class="wrap"><div class="crumbs"><a href="index.html">Home</a><span>/</span>About</div><p class="eyebrow">About Us</p><h1>A family enterprise. <em>Looking ahead.</em></h1><p class="sub">Burman and Burman Enterprises — rooted in Bangalore, built over 20+ years on site.</p></div>
  <span class="credit">Illustrative · Unsplash</span>
 </section>
-<section class="sec">
- <div class="wrap grid2">
-  <div class="story-img rv-img"><img src="{IMG}stock-drafting.jpg" alt="Hands drafting construction drawings" loading="lazy" style="object-position:30% center"><span class="credit">Illustrative · Unsplash</span></div>
-  <div>
-   <p class="eyebrow rv">Legacy</p>
-   <h2 class="rv" style="margin-bottom:30px">Built on <em>experience</em></h2>
-   <p class="lead rv d1">B&amp;B Enterprises was founded by Prakash Burman, who has led the company for about two decades in construction.</p>
-   <p class="rv d1">What began as a family business has grown into a contractor trusted by Bangalore&rsquo;s leading developers — with 50+ completed projects, including high-rise towers, and a workforce 5,000 strong.</p>
-   <p class="rv d2">The founding story — how and when it began, the first projects, and the moments that shaped the company — will be told here in the family&rsquo;s own words. {PH()}</p>
+
+<section class="sec about-flow" id="about-us">
+ <div class="wrap">
+  <div class="grid2 about-story">
+   <div class="story-img rv-img"><img src="{IMG}stock-drafting.jpg" alt="Hands drafting construction drawings" loading="lazy" style="object-position:30% center"><span class="credit">Illustrative · Unsplash</span></div>
+   <div>
+    <p class="eyebrow rv">Our story</p>
+    <h2 class="rv" style="margin-bottom:30px">Built on <em>experience</em></h2>
+    <p class="lead rv d1">B&amp;B Enterprises was founded by Prakash Burman, who has led the company for 20+ years in construction.</p>
+    <p class="rv d1">What began as a family business has grown into a contractor trusted by Bangalore&rsquo;s leading developers — with 50+ completed projects, including high-rise towers, and a 5,000+ workforce.</p>
+    <p class="rv d2">The founding story — how and when it began, the first projects, and the moments that shaped the company — will be told here in the family&rsquo;s own words. {PH()}</p>
+   </div>
+  </div>
+
+  <div class="about-belief center">
+   <p class="eyebrow center rv">Our belief</p>
+   <p class="big-quote rv" style="margin:0 auto">&ldquo;Every structure we raise carries our family&rsquo;s name — so it must be built to <em>last for generations</em>.&rdquo;</p>
+   <p class="rv d1" style="margin-top:28px">{PH("Sample quote — confirm wording with Prakash Burman")}</p>
+  </div>
+
+  <div class="about-values">
+   <div class="sec-head"><div><p class="eyebrow rv">Values</p><h2 class="rv">What we <em>stand on</em></h2></div></div>
+   <div class="values">
+    <div class="value rv"><div class="vn">i.</div><h4>Responsibility</h4><p>We treat a developer&rsquo;s project as if our own name were on it — because it is.</p></div>
+    <div class="value rv d1"><div class="vn">ii.</div><h4>Discipline</h4><p>Systems like Mivan reward rigour. We plan the cycle and keep to it.</p></div>
+    <div class="value rv d2"><div class="vn">iii.</div><h4>Care for people</h4><p>A 5,000+ workforce is a responsibility as much as a capability.</p></div>
+   </div>
+   <p class="small" style="margin-top:20px;color:var(--mute-2)">Value statements are suggested copy {PH("Confirm")}</p>
   </div>
  </div>
 </section>
-<section class="sec ivory on-ivory center">
+
+<section class="sec night" id="core-team">
  <div class="wrap">
-  <p class="eyebrow center rv">Our belief</p>
-  <p class="big-quote rv" style="margin:0 auto">&ldquo;Every structure we raise carries our family&rsquo;s name — so it must be built to <em>last for generations</em>.&rdquo;</p>
-  <p class="rv d1" style="margin-top:28px">{PH("Sample quote — confirm wording with Prakash Burman")}</p>
- </div>
-</section>
-<section class="sec">
- <div class="wrap">
-  <div class="sec-head"><div><p class="eyebrow rv">Values</p><h2 class="rv">What we <em>stand on</em></h2></div></div>
-  <div class="values">
-   <div class="value rv"><div class="vn">i.</div><h4>Responsibility</h4><p>We treat a developer&rsquo;s project as if our own name were on it — because it is.</p></div>
-   <div class="value rv d1"><div class="vn">ii.</div><h4>Discipline</h4><p>Systems like Mivan reward rigour. We plan the cycle and keep to it.</p></div>
-   <div class="value rv d2"><div class="vn">iii.</div><h4>Care for people</h4><p>A 5,000-strong workforce is a responsibility as much as a capability.</p></div>
+  <div class="sec-head"><div><p class="eyebrow rv">Core Team</p><h2 class="rv">The people who <em>lead the work</em></h2></div><p class="rv d1">Founder-led, family-rooted — with room for the wider leadership to be named as the family confirms each role.</p></div>
+  <div class="team">
+   <article class="member rv">
+    <div class="portrait" aria-hidden="true"><span class="ini">PB</span></div>
+    <h4>Prakash Burman</h4>
+    <div class="role">Founder &amp; Managing Director</div>
+    <p>Founder of B&amp;B Enterprises, with 20+ years in construction. Full biography {PH()}</p>
+   </article>
+   <article class="member placeholder rv d1">
+    <div class="portrait silhouette" aria-hidden="true"><span class="ini mono-sil"></span></div>
+    <h4>Name — to be added</h4>
+    <div class="role">Role — to be added</div>
+    <p>Core team member placeholder.</p>
+   </article>
+   <article class="member placeholder rv d2">
+    <div class="portrait silhouette" aria-hidden="true"><span class="ini mono-sil"></span></div>
+    <h4>Name — to be added</h4>
+    <div class="role">Role — to be added</div>
+    <p>Core team member placeholder.</p>
+   </article>
+   <article class="member placeholder rv d3">
+    <div class="portrait silhouette" aria-hidden="true"><span class="ini mono-sil"></span></div>
+    <h4>Name — to be added</h4>
+    <div class="role">Role — to be added</div>
+    <p>Core team member placeholder.</p>
+   </article>
   </div>
-  <p class="small" style="margin-top:20px;color:var(--mute-2)">Value statements are suggested copy {PH("Confirm")}</p>
  </div>
 </section>
-<section class="sec night">
- <div class="wrap">
-  <div class="sec-head"><div><p class="eyebrow rv">Leadership</p><h2 class="rv">The family <em>behind the work</em></h2></div></div>
-  <div class="leaders">
-   <div class="leader rv"><div class="portrait"><span class="ini">PB</span>{PH("Portrait")}</div><h4>Prakash Burman</h4><div class="role">Founder &amp; Managing Director</div><p>Founder of B&amp;B Enterprises, with about two decades in construction. Full biography {PH()}</p></div>
-   <div class="leader rv d1"><div class="portrait"><span class="ini">—</span>{PH("Portrait")}</div><h4>Name {PH()}</h4><div class="role">Designation — placeholder</div><p>Second family / leadership member, if any.</p></div>
-   <div class="leader rv d2"><div class="portrait"><span class="ini">—</span>{PH("Portrait")}</div><h4>Name {PH()}</h4><div class="role">Designation — placeholder</div><p>Third leadership member, if any.</p></div>
-  </div>
- </div>
-</section>
+
 <section class="sec">
  <div class="wrap">
   <div class="sec-head"><div><p class="eyebrow rv">Milestones</p><h2 class="rv">Reaching <em>higher</em></h2></div><p class="rv d1">{PH()} Years and events to be supplied by the family.</p></div>
@@ -436,13 +471,13 @@ about=f'''
    <div class="tl rv"><div class="yr">Year<br>{PH()}</div><div class="tx"><h4>B&amp;B Enterprises founded</h4><p>Prakash Burman establishes the company in Bangalore.</p></div></div>
    <div class="tl rv"><div class="yr">Year<br>{PH()}</div><div class="tx"><h4>First high-rise</h4><p>Milestone to be confirmed.</p></div></div>
    <div class="tl rv"><div class="yr">Year<br>{PH()}</div><div class="tx"><h4>Mivan construction</h4><p>When B&amp;B adopted aluminium-formwork construction — to be confirmed.</p></div></div>
-   <div class="tl rv"><div class="yr">Today</div><div class="tx"><h4>50+ projects, 5,000 strong</h4><p>Building for Keya, Adarsh, Brigade, Sumadhura, MVN and more.</p></div></div>
+   <div class="tl rv"><div class="yr">Today</div><div class="tx"><h4>50+ projects, 5,000+</h4><p>Building for Keya, Adarsh, Brigade, Sumadhura, MVN and more — with 20+ years behind us.</p></div></div>
   </div>
  </div>
 </section>
 {cta("ell-dusk.jpg")}
 '''
-page("about.html","About — B&amp;B Enterprises","The story of B&B Enterprises, a Bangalore family construction enterprise founded by Prakash Burman.",about)
+page("about.html","About Us — B&amp;B Enterprises","About Us — B&B Enterprises, a Bangalore family construction enterprise founded by Prakash Burman. 20+ years in construction and a 5,000+ workforce.",about)
 
 # ---------- CONTACT ----------
 contact=f'''
