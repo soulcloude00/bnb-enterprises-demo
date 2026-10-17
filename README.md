@@ -11,3 +11,10 @@ Static demo site for **B&B Enterprises (Burman and Burman Enterprises)**, a Bang
   MVN Aero One — mvnaeroone.com · Ellegenza — nambiarbuilders.com · East Park Residences — ramsonstrendsquares.com.
   Used for demo purposes; get the developers' permission before public launch.
 - Non-project imagery: Unsplash (Unsplash License), shown as illustrative.
+
+## Build your vision (3D consultation configurator)
+- Every "Request a consultation" button (`data-consult`) opens a full-screen overlay; it also lives at `consult.html`.
+- Source: `_build/consult-src/*.js` (concatenated into `assets/js/consult.js` by `_build/build.py`), styles in `assets/css/consult.css`.
+- Three.js r169 is vendored in `assets/vendor/three-0.169.0/` (MIT) and only loads when the overlay opens.
+- Front-end only: nothing is submitted. The WhatsApp number (`WA_NUMBER` in `01-ui.js`) is a **placeholder**.
+- QA scripts: `_build/qa_consult.py`, `_build/qa_extra.py` (headless Chrome + SwiftShader).

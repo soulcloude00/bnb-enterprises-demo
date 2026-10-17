@@ -101,5 +101,23 @@
     form.querySelectorAll('input,select,textarea').forEach(function(f){f.addEventListener('input',function(){var w=f.closest('.fld');if(w)w.classList.remove('bad');});});
   }
 
+
+  // "Build your vision" consultation configurator — lazy-loaded ES module (3D only loads when opened)
+  var cxP=null, cxPage=d.body.hasAttribute('data-consult-page');
+  function cxLoad(){
+    if(!cxP){ try{ cxP=(new Function('u','return import(u)'))(new URL('assets/js/consult.js',d.baseURI).href); }catch(err){ cxP=Promise.reject(err); } }
+    return cxP;
+  }
+  function cxOpen(push){ cxLoad().then(function(m){ m.open({push:push}); }).catch(function(){ if(!cxPage) location.href='consult.html'; }); }
+  d.addEventListener('click',function(e){
+    var a=e.target.closest&&e.target.closest('[data-consult]');
+    if(!a||e.defaultPrevented||e.metaKey||e.ctrlKey||e.shiftKey||e.altKey||e.button>0) return;
+    e.preventDefault();
+    if(d.body.classList.contains('menu-open')){ d.body.classList.remove('menu-open'); if(burger) burger.setAttribute('aria-expanded','false'); }
+    cxOpen(!cxPage);
+  });
+  d.addEventListener('pointerover',function(e){ if(e.target.closest&&e.target.closest('[data-consult]')) cxLoad().catch(function(){}); },{passive:true});
+  if(cxPage) cxOpen(false);
+
   var y=d.getElementById('yr'); if(y) y.textContent=new Date().getFullYear();
 })();

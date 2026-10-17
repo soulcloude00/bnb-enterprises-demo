@@ -24,21 +24,22 @@ def head(title,desc):
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/css/site.css">
+<link rel="stylesheet" href="assets/css/consult.css">
 <script>document.documentElement.classList.add('js')</script>
 </head>
 '''
 
 BRAND='<span class="mono">B<i>&amp;</i>B</span><span class="wm"><b>Enterprises</b><span>Real Estate Construction</span></span>'
 
-def header(cur):
+def header(cur,battr=''):
     links="".join(f'<a href="{h}"{" aria-current=\"page\"" if h==cur else ""}>{t}</a>' for h,t in NAV)
-    mlinks="".join(f'<a href="{h}">{t}<small>0{i+1}</small></a>' for i,(h,t) in enumerate(NAV+[("contact.html","Contact")]))
-    return f'''<body>
+    mlinks="".join(f'<a href="{h}">{t}<small>0{i+1}</small></a>' for i,(h,t) in enumerate(NAV+[("contact.html","Contact")]))+'<a href="consult.html" data-consult>Build your vision<small>3D</small></a>'
+    return f'''<body{battr}>
 <a class="skip" href="#main">Skip to content</a>
 <header class="hdr">
  <div class="wrap">
   <a class="brand" href="index.html" aria-label="B&amp;B Enterprises — home">{BRAND}</a>
-  <nav class="nav" aria-label="Primary">{links}<a class="btn" href="contact.html"{" aria-current=\"page\"" if cur=="contact.html" else ""}>Request a consultation</a></nav>
+  <nav class="nav" aria-label="Primary">{links}<a class="btn" href="consult.html" data-consult{" aria-current=\"page\"" if cur=="consult.html" else ""}>Request a consultation</a></nav>
   <button class="burger" aria-label="Menu" aria-expanded="false" aria-controls="mnav"><span></span><span></span><span></span></button>
  </div>
 </header>
@@ -58,7 +59,7 @@ def footer():
    <div><h5>Expertise</h5><ul><li><a href="services.html#mivan">Mivan construction</a></li><li><a href="services.html#block">Block construction</a></li><li><a href="projects.html#completed">Completed work</a></li></ul></div>
    <div><h5>Reach us</h5><ul>
     <li>Phone {PH()}</li><li>Email {PH()}</li><li>Office address, Bangalore {PH()}</li>
-    <li><a href="contact.html">Request a consultation →</a></li></ul></div>
+    <li><a href="consult.html" data-consult>Request a consultation →</a></li></ul></div>
   </div>
   <div class="ftr-bot">
    <p>© <span id="yr">2026</span> B&amp;B Enterprises. Demo website — content in progress.</p>
@@ -72,14 +73,14 @@ def footer():
 </html>
 '''
 
-def page(fn,title,desc,body,cur=None):
+def page(fn,title,desc,body,cur=None,battr=''):
     with open(os.path.join(OUT,fn),"w") as f:
-        f.write(head(title,desc)+header(cur or fn)+'<main id="main">'+body+'</main>\n'+footer())
+        f.write(head(title,desc)+header(cur or fn,battr)+'<main id="main">'+body+'</main>\n'+footer())
 
 def cta(img="stock-dusk-villa.jpg",h="Let&rsquo;s build what&rsquo;s <em>next</em>, together.",p="Developers planning a high-rise, a villa community or a residential tower in Bangalore — share your brief and our team will respond with a considered proposal."):
     return f'''<section class="cta"><img src="{IMG}{img}" alt="" loading="lazy">
  <div class="wrap"><p class="eyebrow center rv">Request a consultation</p><h2 class="rv">{h}</h2><p class="rv d1">{p}</p>
- <div class="ctas rv d2"><a class="btn" href="contact.html">Request a consultation <span class="arr"></span></a><a class="btn ghost" href="projects.html">View our work</a></div></div></section>'''
+ <div class="ctas rv d2"><a class="btn" href="consult.html" data-consult>Request a consultation <span class="arr"></span></a><a class="btn ghost" href="projects.html">View our work</a></div></div></section>'''
 
 # ---------- PROJECTS DATA ----------
 P=[
@@ -134,7 +135,7 @@ home=f'''
   <p class="eyebrow"><span class="hide-m">B&amp;B Enterprises ·&nbsp;</span>Real Estate Construction</p>
   <h1><span class="l"><span>Built on experience.</span></span><span class="l"><span><em>Reaching higher.</em></span></span></h1>
   <p class="sub">A Bangalore family construction enterprise, building high-rise towers and luxury residences for the city&rsquo;s leading developers — with Mivan precision and the care of a name we carry ourselves.</p>
-  <div class="ctas"><a class="btn" href="contact.html">Request a consultation <span class="arr"></span></a><a class="btn ghost" href="projects.html">Explore our work</a></div>
+  <div class="ctas"><a class="btn" href="consult.html" data-consult>Request a consultation <span class="arr"></span></a><a class="btn ghost" href="projects.html">Explore our work</a></div>
  </div>
  <div class="hero-side"><span class="cap">Rooted in Bangalore</span><span class="scroll-cue"><i></i>Scroll</span></div>
  <span class="credit">Illustrative image · Unsplash</span>
@@ -353,7 +354,7 @@ services=f'''
     <li>Consistent quality across every floor and every tower</li>
    </ul>
    <p class="small rv">Typical cycle time, tower heights handled and formwork sets owned {PH("To confirm")}</p>
-   <a class="btn rv d2" href="contact.html">Discuss a Mivan project <span class="arr"></span></a>
+   <a class="btn rv d2" href="consult.html" data-consult>Discuss a Mivan project <span class="arr"></span></a>
   </div>
  </section>
  <section class="svc-row rev" id="block">
@@ -368,7 +369,7 @@ services=f'''
     <li>Built to the developer&rsquo;s specification and finish standard</li>
    </ul>
    <p class="small rv">Block types used and typical project scale {PH("To confirm")}</p>
-   <a class="btn rv d2" href="contact.html">Discuss a block project <span class="arr"></span></a>
+   <a class="btn rv d2" href="consult.html" data-consult>Discuss a block project <span class="arr"></span></a>
   </div>
  </section>
 </div>
@@ -483,7 +484,7 @@ page("about.html","About Us — B&amp;B Enterprises","About Us — B&B Enterpris
 contact=f'''
 <section class="phero short">
  <div class="hero-media"><img src="{IMG}stock-dusk-villa.jpg" alt="Modern residence at dusk"></div><div class="hero-frame" aria-hidden="true"></div>
- <div class="wrap"><div class="crumbs"><a href="index.html">Home</a><span>/</span>Contact</div><p class="eyebrow">Request a consultation</p><h1>Begin with a <em>conversation</em></h1><p class="sub">Tell us about your project — tower, villa community or residential development — and our team will respond with a considered proposal.</p></div>
+ <div class="wrap"><div class="crumbs"><a href="index.html">Home</a><span>/</span>Contact</div><p class="eyebrow">Request a consultation</p><h1>Begin with a <em>conversation</em></h1><p class="sub">Tell us about your project — tower, villa community or residential development — and our team will respond with a considered proposal.</p><div class="ctas" style="margin-top:30px"><a class="btn" href="consult.html" data-consult>Build your vision in 3D <span class="arr"></span></a></div></div>
  <span class="credit">Illustrative · Unsplash</span>
 </section>
 <section class="sec">
@@ -534,6 +535,23 @@ contact=f'''
 </section>
 '''
 page("contact.html","Contact — Request a Consultation — B&amp;B Enterprises","Request a consultation with B&B Enterprises, Bangalore — Mivan and block construction for developers.",contact)
+
+
+# ---------- BUILD YOUR VISION (3D configurator) ----------
+_src=os.path.join(os.path.dirname(os.path.abspath(__file__)),"consult-src")
+with open(os.path.join(OUT,"assets/js/consult.js"),"w") as f:
+    f.write("".join(open(os.path.join(_src,n)).read() for n in sorted(os.listdir(_src)) if n.endswith(".js")))
+consult=f'''
+<section class="phero cxpage">
+ <div class="hero-media"><img src="{IMG}stock-architecture.jpg" alt="Contemporary architecture at dusk"></div><div class="hero-frame" aria-hidden="true"></div>
+ <div class="wrap"><div class="crumbs"><a href="index.html">Home</a><span>/</span>Build your vision</div><p class="eyebrow">Request a consultation</p><h1>Build your <em>vision</em></h1>
+ <p class="sub">Answer 11 short questions and watch a 3D concept of your project rise on its plot — then share the brief with our team on WhatsApp or download it.</p>
+ <div class="ctas"><a class="btn" href="consult.html" data-consult>Start the configurator <span class="arr"></span></a><a class="btn ghost" href="contact.html">Prefer a simple form?</a></div>
+ <noscript><p class="small" style="margin-top:24px">The 3D configurator needs JavaScript. Please use the <a class="gold" href="contact.html">enquiry form</a> instead.</p></noscript></div>
+ <span class="credit">Illustrative · Unsplash</span>
+</section>
+'''
+page("consult.html","Build your vision — Request a Consultation — B&amp;B Enterprises","Configure your villa, apartment building, commercial project, row houses or farmhouse in 3D and share the brief with B&B Enterprises, Bangalore.",consult,cur="consult.html",battr=' data-consult-page')
 
 # ---------- 404 ----------
 page("404.html","Page not found — B&amp;B Enterprises","Page not found.",f'''<section class="phero"><div class="hero-media"><img src="{IMG}hero-towers.jpg" alt=""></div><div class="hero-frame"></div><div class="wrap"><p class="eyebrow">404</p><h1>This floor isn&rsquo;t <em>built yet.</em></h1><p class="sub">The page you were looking for doesn&rsquo;t exist.</p><div style="margin-top:36px"><a class="btn" href="index.html">Return home <span class="arr"></span></a></div></div></section>''',cur="")
