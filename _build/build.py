@@ -436,7 +436,7 @@ about=f'''
   <div class="sec-head"><div><p class="eyebrow rv">Core Team</p><h2 class="rv">The people who <em>lead the work</em></h2></div><p class="rv d1">Founder-led, family-rooted — with room for the wider leadership to be named as the family confirms each role.</p></div>
   <div class="team-layout">
    <article class="member founder rv">
-    <div class="portrait" aria-hidden="true"><span class="ini">PB</span></div>
+    <div class="portrait photo"><picture><source type="image/webp" srcset="assets/team/founder-800.webp 800w, assets/team/founder.webp 1600w" sizes="(max-width:560px) 92vw, 420px"><img src="assets/team/founder.jpg" alt="Prakash Burman, Founder &amp; Managing Director, B&amp;B Enterprises" width="1600" height="2000" loading="lazy"></picture></div>
     <div class="fb">
      <h4>Prakash Burman</h4>
      <div class="role">Founder &amp; Managing Director</div>
