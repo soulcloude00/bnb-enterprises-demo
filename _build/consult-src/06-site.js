@@ -100,9 +100,20 @@ function people(g, list) {
 function streetLamp(list, x, z, face) { list.push({ x, z, face }); }
 
 /* ---------- site parts */
+function lawnPlane(w, d, y) { // mown stripes + low-frequency patches so the lawn isn't one flat colour
+  const nx = clamp(Math.round(w / 1.5), 8, 120), nz = clamp(Math.round(d / 1.5), 8, 120);
+  const geo = new T.PlaneGeometry(w, d, nx, nz).rotateX(-Math.PI / 2), p = geo.attributes.position, c = new Float32Array(p.count * 3);
+  for (let i = 0; i < p.count; i++) {
+    const x = p.getX(i), z = p.getZ(i), stripe = (Math.floor((x + w / 2) / 2.4) % 2) ? .055 : -.035;
+    const n = Math.sin(x * .21 + Math.cos(z * .17) * 1.7) * .05 + Math.sin(z * .37 - x * .11) * .035;
+    const k = .93 + stripe + n; c[i * 3] = k * .93; c[i * 3 + 1] = k * 1.02; c[i * 3 + 2] = k * .84;
+  }
+  geo.setAttribute('color', new T.BufferAttribute(c, 3)); worldUV(geo);
+  const m = new T.Mesh(geo, mat.terrain()); m.position.y = y; m.receiveShadow = true; return m;
+}
 function plotPart(L) {
   const g = new T.Group(), { pw, pd } = L;
-  g.add(B(pw, .12, pd, mat.lawn(), 0, 0, 0, false, 0));
+  g.add(B(pw, .12, pd, mat.lawn(), 0, 0, 0, false, 0)); g.add(lawnPlane(pw, pd, .121));
   const e = .16, km = mat.paveD();
   g.add(inst([[0, .14, pd / 2 - e / 2, pw, .06, e], [0, .14, -pd / 2 + e / 2, pw, .06, e], [pw / 2 - e / 2, .14, 0, e, .06, pd], [-pw / 2 + e / 2, .14, 0, e, .06, pd]], km));
   const pg = G.peg || (G.peg = keep(new T.CylinderGeometry(.07, .07, .7, 8).translate(0, .35, 0)));
@@ -172,9 +183,9 @@ function landPart(L) {
   const tl = [], kinds = sp === 'tropical' || sp === 'indian' ? ['palm', 'frangipani', 'broad'] : sp === 'classic' ? ['cypress', 'broad', 'cypress'] : ['broad', 'frangipani', 'cypress'];
   const sc = clamp(Math.min(pw, pd) / 18, .6, 1.15), want = (L.tier === 'luxury' ? 9 : L.tier === 'premium' ? 7 : 5) + (L.ex.has('garden') ? 10 : 0) + (pw * pd > 2500 ? 14 : 0);
   for (let t = 0, n = 0; t < 260 && n < want; t++) {
-    const x = (r() - .5) * (pw - 2.4), z = (r() - .5) * (pd - 2.4); if (occ(x, z, 1.8)) continue;
+    const x = (r() - .5) * (pw - 2.4), z = (r() - .5) * (pd - 2.4), s = (.7 + r() * .45) * sc; if (occ(x, z, 1.6 + 2.4 * s)) continue; // canopy + eaves clearance
     if (tl.some(o => Math.hypot(o.x - x, o.z - z) < 3.2 * sc)) continue;
-    tl.push({ x, z, s: (.7 + r() * .45) * sc, k: kinds[n % kinds.length] }); n++;
+    tl.push({ x, z, s, k: kinds[n % kinds.length] }); n++;
   }
   trees(g, tl); tl.forEach(t => shadowDecal(g, t.x, t.z, 3.2 * t.s, 3.2 * t.s, .128));
   // entrance planters and shrubs along the plinth
@@ -256,8 +267,8 @@ function gardenPart(L) { // extra: lawn beds, a seating nook and a stone path lo
 function terracePart(L, info) {
   const g = new T.Group(), z0 = topZone(info, L, true); if (!z0) return g;
   const pm = std('planter', { color: 0x3a3632, roughness: .8 });
-  g.add(B(z0.w - 1, .5, .6, pm, z0.x, z0.y, z0.z + z0.d / 2 - .55), B(.6, .5, z0.d - 1.2, pm, z0.x - z0.w / 2 + .55, z0.y, z0.z));
-  hedgeRow(g, z0.x - z0.w / 2 + 1, z0.z + z0.d / 2 - .55, z0.x + z0.w / 2 - 1, z0.z + z0.d / 2 - .55, .55, .5, z0.y + .45);
+  g.add(B(z0.w - 1, .5, .6, pm, z0.x, z0.y, z0.z + z0.d / 2 - .95), B(.6, .5, z0.d - 2, pm, z0.x - z0.w / 2 + .95, z0.y, z0.z));
+  hedgeRow(g, z0.x - z0.w / 2 + 1.3, z0.z + z0.d / 2 - .95, z0.x + z0.w / 2 - 1.3, z0.z + z0.d / 2 - .95, .55, .5, z0.y + .45);
   trees(g, [{ x: z0.x - z0.w / 2 + 1.2, z: z0.z + z0.d / 2 - 1.3, s: .45, k: 'frangipani', y: z0.y }, { x: z0.x + z0.w / 2 - 1.3, z: z0.z - z0.d / 2 + 1.2, s: .4, k: 'broad', y: z0.y }]);
   if (L.poolMode !== 'roof') g.add(B(Math.min(3.4, z0.w * .35), .04, Math.min(2.6, z0.d * .35), mat.lawn(), z0.x + z0.w * .12, z0.y, z0.z + z0.d * .05, false, 0));
   g.add(at(new T.Mesh(G.umb || (G.umb = keep(new T.ConeGeometry(1.3, .45, 12))), std('umbrella', { color: 0xf3ead8, roughness: .8 })), z0.x + z0.w * .2, z0.y + 2.3, z0.z - z0.d * .1, true));

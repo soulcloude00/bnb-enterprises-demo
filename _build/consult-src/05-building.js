@@ -24,6 +24,7 @@ function facade(g, v, l, L, h, W) {
     if (faceBlocked(v, l, nx, nz)) continue;
     const put = (list, c, yc, a, b, off, dep) => { if (nz) list.push([c * nz, yc, nz * (half + off), a, b, dep]); else list.push([nx * (half + off), yc, -c * nx, dep, b, a]); };
     const open = (c, yc, ww, wh, kind) => {
+      if (!v.rot && l.vols.length > 1) { const o = half + .35, px = v.x + (nz ? c * nz : nx * o), pz = v.z + (nz ? nz * o : -c * nx); for (const e of [-ww / 2, 0, ww / 2]) { const qx = px + (nz ? e : 0), qz = pz + (nz ? 0 : e); if (l.vols.some(u => u !== v && u.kind !== 'canopy' && inVol(u, qx, qz))) return; } }
       const k = r(), iv = k < .55 ? 0 : k < .8 ? 1 : 2, ft = cfg.ft;
       put(it[iv], c, yc, ww, wh, .012, .02); put(gl, c, yc, ww, wh, .075, .02);
       put(fr, c, yc + wh / 2 + ft / 2, ww + 2 * ft, ft, .07, .16); put(fr, c, yc - wh / 2 - ft / 2, ww + 2 * ft, ft, .07, .16);
@@ -60,6 +61,16 @@ function facade(g, v, l, L, h, W) {
   const fm = mat.frame(style, L.tier);
   [[it[0], mat.int(0)], [it[1], mat.int(1)], [it[2], mat.int(2)], [gl, mat.glass()], [fr, fm], [sl, mat.trim(style)], [ch, mat.trim(style)], [lv, mat.wood()], [dr, mat.wood()]].forEach(([a, m]) => { const im = inst(a, m, null, m === fm || m === M['trimr-' + style]); if (im) g.add(im); });
 }
+function inVol(u, x, z, m = 0) { return Math.abs(x - u.x) < u.w / 2 + m && Math.abs(z - u.z) < u.d / 2 + m; }
+function balconyFree(v, l, L) { // a cantilevered balcony must not land on a lower roof or clip a neighbour
+  if (v.rot) return false;
+  const z = v.z + v.d / 2 + .75, bw = v.w * .3, below = L.levels[L.levels.indexOf(l) - 1];
+  for (const x of [v.x - bw, v.x, v.x + bw]) {
+    if (below && below.vols.some(u => u.kind !== 'canopy' && inVol(u, x, z, .2))) return false;
+    if (l.vols.some(u => u !== v && inVol(u, x, z, .2))) return false;
+  }
+  return true;
+}
 function slabMat(L) { return L.ghost ? mat.trim('model') : L.tier === 'luxury' && L.style !== 'classic' ? mat.gold() : ['glass', 'modern'].includes(L.style) ? (L.style === 'glass' ? mat.frame('glass') : mat.trim('modern')) : mat.trim(L.style); }
 function solidVol(g, v, l, L) {
   const h = l.h, st = L.style, cm = L.ghost ? mat.ghost() : clad(st, v.clad || PAL[st].clad), slabT = v.slab || .26;
@@ -70,7 +81,7 @@ function solidVol(g, v, l, L) {
   facade(g, v, l, L, h - slabT);
   if (v.pil) { const p = []; for (const [Lf, nx, nz, half] of FACES(v.w, v.d)) { if (faceBlocked(v, l, nx, nz)) continue; const n = Math.max(2, Math.round(Lf / 2.6)); for (let k = 0; k <= n; k++) { const c = -Lf / 2 + Lf * k / n; if (nz) p.push([c, h / 2, nz * (half + .1), .32, h, .22]); else p.push([nx * (half + .1), h / 2, c, .22, h, .32]); } } g.add(inst(p, mat.trim(st), null, true)); }
   // balconies: apartments (and upper floors of premium / luxury homes)
-  if (l.lvl >= 1 && !v.planters && ((L.type === 'apartment' && v.w > 6) || (L.tier !== 'standard' && ['villa', 'unsure'].includes(L.type) && v.w > 5))) {
+  if (l.lvl >= 1 && !v.planters && balconyFree(v, l, L) && ((L.type === 'apartment' && v.w > 6) || (L.tier !== 'standard' && ['villa', 'unsure'].includes(L.type) && v.w > 5))) {
     const bw = v.w * (L.type === 'apartment' ? .62 : .42), z = v.d / 2;
     g.add(B(bw, .16, 1.4, slabMat(L), 0, 0, z + .7));
     railing(g, [[-bw / 2, z + 1.36, bw / 2, z + 1.36], [-bw / 2, z, -bw / 2, z + 1.36], [bw / 2, z, bw / 2, z + 1.36]], .16, L);
@@ -136,8 +147,15 @@ function pitchedRoof(g, v, ry, L) {
     pitchedRoof(tmp, Object.assign({}, v, { x: 0, z: 0, w: v.d, d: v.w, roofK: 'mono', monoH: roofRise('mono-x', v) }), 0, L);
     L.slopes.length = n; tmp.rotation.y = Math.PI / 2; tmp.position.set(v.x, ry, v.z); g.add(tmp); return;
   }
-  const st = L.style, r = v.roofK, low = PAL[st].low, ov = v.monoH ? .2 : r === 'barn' ? .3 : low ? 1.3 : .6, hr = v.monoH || roofRise(r, v, st);
-  const W = v.w + 2 * ov, D = v.d + 2 * ov;
+  const st = L.style, r = v.roofK, low = PAL[st].low, ov0 = v.monoH ? .2 : r === 'barn' ? .3 : low ? 1.3 : .6, hr = v.monoH || roofRise(r, v, st);
+  let ovx = ov0, ovz = ov0;
+  for (const u of (v._nb || [])) { // keep eaves clear of adjacent wings / the floor above
+    const gx = Math.abs(u.x - v.x) - (u.w + v.w) / 2, gz = Math.abs(u.z - v.z) - (u.d + v.d) / 2;
+    if (gx >= -.01 && Math.abs(u.z - v.z) < (u.d + v.d) / 2) ovx = Math.min(ovx, Math.max(.12, gx * .5 - .1));
+    if (gz >= -.01 && Math.abs(u.x - v.x) < (u.w + v.w) / 2) ovz = Math.min(ovz, Math.max(.12, gz * .5 - .1));
+  }
+  const ov = r === 'gable-z' ? ovx : r === 'gable-x' ? ovz : Math.min(ovx, ovz);
+  const W = v.w + 2 * ovx, D = v.d + 2 * ovz;
   const rmat = v.roofMat || (L.variant === 'hacienda' || (L.variant === 'ranch' && st !== 'tropical') ? 'tile' : L.variant === 'barn' ? 'metal' : null);
   const rm = mat.roofT(st, rmat), wm = dbl(clad(st, v.clad || PAL[st].clad));
   const grp = new T.Group(); grp.position.set(v.x, ry, v.z); if (v.rot) grp.rotation.y = v.rot;
@@ -197,7 +215,7 @@ function flatRoof(g, v, ry, L, terrace) {
   if (terrace) {
     grp.add(B(w - .1, .06, d - .1, mat.deck(), 0, 0, 0, false, 0));
     railing(grp, [[-w / 2 + .1, d / 2 - .1, w / 2 - .1, d / 2 - .1], [-w / 2 + .1, -d / 2 + .1, w / 2 - .1, -d / 2 + .1], [-w / 2 + .1, -d / 2 + .1, -w / 2 + .1, d / 2 - .1], [w / 2 - .1, -d / 2 + .1, w / 2 - .1, d / 2 - .1]], .06, L);
-    if (v.planters || L.tier !== 'standard') { const pl = [[0, .3, d / 2 - .45, w - 1, .6, .6]]; grp.add(inst(pl, clad(st, 'concrete'), null, true)); hedgeRow(grp, -w / 2 + .7, d / 2 - .45, w / 2 - .7, d / 2 - .45, .6, .5); }
+    if (v.planters || L.tier !== 'standard') { const pl = [[0, .3, d / 2 - .95, w - 1.6, .6, .6]]; grp.add(inst(pl, clad(st, 'concrete'), null, true)); hedgeRow(grp, -w / 2 + 1, d / 2 - .95, w / 2 - 1, d / 2 - .95, .6, .5); }
   } else if (v.bal) { // classical balustrade
     grp.add(B(w, .08, d, mat.conc(), 0, 0, 0, false, 0));
     const bl = [], rl = [];
@@ -219,6 +237,7 @@ function roofsPart(L) {
   L.slopes.length = 0;
   for (const l of L.levels) for (const v of l.vols) {
     const ry = l.y + l.h, r = v.roofK;
+    v._nb = l.vols.filter(u => u !== v && u.kind !== 'canopy' && !u.rot);
     if (!r || r === 'none') continue;
     if (L.ghost) { if (r === 'flat') g.add(B(v.w, .1, v.d, mat.trim('model'), v.x, ry, v.z)); continue; }
     if (r === 'terrace') flatRoof(g, v, ry, L, true);
@@ -246,7 +265,7 @@ function decorPart(L) {
     } else if (d.k === 'pond') {
       g.add(B(d.w + .4, .3, d.d + .4, mat.paveD(), d.x, .12, d.z)); g.add(B(d.w, .04, d.d, mat.water(), d.x, .4, d.z, false, 0));
     } else if (d.k === 'court') {
-      g.add(B(d.w, .06, d.d, d.paved ? mat.pave() : mat.lawn(), d.x, y0, d.z, false, 0));
+      g.add(B(d.w + .3, Math.max(.06, y0 - .12), d.d + .3, mat.paveD(), d.x, .12, d.z, false, 0)); g.add(B(d.w, .06, d.d, d.paved ? mat.pave() : mat.lawn(), d.x, Math.max(.12, y0 - .06), d.z, false, 0));
       if (!d.paved) { g.add(B(d.w * .4, .05, d.d * .3, mat.water(), d.x + d.w * .2, y0 + .06, d.z + d.d * .2, false, 0)); trees(g, [{ x: d.x - d.w * .18, z: d.z - d.d * .1, s: 1.1, k: 'frangipani', y: y0 }, { x: d.x + d.w * .3, z: d.z - d.d * .3, s: .9, k: 'palm', y: y0 }]); }
       else trees(g, [{ x: d.x - d.w * .35, z: d.z - d.d * .3, s: .8, k: 'cypress', y: y0 }, { x: d.x + d.w * .35, z: d.z - d.d * .3, s: .8, k: 'cypress', y: y0 }, { x: d.x - d.w * .35, z: d.z + d.d * .3, s: .8, k: 'cypress', y: y0 }, { x: d.x + d.w * .35, z: d.z + d.d * .3, s: .8, k: 'cypress', y: y0 }]);
     } else if (d.k === 'fountain') {

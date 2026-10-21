@@ -185,8 +185,9 @@ home=f'''
  </div>
 </section>
 
-<section class="builders" aria-label="Developers we have worked with">
- <p class="lbl">Trusted by Bangalore&rsquo;s builders</p>
+<section class="builders" aria-label="Partners in every landmark">
+ <p class="lbl">Partners in every landmark</p>
+ <p class="partner-line">Developers trust us to build their vision; we grow with every tower we raise together.</p>
  {mq_html()}
 </section>
 
@@ -262,8 +263,9 @@ projects=f'''
   <p class="small" style="margin-top:56px;color:var(--mute-2)">Project images and facts: each developer&rsquo;s official project site, credited on every page. The remaining 50+ completed projects are to be added {PH()}</p>
  </div>
 </section>
-<section class="builders" aria-label="Developers we have worked with">
- <p class="lbl">Developers we have built for</p>
+<section class="builders" aria-label="Partners in every landmark">
+ <p class="lbl">Partners in every landmark</p>
+ <p class="partner-line">Developers trust us to build their vision; we grow with every tower we raise together.</p>
  {mq_html()}
 </section>
 {cta("stock-architecture.jpg","Have a project <em>in the pipeline?</em>")}

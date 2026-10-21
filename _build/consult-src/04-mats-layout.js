@@ -144,9 +144,9 @@ function variantLevels(type, v, W, D, n, P) {
       dec.push({ k: 'pond', x: W * .3, z: D * .3, w: W * .38, d: 1.6 });
       break;
     case 'villa/courtyard':
-      lv.push([vol(0, -D * .32, W, D * .36, { roof: 'gable-x' }), vol(-W * .37, D * .14, W * .26, D * .56, { roof: 'gable-z', clad: 'stone' }), vol(W * .37, D * .14, W * .26, D * .56, { roof: 'gable-z', clad: 'stone' })]);
-      for (let i = 1; i < n; i++) lv.push([vol(0, -D * .32, W * (i === 1 ? .74 : .5), D * .34, { roof: 'hip', clad: i === 1 ? 'timber' : 'render' })]);
-      dec.push({ k: 'court', x: 0, z: D * .12, w: W * .46, d: D * .5 }, { k: 'pergola', x: 0, z: D * .4, w: W * .44, d: 2.4 });
+      lv.push([vol(0, -D * .32, W, D * .36, { roof: 'gable-x' }), vol(-W * .37, D * .2, W * .26, D * .48, { roof: 'gable-z', clad: 'stone' }), vol(W * .37, D * .2, W * .26, D * .48, { roof: 'gable-z', clad: 'stone' })]);
+      for (let i = 1; i < n; i++) lv.push([vol(0, -D * .32, W * .6, D * .3, { roof: 'hip', clad: i === 1 ? 'timber' : 'render' })]);
+      dec.push({ k: 'court', x: 0, z: D * .2, w: W * .44, d: D * .4 }, { k: 'pergola', x: 0, z: D * .4, w: W * .44, d: 2.4 });
       break;
     case 'villa/palladian': {
       const cw = W * .46, cd = D * .78;
