@@ -25,6 +25,8 @@
   else{
     var io=new IntersectionObserver(function(es){es.forEach(function(en){if(en.isIntersecting){en.target.classList.add('in');io.unobserve(en.target);}});},{rootMargin:'0px 0px -8% 0px',threshold:.08});
     els.forEach(function(e){io.observe(e);});
+    // safety net: never leave content hidden if an observer callback is missed
+    setTimeout(function(){ els.forEach(function(e){ var r=e.getBoundingClientRect(); if(r.top<innerHeight&&r.bottom>0) e.classList.add('in'); }); },1800);
   }
 
   // count-up
