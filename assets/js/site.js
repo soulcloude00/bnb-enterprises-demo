@@ -157,4 +157,36 @@
   }
 
   var y=d.getElementById('yr'); if(y) y.textContent=new Date().getFullYear();
+
+  // ---- v4 motion layer ----
+  (function(){
+    if(reduce) return;
+    var fine=window.matchMedia('(hover:hover) and (pointer:fine)').matches;
+    // scroll progress hairline
+    var bar=d.createElement('div'); bar.className='sprog'; d.body.appendChild(bar);
+    // auto-stagger siblings in grids
+    d.querySelectorAll('.team-grid,.pgrid,.pillars,.stats,.values,.process').forEach(function(g){
+      [].forEach.call(g.children,function(c,i){ if(c.classList.contains('rv')) c.style.transitionDelay=(i%4*0.09+Math.floor(i/4)*0.05)+'s'; });
+    });
+    // hero word stagger on the sub line
+    var sub=d.querySelector('.hero .sub');
+    if(sub&&!sub.querySelector('.w')){ sub.innerHTML=sub.textContent.trim().split(/\s+/).map(function(w,i){return '<span class="w" style="animation-delay:'+(0.75+i*0.025).toFixed(3)+'s">'+w+'</span>';}).join(' '); sub.classList.add('words'); }
+    // parallax targets
+    var heroImg=d.querySelector('.hero .hero-media'), par=[].slice.call(d.querySelectorAll('.feat-media img,.story-img img,.svc-media img,.cta .hero-media'));
+    var ticking=false;
+    function frame(){
+      ticking=false; var y=window.scrollY, vh=innerHeight;
+      var h=d.documentElement.scrollHeight-vh; bar.style.transform='scaleX('+(h>0?y/h:0)+')';
+      if(heroImg&&y<vh*1.2) heroImg.style.transform='translate3d(0,'+(y*0.28).toFixed(1)+'px,0)';
+      for(var i=0;i<par.length;i++){ var el=par[i], r=el.parentNode.getBoundingClientRect(); if(r.bottom<0||r.top>vh) continue;
+        var p=((r.top+r.height/2)-vh/2)/vh; el.style.setProperty('--py',(p*-6).toFixed(2)+'%'); }
+    }
+    function req(){ if(!ticking){ticking=true;requestAnimationFrame(frame);} }
+    window.addEventListener('scroll',req,{passive:true}); window.addEventListener('resize',req); frame();
+    // magnetic buttons (desktop only)
+    if(fine) d.querySelectorAll('.btn').forEach(function(b){
+      b.addEventListener('mousemove',function(e){var r=b.getBoundingClientRect();b.style.transform='translate('+((e.clientX-r.left-r.width/2)*0.15).toFixed(1)+'px,'+((e.clientY-r.top-r.height/2)*0.25-1).toFixed(1)+'px)';});
+      b.addEventListener('mouseleave',function(){b.style.transform='';});
+    });
+  })();
 })();

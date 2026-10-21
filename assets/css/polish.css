@@ -86,3 +86,23 @@ h2{line-height:1.12;letter-spacing:-.01em}
 .member.founder .portrait.photo img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 30%;transition:transform 1.6s var(--ease)}
 .member.founder .portrait.photo::after{z-index:2}
 .member.founder:hover .portrait.photo img{transform:scale(1.03)}
+/* ---- v4 motion ---- */
+.sprog{position:fixed;left:0;right:0;top:0;height:2px;z-index:120;background:linear-gradient(90deg,var(--gold-3),var(--gold-2));transform-origin:left;transform:scaleX(0);pointer-events:none}
+.hero .hero-media{will-change:transform}
+.hero .sub.words{opacity:1;animation:none}
+.hero .sub .w{display:inline-block;opacity:0;transform:translateY(.6em);animation:riseFade .9s var(--ease) forwards}
+.feat-media img,.story-img img,.svc-media img{will-change:transform}
+.js .rv-img.in img{transform:translate3d(0,var(--py,0),0) scale(1.12);transition:transform .25s linear}
+.feat:hover .feat-media.in img{transform:translate3d(0,var(--py,0),0) scale(1.16)}
+.btn{will-change:transform}
+/* gold line draw-in under section heads */
+.sec-head::after{transform:scaleX(0);transform-origin:left;transition:transform 1.6s var(--ease) .2s}
+.sec-head:has(.rv.in)::after{transform:scaleX(1)}
+.eyebrow::before{transform-origin:left;transition:transform 1s var(--ease) .1s}
+.js .rv.eyebrow:not(.in)::before{transform:scaleX(0)}
+.pcard,.member.slot{transition:transform .6s var(--ease)}
+.pcard:hover,.member.slot:hover{transform:translateY(-6px)}
+.stat .n sup{display:inline-block;transition:transform .6s var(--ease)}
+.stat:hover .n sup{transform:translateY(-4px)}
+@media (prefers-reduced-motion:reduce){.sec-head::after{transform:none}.hero .sub .w{opacity:1;transform:none}.sprog{display:none}}
+.builders:hover .marquee{animation-play-state:paused}.marquee li{transition:color .4s}.marquee li:hover{color:var(--gold-2)}
