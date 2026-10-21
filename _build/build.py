@@ -218,6 +218,8 @@ home=f'''
   <div>
    <p class="eyebrow rv">Core Team</p>
    <h2 class="rv">The family <em>behind the work</em></h2>
+   <!-- DRAFT founder quote (compact) — replace with Prakash Burman's own words -->
+   <figure class="fv-mini rv d1"><img src="assets/team/founder-800.webp" alt="" width="72" height="90" loading="lazy"><blockquote>&ldquo;We don&rsquo;t just build structures. We build the <em>trust</em> that families and developers place in every floor we raise.&rdquo;<figcaption>Prakash Burman · Founder</figcaption></blockquote></figure>
    <p class="rv d1">Led by Founder &amp; Managing Director Prakash Burman — with 20+ years in construction and a 5,000+ workforce across Bangalore.</p>
   </div>
   <a class="btn ghost rv d1" href="about.html#core-team">Meet the Core Team <span class="arr"></span></a>
@@ -431,18 +433,27 @@ about=f'''
  </div>
 </section>
 
+<section class="sec fv" id="founder" aria-labelledby="fv-name">
+ <div class="wrap fv-grid">
+  <figure class="fv-media rv-img"><picture><source type="image/webp" srcset="assets/team/founder-800.webp 800w, assets/team/founder.webp 1600w" sizes="(max-width:860px) 92vw, 48vw"><img src="assets/team/founder.jpg" alt="Prakash Burman, Founder &amp; Managing Director, B&amp;B Enterprises" width="1600" height="2000" loading="lazy"></picture></figure>
+  <div class="fv-body">
+   <p class="eyebrow rv">Founder&rsquo;s vision</p>
+   <!-- DRAFT QUOTE + VISION TEXT: placeholder wording for the family to replace with Prakash Burman's own words. -->
+   <blockquote class="fv-quote rv"><span class="qm" aria-hidden="true">&ldquo;</span>We don&rsquo;t just build structures. We build the <em>trust</em> that families and developers place in every floor we raise.<span class="qm close" aria-hidden="true">&rdquo;</span></blockquote>
+   <div class="fv-rule rv" aria-hidden="true"></div>
+   <h3 class="fv-name rv" id="fv-name">Prakash Burman</h3>
+   <p class="fv-role rv">Founder &amp; Managing Director · B&amp;B Enterprises</p>
+   <p class="fv-text rv d1">For more than 20 years, B&amp;B has worked alongside Brigade, Adarsh, Sumadhura, Keya and MVN on 50+ projects across Bangalore. Whether it is Mivan high-rise or block construction, the standard is the same: plan the cycle, keep the promise, and treat a 5,000+ workforce as a responsibility as much as a strength.</p>
+   <div class="fv-sig rv d2" aria-hidden="true"><span>Prakash Burman</span><svg viewBox="0 0 220 24" fill="none" stroke="currentColor" stroke-width="1"><path d="M2 16c30-10 52 6 80-2s46-12 70-4 40 6 66-2"/></svg></div>
+   <p class="small rv d2" style="color:var(--mute-2)">Draft wording {PH("To confirm with the family")}</p>
+  </div>
+ </div>
+</section>
+
 <section class="sec night" id="core-team">
  <div class="wrap">
   <div class="sec-head"><div><p class="eyebrow rv">Core Team</p><h2 class="rv">The people who <em>lead the work</em></h2></div><p class="rv d1">Founder-led, family-rooted — with room for the wider leadership to be named as the family confirms each role.</p></div>
-  <div class="team-layout">
-   <article class="member founder rv">
-    <div class="portrait photo"><picture><source type="image/webp" srcset="assets/team/founder-800.webp 800w, assets/team/founder.webp 1600w" sizes="(max-width:560px) 92vw, 420px"><img src="assets/team/founder.jpg" alt="Prakash Burman, Founder &amp; Managing Director, B&amp;B Enterprises" width="1600" height="2000" loading="lazy"></picture></div>
-    <div class="fb">
-     <h4>Prakash Burman</h4>
-     <div class="role">Founder &amp; Managing Director</div>
-     <p>Founder of B&amp;B Enterprises, with 20+ years in construction. Full biography {PH()}</p>
-    </div>
-   </article>
+  <div class="team-layout solo">
    <!-- CORE TEAM SLOTS — to add a real photo: save it as assets/team/member-N.jpg (portrait, ~4:5, min 800px tall),
         replace the comment inside that slot's .portrait with the <img> tag shown, remove the .mono-tag/.soon spans
         and the "silhouette" class, then set the name in <h4> and the role in .role. -->

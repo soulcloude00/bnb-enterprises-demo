@@ -172,7 +172,7 @@
     var sub=d.querySelector('.hero .sub');
     if(sub&&!sub.querySelector('.w')){ sub.innerHTML=sub.textContent.trim().split(/\s+/).map(function(w,i){return '<span class="w" style="animation-delay:'+(0.75+i*0.025).toFixed(3)+'s">'+w+'</span>';}).join(' '); sub.classList.add('words'); }
     // parallax targets
-    var heroImg=d.querySelector('.hero .hero-media'), par=[].slice.call(d.querySelectorAll('.feat-media img,.story-img img,.svc-media img,.cta .hero-media'));
+    var heroImg=d.querySelector('.hero .hero-media'), par=[].slice.call(d.querySelectorAll('.feat-media img,.story-img img,.svc-media img,.fv-media img,.cta .hero-media'));
     var ticking=false;
     function frame(){
       ticking=false; var y=window.scrollY, vh=innerHeight;
