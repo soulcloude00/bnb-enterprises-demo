@@ -1,0 +1,171 @@
+{
+ "poetry-of-earth": {
+  "hero": [
+   "hero-01.webp"
+  ],
+  "gal": [
+   "gal-01.webp",
+   "gal-02.webp",
+   "gal-03.webp",
+   "gal-04.webp",
+   "gal-05.webp",
+   "gal-06.webp",
+   "gal-07.webp",
+   "gal-08.webp",
+   "gal-09.webp",
+   "gal-10.webp",
+   "gal-11.webp",
+   "gal-12.webp"
+  ],
+  "plan": [
+   "plan-01.webp",
+   "plan-02.webp",
+   "plan-03.webp",
+   "plan-04.webp",
+   "plan-05.webp"
+  ],
+  "map": [
+   "map-01.webp"
+  ]
+ },
+ "mana-skanda": {
+  "hero": [
+   "hero-01.webp"
+  ],
+  "gal": [
+   "gal-01.webp",
+   "gal-02.webp",
+   "gal-03.webp",
+   "gal-04.webp",
+   "gal-05.webp",
+   "gal-06.webp",
+   "gal-07.webp",
+   "gal-08.webp",
+   "gal-09.webp",
+   "gal-10.webp"
+  ],
+  "plan": [
+   "plan-01.webp"
+  ],
+  "map": []
+ },
+ "snn-raj-highgardens": {
+  "hero": [
+   "hero-01.webp"
+  ],
+  "gal": [
+   "gal-01.webp",
+   "gal-02.webp",
+   "gal-03.webp",
+   "gal-04.webp",
+   "gal-05.webp",
+   "gal-06.webp",
+   "gal-07.webp",
+   "gal-08.webp",
+   "gal-09.webp"
+  ],
+  "plan": [
+   "plan-01.webp",
+   "plan-02.webp",
+   "plan-03.webp",
+   "plan-04.webp"
+  ],
+  "map": [
+   "map-01.webp"
+  ]
+ },
+ "snn-estates-duomont": {
+  "hero": [
+   "hero-01.webp"
+  ],
+  "gal": [
+   "gal-01.webp",
+   "gal-02.webp",
+   "gal-03.webp",
+   "gal-04.webp",
+   "gal-05.webp",
+   "gal-06.webp",
+   "gal-07.webp",
+   "gal-08.webp",
+   "gal-09.webp",
+   "gal-10.webp",
+   "gal-11.webp"
+  ],
+  "plan": [],
+  "map": [
+   "map-01.webp"
+  ]
+ },
+ "adarsh-parkland": {
+  "hero": [
+   "hero-01.webp"
+  ],
+  "gal": [
+   "gal-01.webp",
+   "gal-02.webp",
+   "gal-03.webp",
+   "gal-04.webp",
+   "gal-05.webp",
+   "gal-06.webp",
+   "gal-07.webp",
+   "gal-08.webp",
+   "gal-09.webp",
+   "gal-10.webp"
+  ],
+  "site": [
+   "site-01.webp",
+   "site-02.webp",
+   "site-03.webp",
+   "site-04.webp",
+   "site-05.webp"
+  ],
+  "plan": [],
+  "map": []
+ },
+ "adarsh-primrose": {
+  "hero": [
+   "hero-01.webp"
+  ],
+  "gal": [
+   "gal-01.webp",
+   "gal-02.webp",
+   "gal-03.webp",
+   "gal-04.webp",
+   "gal-05.webp",
+   "gal-06.webp"
+  ],
+  "plan": [
+   "plan-01.webp",
+   "plan-02.webp",
+   "plan-03.webp",
+   "plan-04.webp",
+   "plan-05.webp",
+   "plan-06.webp",
+   "plan-07.webp"
+  ],
+  "map": []
+ },
+ "mvn-aero-one": {
+  "gal": [
+   "gal-01.webp",
+   "gal-02.webp",
+   "gal-03.webp",
+   "gal-04.webp",
+   "gal-05.webp",
+   "gal-06.webp"
+  ],
+  "plan": [],
+  "map": [
+   "map-01.webp"
+  ]
+ },
+ "ellegenza": {
+  "gal": [],
+  "plan": [
+   "plan-01.webp"
+  ],
+  "map": [
+   "map-01.webp"
+  ]
+ }
+}

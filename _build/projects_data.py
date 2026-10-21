@@ -1,0 +1,81 @@
+# Project data. RULE: only facts stated on the developer's/project's own published page (see "src").
+# Anything not published there is "To confirm". B&B's role = construction contractor; the developer owns the project.
+import json,os
+_A=json.load(open(os.path.join(os.path.dirname(__file__),"project_assets.json")))
+TC="To confirm"
+def _p(slug,g): return [f"assets/projects/{slug}/{f}" for f in _A.get(slug,{}).get(g,[])]
+I="assets/img/"
+PROJ=[
+dict(slug="poetry-of-earth",page="project-poetry-of-earth.html",name="Urban Poetry of Earth",dev="Urban Excellence",status="ongoing",
+ loc="Varthur, Sarjapur–Whitefield Main Road, Bangalore",typ="2, 3 &amp; 4 BHK apartments",
+ src="https://lp.poetryofearth.in/apartments-varthur-sarjapur-whitefield-road-bangalore/index.html",credit="Project page (poetryofearth.in)",
+ intro="A nature-forward community of 2, 3 and 4 BHK residences on the Sarjapur–Whitefield Main Road in Varthur, opposite Brigade Utopia — with an urban forest, eco pond and a project-level sky walk.",
+ facts=[("Developer","Urban Excellence"),("Land area","~7.5 acres"),("Towers / floors","6 towers · 2B + G + 26 floors"),("Units","624 apartments"),("Configurations","2, 3 &amp; 4 BHK; 3 &amp; 4 BHK sky-villa penthouses"),("Unit sizes","2 BHK 1,337–1,728 sq ft · 3 BHK 1,630–2,199 sq ft · Penthouses 3,035–3,516 sq ft"),("Open space","~80%"),("Clubhouse","26,000 sq ft, G+4"),("RERA","PRM/KA/RERA/1251/446/PR/281024/007183"),("Possession",TC)],
+ amen=["26,000 sq ft G+4 clubhouse","40+ amenities","Sky walk linking activity zones","Eco pond","Urban / Miyawaki forest (300+ trees)","Vehicle-free podium &amp; central courtyards","Banquet hall","Gymnasium","Indoor games","Mini theatre","Badminton &amp; basketball courts","Kids&rsquo; play area"],
+ near=["Sahara Hospital – 0.25 km","The Central Shopping Mall – 1.1 km","Nexus Whitefield – 3.0 km","Manipal Hospital – 3.0 km","Brigade Tech Park – 7.2 km","ITPL – 8.0 km","RMZ Ecospace – 8.5 km"]),
+dict(slug="mana-skanda",page="project-mana-skanda.html",name="MANA Skanda — The Right Life",dev="Mana Projects &amp; Skanda Avani",status="ongoing",
+ loc="Sarjapur–Varthur Road, Bangalore",typ="2, 3, 3.5 &amp; 4 BHK homes in an integrated township",
+ src="https://themanaprojects.in/trl",credit="Project page (themanaprojects.in)",
+ intro="A 100+ acre child-centric integrated township on Sarjapur–Varthur Road, planned as five provinces — Solitaire, Lake, Sports, Forest and Beach — around a reclaimed lake, a forest and a sports arena, with 84% open space.",
+ facts=[("Developer","Mana Projects &amp; Skanda Avani (joint)"),("Land area","100+ acres (township)"),("Towers / floors","Lake: Towers 1–5 · Solitaire: Tower 6, G+32 · Sports: Towers 7–9 · Forest: Phase 2, 8 towers"),("Configurations","2, 3, 3.5 &amp; 4 BHK"),("Unit sizes","Solitaire 3 &amp; 4 BHK: 3,000+ sq ft · others "+TC),("Units",TC),("Open space","84%"),("Clubhouses","3.5 lakh sq ft"),("RERA","Solitaire PRM/KA/RERA/1251/308/PR/210725/007941 · Lake T1–3 …/280324/006766 · Lake T4–5 …/210725/007939 · Sports …/210325/007611 · Forest …/120326/008521 &amp; …/008522"),("Possession",TC),("B&amp;B package","Province / towers built by B&amp;B: "+TC)],
+ amen=["13+ acre reclaimed lake","6.5 acre game centre","40+ child-centric amenities","Retail high street","FIFA-standard football &amp; futsal","Temperature-controlled half-Olympic pool","Padel &amp; pickleball","Miyawaki forest of 1,000+ trees","Aqua gym &amp; floating pavilion","Private Solitaire Club"],
+ near=[]),
+dict(slug="snn-raj-highgardens",page="project-snn-raj-highgardens.html",name="SNN Raj Highgardens",dev="SNN Raj Corp",status="ongoing",
+ loc="Chandapura Circle, Hosur Road, Electronic City, Bangalore",typ="2 &amp; 3 BHK apartments",
+ src="https://lp.snnrajcorp.com/snn-raj-highgardens-flats-electronic-city/index.html",credit="Project page (snnrajcorp.com)",
+ intro="802 apartments across 9 acres and 12 guntas, right on Hosur Road just after Chandapura Circle — built using Mivan construction technology, with 70%+ green open space and an outdoor sports arena.",
+ facts=[("Developer","SNN Raj Corp"),("Land area","9 acres 12 guntas"),("Units","802 apartments"),("Blocks","A–G ready (OC applied) · H–K under construction"),("Configurations","2, 2.5 &amp; 3 BHK (1 &amp; 1.5 BHK sold out)"),("Unit sizes","2 &amp; 3 BHK: 1,000–1,685 sq ft"),("Construction","Mivan technology"),("Open space","70%+"),("RERA","PRM/KA/RERA/1251/308/PR/140622/004983"),("Possession",TC),("Towers / floors",TC)],
+ amen=["Grand modern clubhouse","25+ amenities","Rooftop swimming pool","Full-size basketball court","Tennis, football &amp; cricket practice","Indoor badminton &amp; squash","Yoga &amp; meditation zone","Jogging track","Outdoor gymnasium"],
+ near=["Electronic City toll – 12 min","Bommasandra Metro – 10 min","Attibele Industrial Area – 5 min","Infosys – 14 min"]),
+dict(slug="snn-estates-duomont",page="project-snn-estates-duomont.html",name="SNN Estates Duomont",dev="SNN Estates",status="ongoing",
+ loc="Kudlu Gate Junction, Hosur Main Road, Bangalore",typ="3, 4, 6 &amp; 8 BHK ultra-luxury residences",
+ src="https://snnestatesduomont.com/",credit="snnestatesduomont.com",
+ intro="Ultra-luxury residences at Kudlu Gate Junction with double-height living and dining, double-height balconies, just two homes per floor and a helper&rsquo;s room in every residence.",
+ facts=[("Developer","SNN Estates"),("Land area","2 acres 12 guntas"),("Towers / floors","4 towers · 2 basements + G + 15 floors"),("Units","114 apartments"),("Configurations","3, 4, 6 &amp; 8 BHK"),("Homes per floor","2"),("Open space","80%"),("Unit sizes",TC),("RERA","PRM/KA/RERA/1251/310/PR/240925/008118"),("Possession",TC)],
+ amen=["Double-height living / dining","Double-height balconies","Clubhouse","Futsal court","Half basketball court","Badminton &amp; throwball","Pickleball court","Swimming pool","Poker / games room","Landscaped ground level"],
+ near=[]),
+dict(slug="adarsh-parkland",page="project-adarsh-parkland.html",name="Adarsh Parkland",dev="Adarsh Group",status="ongoing",
+ loc="Panathur, off Outer Ring Road (Varthur), Bangalore",typ="2.5 &amp; 3 BHK premium apartments",
+ src="https://www.adarshdevelopers.com/projects/residential/adarsh-parkland/",credit="adarshdevelopers.com",
+ intro="Premium apartments in Panathur, off the Outer Ring Road — a green, park-centred community now rising in two phases.",
+ facts=[("Developer","Adarsh Group"),("Configurations","2.5 &amp; 3 BHK (Phase II)"),("Unit sizes","2.5 BHK 1,475 sq ft · 3 BHK 1,850 sq ft (super built-up)"),("RERA","Phase I PRM/KA/RERA/1251/446/PR/110823/006145 · Phase II PRM/KA/RERA/1251/446/PR/210226/008479"),("Structure","Seismic zone II RCC; 8&Prime;/6&Prime;/4&Prime; concrete-block masonry"),("Land area",TC),("Towers / floors",TC),("Units",TC),("Possession",TC)],
+ amen=["Gym","Lap pool","Swimming pool","Cabana","Mini golf","Aroma garden","4 badminton courts","Squash court","Football / cricket field","Skating rink","Kids&rsquo; play area","Indoor games","Yoga / aerobics","2 party halls","Creche","Grocery shop","Forest lounge","Cycling lane"],
+ near=[]),
+dict(slug="adarsh-primrose",page="project-adarsh-primrose.html",name="Adarsh Primrose",dev="Adarsh Group",status="ongoing",
+ loc="Gunjur, Bangalore",typ="3 BHK contemporary homes",
+ src="https://adarsh-primrose.com/",credit="adarsh-primrose.com",
+ intro="Contemporary 3 BHK homes by the lake at Gunjur, set around a Central Park and an Eden Park, with a full clubhouse.",
+ facts=[("Developer","Adarsh Group"),("Units","172"),("Floors","G + 14"),("Configurations","3 BHK"),("Unit sizes","1,770–1,880 sq ft (plans published from 1,550 sq ft)"),("Amenities","30+"),("RERA","PRM/KA/RERA/1251/446/PR/140325/007583"),("Land area",TC),("Possession",TC)],
+ amen=["Central Park &amp; Eden Park","Swimming pool &amp; kids&rsquo; pool","Jacuzzi &amp; sundeck","Gym","2 badminton courts","Squash","2 tennis courts","Basketball court","Cricket practice net","Skating rink","Amphitheatre","Spa, steam &amp; sauna","Library","Banquet hall","Workspace","Pet zone"],
+ near=[]),
+dict(slug="mvn-aero-one",page="project-mvn-aero-one.html",name="MVN Aero One",dev="MVN",status="completed",
+ loc="Devanahalli, Bangalore",typ="1, 2 &amp; 3 BHK luxury apartments",
+ src="https://mvnaeroone.com/",credit="mvnaeroone.com",
+ intro="A luxury residential high-rise at Devanahalli, in Bangalore&rsquo;s fast-growing north near the international airport, developed by MVN — with views of aircraft taking off and landing.",
+ facts=[("Developer","MVN (MF Farmlands Pvt Ltd)"),("Configurations","1, 2 &amp; 3 BHK (incl. 2 BHK Luxury &amp; Panoramic)"),("Towers","Towers 1–3 (phase 1), Tower 4, Towers 5 &amp; 6"),("RERA","T1–3 PRM/KA/RERA/1250/303/PR/201222/003761 · T4 PRM/KA/RERA/1250/303/PR/140923/006259 · T5–6 PRM/KA/RERA/1250/303/PR/141223/006472"),("Unit sizes",TC),("Land area",TC),("Floors",TC),("Units",TC)],
+ amen=["Rooftop infinity pool"],near=[],
+ hero=I+"mvn-tower-night.jpg",card=I+"mvn-tower-night.jpg",
+ gal0=[(I+"mvn-tower-night.jpg","Tower at night"),(I+"mvn-tower-day.jpg","Tower elevation"),(I+"mvn-infinity-pool.jpg","Rooftop infinity pool"),(I+"mvn-living.jpg","Living &amp; dining"),(I+"mvn-interior.jpg","Apartment interior")]),
+dict(slug="ellegenza",page="project-ellegenza.html",name="Ellegenza",dev="Nambiar Builders",status="completed",
+ loc="Off Sarjapur Road, Bangalore",typ="Independent luxury villas",
+ src="https://nambiarbuilders.com/ellegenza/",credit="nambiarbuilders.com",
+ intro="Independent luxury villas between Hosur Road and Sarjapur Road, on a 30-acre land parcel with a 1.5-acre clubhouse and 6 acres of landscaping, developed by Nambiar Builders.",
+ facts=[("Developer","Nambiar Builders"),("Land area","30 acres"),("Clubhouse","1.5 acres"),("Landscaping","6 acres"),("Typology","Independent villas"),("RERA","Ph I PRM/KA/RERA/1251/308/PR/180604/001867 · Ph I Ext …/230522/004904 · Ph I Ext-2 …/280324/006748"),("Units",TC),("Villa sizes",TC)],
+ amen=["1.5-acre clubhouse","6 acres of landscaping"],near=[],
+ hero=I+"ell-phase1.jpg",card=I+"ell-bungalows.jpg",
+ gal0=[(I+"ell-phase1.jpg","Ellegenza villas"),(I+"ell-bungalows.jpg","Villa elevations"),(I+"ell-avenue.jpg","Villa avenue"),(I+"ell-dusk.jpg","Villas at dusk")]),
+dict(slug="east-park-residences",page="project-east-park-residences.html",name="Ramsons East Park Residences",dev="Ramsons",status="completed",
+ loc="Sarjapur Road, Bangalore East",typ="Residential apartments",
+ src="https://ramsonstrendsquares.com/",credit="ramsonstrendsquares.com",
+ intro="A residential community on Sarjapur Road in Bangalore East, developed by Ramsons.",
+ facts=[("Developer","Ramsons (Ramsons Trendsquares)"),("Typology","Residential apartments"),("Land area",TC),("Towers / floors",TC),("Units",TC),("Unit sizes",TC),("RERA",TC)],
+ amen=[],near=[],
+ hero=I+"epr-landscape.jpg",card=I+"epr-garden.jpg",
+ gal0=[(I+"epr-landscape.jpg","Landscaped grounds"),(I+"epr-garden.jpg","Gardens and towers"),(I+"epr-balcony.jpg","Balcony view"),(I+"epr-bedroom.jpg","Bedroom interior")]),
+]
+for p in PROJ:
+    s=p["slug"]
+    if "hero" not in p: p["hero"]=_p(s,"hero")[0]; p["card"]=(_p(s,"gal") or [p["hero"]])[0] if s!="mana-skanda" else p["hero"]
+    p["gallery"]=p.get("gal0",[])+[(f,"Project image") for f in _p(s,"gal")]
+    p["site"]=_p(s,"site"); p["plans"]=_p(s,"plan"); p["maps"]=_p(s,"map")
+DEVS=["Brigade","Adarsh","Sumadhura","Keya","MVN","Mana Projects","Skanda Avani","SNN Raj Corp","SNN Estates","Urban Excellence","Nambiar Builders","Ramsons"]

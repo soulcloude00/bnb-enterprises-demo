@@ -87,6 +87,10 @@ def cta(img="stock-dusk-villa.jpg",h="Let&rsquo;s build what&rsquo;s <em>next</e
  <div class="wrap"><p class="eyebrow center rv">Request a consultation</p><h2 class="rv">{h}</h2><p class="rv d1">{p}</p>
  <div class="ctas rv d2"><a class="btn" href="consult.html" data-consult>Request a consultation <span class="arr"></span></a><a class="btn ghost" href="projects.html">View our work</a></div></div></section>'''
 
+from projects_data import PROJ, DEVS, TC
+def mq_html():
+    li="".join(f"<li>{d}</li>" for d in DEVS)
+    return f'<div class="marquee"><ul>{li}</ul><ul aria-hidden="true">{li}</ul></div>'
 # ---------- PROJECTS DATA ----------
 P=[
  dict(slug="project-mvn-aero-one.html",name="MVN Aero One",dev="MVN",loc="Devanahalli, Bangalore",typ="2 &amp; 3 BHK luxury apartments",cat="High-rise residential",status="completed",
@@ -183,7 +187,7 @@ home=f'''
 
 <section class="builders" aria-label="Developers we have worked with">
  <p class="lbl">Trusted by Bangalore&rsquo;s builders</p>
- <div class="marquee"><ul><li>Keya</li><li>Adarsh</li><li>Brigade</li><li>Sumadhura</li><li>MVN</li></ul><ul aria-hidden="true"><li>Keya</li><li>Adarsh</li><li>Brigade</li><li>Sumadhura</li><li>MVN</li></ul><ul aria-hidden="true"><li>Keya</li><li>Adarsh</li><li>Brigade</li><li>Sumadhura</li><li>MVN</li></ul><ul aria-hidden="true"><li>Keya</li><li>Adarsh</li><li>Brigade</li><li>Sumadhura</li><li>MVN</li></ul></div>
+ {mq_html()}
 </section>
 
 {home_teaser()}
@@ -232,107 +236,107 @@ home=f'''
 page("index.html","B&amp;B Enterprises — Real Estate Construction, Bangalore","B&B Enterprises (Burman and Burman Enterprises) — a Bangalore family construction contractor with 20+ years and a 5,000+ workforce, specialising in Mivan and block construction for leading developers.",home)
 
 # ---------- PROJECTS ----------
+def tcv(v): return f'<span class="tc">{v}</span>' if v==TC else v
+STAT={"ongoing":"Ongoing — under construction by B&amp;B","completed":"Completed"}
 cards=""
-for p in P:
-    cards+=f'''<a class="pcard rv" href="{p["slug"]}" data-status="{p["status"]}">
-  <div class="pm"><img src="{IMG}{p["card"]}" alt="{p["name"]}" loading="lazy"><span class="status">Completed</span><span class="credit">Image: {p["credit"]}</span></div>
-  <div class="pb"><h3>{p["name"]}</h3><div class="pl">{p["loc"]} · {p["dev"]}</div><p class="pd">{p["typ"]}</p></div></a>'''
-for i,q in enumerate(PHP):
-    lab={"ongoing":"Ongoing","upcoming":"Upcoming"}[q["status"]]
-    cards+=f'''<div class="pcard placeholder rv" data-status="{q["status"]}">
-  <div class="pm"><img src="{IMG}{q["img"]}" alt="" loading="lazy"><span class="status">{lab}</span><div class="phbox"><span>Project name — Placeholder</span></div></div>
-  <div class="pb"><h3>Project Name {PH()}</h3><div class="pl">Location · Developer — placeholder</div><p class="pd">{lab} project to be added with real details.</p></div></div>'''
-n_all=len(P)+len(PHP); n_c=len(P); n_o=sum(1 for q in PHP if q["status"]=="ongoing"); n_u=n_all-n_c-n_o
+for p in PROJ:
+    cards+=f'''<a class="pcard rv" href="{p["page"]}" data-status="{p["status"]}">
+  <div class="pm"><img src="{p["card"]}" alt="{p["name"]}" loading="lazy"><span class="status{" live" if p["status"]=="ongoing" else ""}">{"Ongoing" if p["status"]=="ongoing" else "Completed"}</span><span class="credit">Image: {p["credit"]}</span></div>
+  <div class="pb"><h3>{p["name"]}</h3><div class="pl">{p["loc"].split(",")[0]} · {p["dev"]}</div><p class="pd">{p["typ"]}</p></div></a>'''
+n_all=len(PROJ); n_c=sum(p["status"]=="completed" for p in PROJ); n_o=n_all-n_c
 projects=f'''
 <section class="phero short">
  <div class="hero-media"><img src="{IMG}ell-avenue.jpg" alt="Avenue of luxury villas at Ellegenza"></div><div class="hero-frame" aria-hidden="true"></div>
- <div class="wrap"><div class="crumbs"><a href="index.html">Home</a><span>/</span>Projects</div><p class="eyebrow">Our work</p><h1>Projects that <em>stand tall</em></h1><p class="sub">50+ completed projects across Bangalore — high-rise towers, luxury villas and residential communities, built for the city&rsquo;s leading developers.</p></div>
+ <div class="wrap"><div class="crumbs"><a href="index.html">Home</a><span>/</span>Projects</div><p class="eyebrow">Our work</p><h1>Projects that <em>stand tall</em></h1><p class="sub">50+ completed projects across Bangalore — and towers rising today for the city&rsquo;s leading developers. B&amp;B is the construction contractor; each project belongs to its developer.</p></div>
  <span class="credit">Image: nambiarbuilders.com</span>
 </section>
 <section class="sec">
  <div class="wrap">
-  <div class="filters" role="group" aria-label="Filter projects by status"><span class="flab">Filter</span>
+  <div class="filters tabs" role="group" aria-label="Filter projects by status"><span class="flab">Show</span>
    <button class="chip" data-f="all" aria-pressed="true">All <span class="c">{n_all}</span></button>
-   <button class="chip" data-f="completed" aria-pressed="false">Completed <span class="c">{n_c}</span></button>
    <button class="chip" data-f="ongoing" aria-pressed="false">Ongoing <span class="c">{n_o}</span></button>
-   <button class="chip" data-f="upcoming" aria-pressed="false">Upcoming <span class="c">{n_u}</span></button>
+   <button class="chip" data-f="completed" aria-pressed="false">Completed <span class="c">{n_c}</span></button>
   </div>
   <p id="filter-live" class="sr" aria-live="polite"></p>
   <div class="pgrid">{cards}</div>
-  <p class="small" style="margin-top:56px;color:var(--mute-2)">Showing three verified completed projects. The remaining 50+ projects, plus ongoing and upcoming work, are to be added {PH()} — placeholder cards use illustrative stock imagery.</p>
+  <p class="small" style="margin-top:56px;color:var(--mute-2)">Project images and facts: each developer&rsquo;s official project site, credited on every page. The remaining 50+ completed projects are to be added {PH()}</p>
  </div>
 </section>
 <section class="builders" aria-label="Developers we have worked with">
  <p class="lbl">Developers we have built for</p>
- <div class="marquee"><ul><li>Keya</li><li>Adarsh</li><li>Brigade</li><li>Sumadhura</li><li>MVN</li></ul><ul aria-hidden="true"><li>Keya</li><li>Adarsh</li><li>Brigade</li><li>Sumadhura</li><li>MVN</li></ul><ul aria-hidden="true"><li>Keya</li><li>Adarsh</li><li>Brigade</li><li>Sumadhura</li><li>MVN</li></ul><ul aria-hidden="true"><li>Keya</li><li>Adarsh</li><li>Brigade</li><li>Sumadhura</li><li>MVN</li></ul></div>
+ {mq_html()}
 </section>
 {cta("stock-architecture.jpg","Have a project <em>in the pipeline?</em>")}
 '''
-page("projects.html","Projects — B&amp;B Enterprises","Completed, ongoing and upcoming construction projects by B&B Enterprises in Bangalore.",projects)
+page("projects.html","Projects — B&amp;B Enterprises","Ongoing and completed construction projects by B&B Enterprises in Bangalore.",projects)
 
 # ---------- PROJECT DETAILS ----------
-cls=["g-a","g-b","g-c","g-d","g-e","g-f","g-g"]
-for i,p in enumerate(P):
-    nxt=P[(i+1)%len(P)]
-    gal="".join(f'<button class="{cls[j] if len(p["gal"])>4 else ["g-a","g-b","g-c","g-g"][j]} rv" data-full="{IMG}{f}" data-cap="{c} · Image: {p["credit"]}" aria-label="Open image: {c}"><img src="{IMG}{f}" alt="{p["name"]} — {c}" loading="lazy"><span class="credit">Image: {p["credit"]}</span></button>' for j,(f,c) in enumerate(p["gal"]))
+def btn(src,cap,p,cls=""):
+    return f'<button class="{cls} rv" data-full="{src}" data-cap="{cap} · Images: developer&rsquo;s official project site ({p["credit"]})" aria-label="Open image: {cap}"><img src="{src}" alt="{p["name"]} — {cap}" loading="lazy"></button>'
+for i,p in enumerate(PROJ):
+    nxt=PROJ[(i+1)%len(PROJ)]
+    g=p["gallery"]
+    gal="".join(btn(f,c if c!="Project image" else f"{p['name']} {j+1}",p,"gx") for j,(f,c) in enumerate(g))
+    site="".join(btn(f,f"Construction progress {j+1}",p,"gx") for j,f in enumerate(p["site"]))
+    plans="".join(btn(f,("Master plan" if j==0 and ("master" in f or p["slug"] in("mana-skanda","snn-raj-highgardens","adarsh-primrose","poetry-of-earth","ellegenza")) else "Unit plan")+f" {j+1}",p,"pl") for j,f in enumerate(p["plans"]))
+    facts="".join(f'<div><dt>{k}</dt><dd>{tcv(v)}</dd></div>' for k,v in p["facts"])
+    amen="".join(f"<li>{a}</li>" for a in p["amen"]) or f"<li>{TC}</li>"
+    near="".join(f"<li>{a}</li>" for a in p["near"])
+    maps="".join(btn(f,"Location map",p,"mp") for f in p["maps"])
+    status=STAT[p["status"]]
     body=f'''
 <section class="phero">
- <div class="hero-media"><img src="{IMG}{p["hero"]}" alt="{p["name"]}, {p["loc"]}" style="object-position:center 35%"></div><div class="hero-frame" aria-hidden="true"></div>
+ <div class="hero-media"><img src="{p["hero"]}" alt="{p["name"]}, {p["loc"]}" style="object-position:center 40%"></div><div class="hero-frame" aria-hidden="true"></div>
  <div class="wrap"><div class="crumbs"><a href="index.html">Home</a><span>/</span><a href="projects.html">Projects</a><span>/</span>{p["name"]}</div>
- <p class="eyebrow">Completed · {p["cat"]}</p><h1>{p["name"]}</h1><p class="sub">{p["loc"]} — built for {p["dev"]}.</p></div>
- <span class="credit">Image: {p["credit"]}</span>
+ <p class="eyebrow">{status}</p><h1>{p["name"]}</h1><p class="sub">{p["loc"]} — developed by {p["dev"]}. B&amp;B Enterprises: construction contractor.</p></div>
+ <span class="credit">Images: developer&rsquo;s official project site</span>
 </section>
 <section class="sec tight">
- <div class="wrap">
-  <dl class="facts rv">
-   <div><dt>Developer</dt><dd>{p["dev"]}</dd></div>
-   <div><dt>Location</dt><dd>{p["loc"]}</dd></div>
-   <div><dt>Typology</dt><dd>{p["typ"]}</dd></div>
-   <div><dt>B&amp;B scope</dt><dd>{PH("To confirm")}</dd></div>
-   <div><dt>Construction system</dt><dd>{PH("Mivan / Block — confirm")}</dd></div>
-   <div><dt>Status</dt><dd>Completed</dd></div>
-   <div><dt>Year of completion</dt><dd>{PH()}</dd></div>
-   <div><dt>Built-up area</dt><dd>{PH()}</dd></div>
-   <div><dt>Towers / units / floors</dt><dd>{PH()}</dd></div>
-  </dl>
+ <div class="wrap grid2 pd-intro" style="align-items:start">
+  <div><p class="eyebrow rv">The project</p><h2 class="rv">{p["typ"]}</h2></div>
+  <div><p class="lead rv">{p["intro"]}</p><p class="rv d1">Facts below are as published on the developer&rsquo;s official project page; items marked &ldquo;To confirm&rdquo; were not stated there. <a class="link" href="{p["src"]}" target="_blank" rel="noopener">Source <span aria-hidden="true">↗</span></a></p></div>
  </div>
 </section>
-<section class="sec ivory on-ivory">
- <div class="wrap grid2" style="align-items:start">
-  <div><p class="eyebrow rv">The project</p><h2 class="rv">{p["intro"].split(",")[0].replace("A ","A <em>",1)+"</em>" if False else "About the <em>project</em>"}</h2></div>
-  <div><p class="lead rv" style="color:#2b2823">{p["intro"]}</p><p class="rv d1">B&amp;B Enterprises served as construction contractor. A fuller account of the brief, the challenges on site and how the team delivered will be added here. {PH()}</p></div>
- </div>
- <div class="wrap" style="margin-top:80px">
-  <p class="eyebrow rv">What B&amp;B built</p>
-  <ul class="scope rv">
-   <li><b>01</b><span>Structural scope — e.g. Mivan shell for towers / block masonry for villas</span>{PH("Confirm")}</li>
-   <li><b>02</b><span>Scale delivered — floors, units or built-up area</span>{PH("Confirm")}</li>
-   <li><b>03</b><span>Programme — duration and key milestones</span>{PH("Confirm")}</li>
-   <li><b>04</b><span>Peak workforce deployed on site</span>{PH("Confirm")}</li>
-  </ul>
+<section class="sec tight" style="padding-top:0">
+ <div class="wrap">
+  <div class="sec-head"><div><p class="eyebrow rv">Specifications</p><h2 class="rv">At a <em>glance</em></h2></div><p class="rv d1">Status: {status}. B&amp;B scope on site {PH("To confirm")}</p></div>
+  <dl class="facts spec rv"><div><dt>Status</dt><dd>{status}</dd></div><div><dt>Location</dt><dd>{p["loc"]}</dd></div>{facts}</dl>
  </div>
 </section>
 <section class="sec">
  <div class="wrap">
-  <div class="sec-head"><div><p class="eyebrow rv">Gallery</p><h2 class="rv">The finished <em>work</em></h2></div><p class="rv d1">Images courtesy of the developer, {p["credit"]}. Select any image to enlarge.</p></div>
-  <div class="gallery">{gal}</div>
+  <div class="sec-head"><div><p class="eyebrow rv">Gallery</p><h2 class="rv">The <em>project</em></h2></div><p class="rv d1">Images: developer&rsquo;s official project site ({p["credit"]}). Artist&rsquo;s impressions where rendered. Select any image to enlarge.</p></div>
+  <div class="gallery pgal">{gal}</div>
+ </div>
+</section>
+{f'''<section class="sec tight" style="padding-top:0"><div class="wrap"><div class="sec-head"><div><p class="eyebrow rv">On site</p><h2 class="rv">Construction <em>progress</em></h2></div><p class="rv d1">Progress photographs as published on the developer&rsquo;s site.</p></div><div class="gallery pgal">{site}</div></div></section>''' if site else ""}
+<section class="sec ivory on-ivory">
+ <div class="wrap">
+  <div class="sec-head"><div><p class="eyebrow rv">Plans</p><h2 class="rv">Master plan &amp; <em>floor plans</em></h2></div><p class="rv d1">{"As published by the developer. Select to enlarge." if plans else "Floor plans are not published openly on the developer&rsquo;s page — " + TC + "."}</p></div>
+  {f'<div class="gallery plans">{plans}</div>' if plans else ""}
+ </div>
+</section>
+<section class="sec">
+ <div class="wrap grid2" style="align-items:start">
+  <div><p class="eyebrow rv">Amenities</p><h2 class="rv">Life <em>within</em></h2></div>
+  <ul class="amen rv">{amen}</ul>
  </div>
 </section>
 <section class="sec tight" style="padding-top:0">
  <div class="wrap">
   <div class="locbox rv">
-   <div class="lt"><p class="eyebrow">Location</p><h3 style="margin-bottom:18px">{p["loc"]}</h3><p>Developed by {p["dev"]}. B&amp;B Enterprises&rsquo; role on this project: construction contractor.</p><p class="small">Map embed to be added {PH()}</p></div>
-   <div class="mapph" role="img" aria-label="Map placeholder for {p["loc"]}"><div class="pin"><i></i><b>{p["loc"].split(",")[0]}</b><small>Map placeholder</small></div></div>
+   <div class="lt"><p class="eyebrow">Location</p><h3 style="margin-bottom:18px">{p["loc"]}</h3>{f'<ul class="near">{near}</ul>' if near else ""}<p class="small">Distances as published by the developer. <a class="link" href="https://www.google.com/maps/search/?api=1&amp;query={p["name"].replace("&amp;","and").replace(" ","+")}+{p["loc"].split(",")[0].replace(" ","+")}" target="_blank" rel="noopener">Open in Google Maps <span aria-hidden="true">↗</span></a></p></div>
+   {f'<div class="gallery mapwrap">{maps}</div>' if maps else f'<div class="mapph" role="img" aria-label="Map placeholder for {p["loc"]}"><div class="pin"><i></i><b>{p["loc"].split(",")[0]}</b><small>Map to be added</small></div></div>'}
   </div>
  </div>
 </section>
 <section>
- <div class="wrap"><a class="nextp" href="{nxt["slug"]}"><div><p class="eyebrow">Next project</p><h3>{nxt["name"]}</h3></div><span class="link">View <span aria-hidden="true">→</span></span></a></div>
+ <div class="wrap"><a class="nextp" href="{nxt["page"]}"><div><p class="eyebrow">Next project</p><h3>{nxt["name"]}</h3></div><span class="link">View <span aria-hidden="true">→</span></span></a></div>
 </section>
-{cta(p["card"] if p["slug"]!="project-mvn-aero-one.html" else "mvn-infinity-pool.jpg","Planning a project <em>like this?</em>")}
+{cta("stock-dusk-villa.jpg","Planning a project <em>like this?</em>")}
 <div class="lb" role="dialog" aria-modal="true" aria-label="Image viewer"><button class="x" aria-label="Close">✕</button><button class="pv" aria-label="Previous image">‹</button><button class="nx" aria-label="Next image">›</button><figure><img src="" alt=""><figcaption></figcaption></figure></div>
 '''
-    page(p["slug"],f'{p["name"]} — Projects — B&amp;B Enterprises',f'{p["name"]}, {html.unescape(p["loc"])} — built by B&B Enterprises for {p["dev"]}.',body,cur="projects.html")
+    page(p["page"],f'{p["name"]} — Projects — B&amp;B Enterprises',f'{p["name"]}, {html.unescape(p["loc"])} — developed by {html.unescape(p["dev"])}; construction by B&B Enterprises.',body,cur="projects.html")
 
 # ---------- SERVICES ----------
 services=f'''
