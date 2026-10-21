@@ -216,5 +216,7 @@ window.__bnbConsult = {
   layout: () => { const L = layoutOf(); return { H: L.H, levels: L.levels.map(l => ({ y: l.y, h: l.h, vols: l.vols.map(v => [v.kind, v.roofK, +v.w.toFixed(1), +v.d.toFixed(1)]) })) }; },
   state: () => JSON.parse(JSON.stringify({ S, step })),
   settle() { for (const o of live.values()) if (o.userData.anim) { o.userData.anim.done = true; applyAnim(o, 1); } dying.splice(0).forEach(o => { world.remove(o); disposeObj(o); }); if (camGoal) camGoal.t0 = -1e9; if (renderer) renderer.shadowMap.needsUpdate = true; dirty = true; },
+  bakeTypes: () => bakeObj.types,
+  bakeLog: () => (instBaked.log || []).map(([n, t, c]) => [n, Math.round(t), c]).sort((a, b) => b[1] * b[2] - a[1] * a[2]).slice(0, 25),
   stats: () => renderer ? { dist: +camera.position.distanceTo(controls.target).toFixed(1), tgt: controls.target.toArray().map(v => +v.toFixed(1)), asp: +camera.aspect.toFixed(2), H: lastLayout && +(+lastLayout.H).toFixed(1), calls: renderer.info.render.calls, tris: renderer.info.render.triangles, geos: renderer.info.memory.geometries, pr: renderer.getPixelRatio(), q: quality, comp: !!composer } : null,
 };

@@ -24,7 +24,7 @@ function societyPlan(st) {
     }
     Object.assign(st, {}); return { type, n, m, k, nb, lw, ld, SW, SD, AM, lots, street: STREET, spine: SPINE, ring: RING, zFront, bd };
   }
-  const cols = Math.ceil(Math.sqrt(n)), rows = Math.ceil(n / cols), gx = lw + 18, gz = ld + 18;
+  const cols = Math.ceil(Math.sqrt(n)), rows = Math.ceil(n / cols), gx = lw + 26, gz = ld + 24;
   SW = cols * gx + 2 * (RING + WALL) + 8; SD = rows * gz + AM + 2 * (RING + WALL) + 6;
   const z0 = SD / 2 - WALL - RING - AM - gz / 2;
   for (let i = 0; i < n; i++) { const c = i % cols, r = Math.floor(i / cols), inRow = Math.min(cols, n - r * cols); lots.push({ x: (c - (inRow - 1) / 2) * gx, z: z0 - r * gz, r: 0 }); }
@@ -48,12 +48,19 @@ function vcMat(m) {
   const k = 'vc|' + m.uuid; if (M[k]) return M[k];
   const c = m.clone(); c.vertexColors = true; c.onBeforeCompile = m.onBeforeCompile; c.customProgramCacheKey = m.customProgramCacheKey; return (M[k] = c);
 }
-function bakeObj(obj) {
+function bakeObj(obj, lite) {
   obj.updateMatrixWorld(true);
   const buckets = new Map(), prepC = new Map(), m4 = new T.Matrix4(), im4 = new T.Matrix4(), col = new T.Color();
   const prep = geo => {
     if (prepC.has(geo)) return prepC.get(geo);
-    let g = geo.index ? geo.toNonIndexed() : geo.clone();
+    let g = geo;
+    if (lite && g.type === 'IcosahedronGeometry' && g.parameters.detail > 0) { g.computeBoundingBox(); const c = g.boundingBox.getCenter(new T.Vector3()), sz = g.boundingBox.getSize(new T.Vector3()); const lo = new T.IcosahedronGeometry(1, 0); lo.scale(sz.x / 2, sz.y / 2, sz.z / 2).translate(c.x, c.y, c.z); g = lo; }
+    else if (lite && (g instanceof RoundedBoxGeometry || (g.type === 'CylinderGeometry' && g.parameters.radialSegments > 4))) { // LOD: plain boxes / 6-sided columns
+      g.computeBoundingBox(); const bb = g.boundingBox, sz = bb.getSize(new T.Vector3()), c = bb.getCenter(new T.Vector3());
+      const p = g.parameters, lo = !(g instanceof RoundedBoxGeometry) && g.type === 'CylinderGeometry' ? new T.CylinderGeometry(p.radiusTop, p.radiusBottom, sz.y, 4, 1, true) : new T.BoxGeometry(sz.x, sz.y, sz.z);
+      lo.translate(c.x, c.y, c.z); g = worldUV(lo);
+    }
+    g = g.index ? g.toNonIndexed() : g.clone();
     for (const a of Object.keys(g.attributes)) if (!['position', 'normal', 'uv'].includes(a)) g.deleteAttribute(a);
     if (!g.attributes.normal) g.computeVertexNormals();
     if (!g.attributes.uv) g.setAttribute('uv', new T.Float32BufferAttribute(new Float32Array(g.attributes.position.count * 2), 2));
@@ -62,7 +69,7 @@ function bakeObj(obj) {
   obj.traverse(o => {
     if (!o.isMesh || Array.isArray(o.material)) return;
     let vis = true; o.traverseAncestors(a => { if (!a.visible) vis = false; }); if (!o.visible || !vis) return;
-    const base = prep(o.geometry), key = o.material;
+    const base = prep(o.geometry), key = o.material; (bakeObj.types || (bakeObj.types = {}))[o.geometry.type + (o.isInstancedMesh ? 'x' + o.count : '')] = ((bakeObj.types || {})[o.geometry.type + (o.isInstancedMesh ? 'x' + o.count : '')] || 0) + base.attributes.position.count / 3 * (o.isInstancedMesh ? o.count : 1);
     let b = buckets.get(key); if (!b) buckets.set(key, b = { list: [], cast: false });
     b.cast = b.cast || o.castShadow;
     const add = (mtx, c) => {
@@ -80,30 +87,50 @@ function bakeObj(obj) {
   return out;
 }
 function instBaked(baked, mats4, grp) {
+  for (const b of baked) (instBaked.log || (instBaked.log = [])).push([b.mat.name || b.mat.type, b.geo.attributes.position.count / 3, mats4.length]);
   for (const b of baked) {
     const im = new T.InstancedMesh(b.geo, b.mat, mats4.length);
     mats4.forEach((m, i) => im.setMatrixAt(i, m));
     im.castShadow = b.cast; im.receiveShadow = true; im.computeBoundingSphere(); im.frustumCulled = false; grp.add(im);
   }
 }
+function massingLevel(l, U) { // far-LOD floor plate: clad box, slab band and a window band per face
+  const g = new T.Group(), st = U.style, cm = clad(st, PAL[st] ? PAL[st].clad : 'render'), bx = G.mbox || (G.mbox = keep(new T.BoxGeometry(1, 1, 1).translate(0, .5, 0)));
+  for (const v of l.vols) {
+    const vg = new T.Group(); vg.position.set(v.x, 0, v.z); if (v.rot) vg.rotation.y = v.rot;
+    const glazed = v.kind === 'glazed', h = l.h;
+    if (v.kind === 'canopy') { const m = new T.Mesh(bx, slabMat(U)); m.scale.set(v.w, .22, v.d); m.position.y = h - .3; vg.add(m); g.add(vg); continue; }
+    const w = new T.Mesh(bx, glazed ? mat.glass() : cm); w.scale.set(v.w - .02, h - .26, v.d - .02); vg.add(w);
+    const sl = new T.Mesh(bx, slabMat(U)); sl.scale.set(v.w + .14, .26, v.d + .14); sl.position.y = h - .26; vg.add(sl);
+    if (!glazed && v.kind !== 'stilt') { const wb = new T.Mesh(bx, mat.glass()); wb.scale.set(v.w * .8, Math.min(1.6, h * .45), v.d + .06); wb.position.y = h * .3; vg.add(wb); const wb2 = new T.Mesh(bx, mat.glass()); wb2.scale.set(v.w + .06, Math.min(1.6, h * .45), v.d * .8); wb2.position.y = h * .3; vg.add(wb2); }
+    g.add(vg);
+  }
+  return g;
+}
 function lotMatrix(lot, y, yOff = 0) { return new T.Matrix4().makeTranslation(lot.x, y + yOff, lot.z).multiply(new T.Matrix4().makeRotationY(lot.r || 0)); }
 function unitsPart(L) {
-  const U = L.unit, P = L.plan, g = new T.Group(), lots = P.lots;
+  const U = L.unit, P = L.plan, g = new T.Group(), lots = P.lots; instBaked.log = []; bakeObj.types = {};
   // floors: dedupe identical floor plates (towers repeat one plate dozens of times)
   const bySig = new Map();
   U.levels.forEach(l => { const k = sig([l.h, l.stilt, l.lvl === 0, l.vols.map(v => [v.x, v.z, v.w, v.d, v.kind, v.clad, v.rot, v.ribbon, v.fins, v.pil, v.planters, v.bal])]); let e = bySig.get(k); if (!e) bySig.set(k, e = { l, ys: [] }); e.ys.push(l.y); });
-  for (const { l, ys } of bySig.values()) {
-    const part = levelPart(l, U); part.position.y = 0;
-    const mats = []; for (const lot of lots) for (const y of ys) mats.push(lotMatrix(lot, y, L.podH));
-    instBaked(bakeObj(part), mats, g);
-  }
-  // roofs, plinth, crowns, roof extras: once per unit
-  const top = new T.Group(); top.add(plinthPart(U));
-  const roofs = roofsPart(U), info = { slopes: U.slopes, flatZones: U.flatZones }; top.add(roofs);
-  if (U.decor.length) top.add(decorPart(U));
-  if (U.ex.has('terrace')) top.add(terracePart(U, info));
-  if (U.ex.has('solar')) top.add(solarPart(U, info));
-  instBaked(bakeObj(top), lots.map(lot => lotMatrix(lot, 0, L.podH)), g);
+  const budget = quality === 'low' || mobile ? 5e5 : 1.3e6, nT = b => b.reduce((a, x) => a + x.geo.attributes.position.count / 3, 0);
+  const plates = [...bySig.values()].map(({ l, ys }) => { const part = levelPart(l, U); part.position.y = 0; return { l, ys, baked: bakeObj(part, L.lite) }; });
+  const info = { slopes: U.slopes, flatZones: U.flatZones };
+  const makeTop = massing => {
+    const top = new T.Group();
+    if (!massing) top.add(plinthPart(U)); else for (const v of U.levels[0].vols) if (v.kind !== 'canopy') top.add(B(v.w + .5, U.plinth, v.d + .5, clad(U.style, 'stone'), v.x, 0, v.z, true, 0));
+    top.add(roofsPart(U));
+    if (U.decor.length && !massing) top.add(decorPart(U));
+    if (U.ex.has('terrace') && !massing) top.add(terracePart(U, info));
+    if (U.ex.has('solar')) { if (!massing) top.add(solarPart(U, info)); else { const z = U.flatZones.slice().sort((a, b) => b.w * b.d - a.w * a.d)[0]; if (z) top.add(B(z.w * .7, .12, z.d * .55, mat.solar(), z.x, z.y + .35, z.z, false, 0)); } }
+    return bakeObj(top, L.lite || massing);
+  };
+  let topB = makeTop(false);
+  const tris = (plates.reduce((a, p) => a + nT(p.baked) * p.ys.length, 0) + nT(topB)) * lots.length;
+  L.massing = tris > budget;
+  if (L.massing) { plates.forEach(p => { p.baked.forEach(b => b.geo.dispose()); p.baked = bakeObj(massingLevel(p.l, U), true); }); topB.forEach(b => b.geo.dispose()); topB = makeTop(true); }
+  for (const { ys, baked } of plates) { const mats = []; for (const lot of lots) for (const y of ys) mats.push(lotMatrix(lot, y, L.podH)); instBaked(baked, mats, g); }
+  instBaked(topB, lots.map(lot => lotMatrix(lot, 0, L.podH)), g);
   return g;
 }
 
@@ -190,7 +217,7 @@ function slabMatComm(st) { return ['glass', 'modern'].includes(st) ? mat.trim('m
 function societyParts(L) {
   const s = sig([L.type, L.plan.SW, L.plan.SD, L.plan.n, L.style, L.tier, L.variant, L.unit.levels.length, L.podH, [...L.ex].sort(), L.park, L.lite, L.unit.ex.has('solar'), L.unit.ex.has('terrace')]);
   return [
-    { key: 'ctx-' + (S.loc || 'default') + '-' + Math.round(Math.max(L.pw, L.pd)), anim: 'rise', dur: 1400, make: () => contextPart(S.loc || 'default', Math.max(L.pw, L.pd) / 2) },
+    { key: 'ctx-' + (S.loc || 'default') + '-' + Math.round(Math.max(L.pw, L.pd) + L.H), anim: 'rise', dur: 1400, make: () => contextPart(S.loc || 'default', Math.max(L.pw, L.pd) / 2 + L.H * 1.1) },
     { key: 'soc-site' + s, anim: 'grow', dur: 800, make: () => societyPart(L) },
     { key: 'soc-units' + s, anim: 'rise', d: 200, dur: 1100, make: () => unitsPart(L) },
   ];
