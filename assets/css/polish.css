@@ -169,3 +169,20 @@ h2{line-height:1.12;letter-spacing:-.01em}
 .builders .partner-line{font-family:'Cormorant Garamond','Cormorant',serif;font-style:italic;font-size:clamp(17px,1.6vw,22px);line-height:1.45;color:var(--gold,#c9a45c);text-align:center;max-width:42ch;margin:-4px auto 26px;padding:0 20px;opacity:.92}
 .builders .lbl{font-family:'Cormorant Garamond','Cormorant',serif;font-size:clamp(28px,2.8vw,40px);font-weight:400;letter-spacing:.02em;text-transform:none;color:#f1e9da;line-height:1.15;text-align:center}
 .builders .partner-line{margin-top:10px}
+/* mobile QA: compact WhatsApp CTA that never covers footer copy */
+@media (max-width:640px){
+  .wa{right:14px;bottom:14px;height:56px;width:56px;padding:0;justify-content:center;gap:0}
+  .wa .wt,.wa .ph,.wa [class*=ph]{display:none!important}
+  .wa .wi{width:46px;height:46px}
+  .ftr{padding-bottom:96px}
+}
+/* mobile QA: legibility + tap targets */
+@media (max-width:640px){
+  .lbl,.eyebrow{font-size:11.5px}
+  .crumbs{font-size:12px}
+  .crumbs a{display:inline-block;padding:12px 2px}
+  a.link{display:inline-flex;align-items:center;min-height:44px}
+  .cx-light button{font-size:11px;padding:12px 14px}
+  .tl-dots button,.tl-nav button,[class*=tl-] button[data-i]{min-height:44px;min-width:44px}
+}
+@media (max-width:640px){.tl-dots{flex-wrap:wrap;justify-content:center;row-gap:4px}}

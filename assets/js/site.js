@@ -82,6 +82,8 @@
     lb.querySelector('.pv').addEventListener('click',function(){show(idx-1);});
     lb.querySelector('.nx').addEventListener('click',function(){show(idx+1);});
     lb.addEventListener('click',function(e){if(e.target===lb)close();});
+    var tx=null,ty=0; lb.addEventListener('touchstart',function(e){if(e.touches.length===1){tx=e.touches[0].clientX;ty=e.touches[0].clientY;}},{passive:true});
+    lb.addEventListener('touchend',function(e){if(tx===null)return; var t=e.changedTouches[0],dx=t.clientX-tx,dy=t.clientY-ty; tx=null; if(Math.abs(dx)>45&&Math.abs(dx)>Math.abs(dy)*1.3){show(idx+(dx<0?1:-1));} else if(dy>90&&Math.abs(dy)>Math.abs(dx)*1.5){close();}},{passive:true});
     d.addEventListener('keydown',function(e){if(!lb.classList.contains('open'))return; if(e.key==='Escape')close(); if(e.key==='ArrowLeft')show(idx-1); if(e.key==='ArrowRight')show(idx+1);});
   }
 
