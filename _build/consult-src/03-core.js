@@ -208,7 +208,7 @@ function setupScene() {
   for (let i = 0; i < pos.count; i++) {
     const x = pos.getX(i), z = pos.getZ(i), r = Math.hypot(x, z);
     const n = Math.sin(x * .021) * Math.cos(z * .017) + Math.sin((x + z) * .0093) * 1.4 + Math.sin(x * .052 + 1.3) * Math.sin(z * .047) * .35;
-    const f = clamp((r - 160) / 300, 0, 1);
+    const f = clamp((r - 600) / 420, 0, 1);
     pos.setY(i, n * 7 * f * f - 0.03);
     const v = .5 + .5 * Math.sin(x * .05 + Math.cos(z * .04) * 2) * Math.cos(z * .03), k = .78 + v * .3 - clamp(Math.sin(x * .013 + z * .011), 0, 1) * .18;
     tmp.setRGB(k * 1.02, k, k * .9);

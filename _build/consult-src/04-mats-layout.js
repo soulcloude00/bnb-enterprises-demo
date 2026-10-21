@@ -230,6 +230,7 @@ function variantLevels(type, v, W, D, n, P) {
   return { lv, dec };
 }
 function layoutOf(st = S, opt = {}) {
+  if (CN[st.type]) { if (!opt.bare && !opt.unit) return societyLayout(st, opt); const up = UNIT_PLOT[st.type]; st = { ...st, type: unitType(st.type), count: null }; opt = { ...opt, plot: up }; }
   const [W0, D0] = opt.plot || plotFt(st); const pw = W0 * FT, pd = D0 * FT;
   const type = st.type || null, tier = st.tier || 'standard', cons = st.cons || 'advise';
   const vrow = variantRow(st), variant = vrow ? vrow[0] : null;
@@ -238,7 +239,7 @@ function layoutOf(st = S, opt = {}) {
   const ex = new Set(opt.bare ? [] : (st.extras || [])), park = opt.bare ? 'none' : (st.park || 'none');
   const fh = { villa: 3.3, apartment: 3.05, commercial: 4.0, row: 3.2, farm: 3.6, unsure: 3.3 }[type] || 3.2;
   const defF = { villa: 2, apartment: 4, commercial: 3, row: 2, farm: 1, unsure: 2 }[type] || 2;
-  const nF = { g1: 2, g2: 3, g3: 4, hr: 16 }[st.floors] || defF;
+  const nF = /^n\d+$/.test(st.floors || '') ? +st.floors.slice(1) + 1 : ({ g1: 2, g2: 3, g3: 4, hr: 16 }[st.floors] || defF);
   const L = { pw, pd, type, variant, style, tier, cons, ex, park, ghost, fh, nF, levels: [], decor: [], flatZones: [], slopes: [], thumb: !!opt.bare };
   if (!type) { L.H = 0; return L; }
   let side = clamp(pw * .08, .9, 5), front = clamp(pd * .14, 1.5, 10), rear = clamp(pd * .08, 1, 6);

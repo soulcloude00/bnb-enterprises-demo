@@ -210,3 +210,12 @@ html.cx-lock,html.cx-lock body{overflow:hidden}
   .cx-thumb{width:104px}
   .cx-vopt .cx-card b{font-size:18px}
 }
+/* v7 community sliders + sub-brand note */
+.cx-range{margin:8px 0 18px;padding:20px 22px;border:1px solid rgba(201,169,110,.28);background:rgba(201,169,110,.04)}
+.cx-range label{display:block;font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--mute)}
+.cx-rrow{display:flex;align-items:center;gap:16px;margin-top:12px}
+.cx-rrow input[type=range]{flex:1;min-width:0;accent-color:#c9a96e;height:28px}
+.cx-rrow output{font-family:'Cormorant Garamond','Cormorant',serif;font-size:38px;line-height:1;color:#c9a96e;min-width:2.6ch;text-align:right}
+.cx-rout{margin:10px 0 0;font-size:14px;color:#e9e2d3}
+.cx-rends{display:flex;justify-content:space-between;font-size:11px;color:var(--mute);margin-top:6px}
+.cx-note{margin:14px 0 0;font-family:'Cormorant Garamond','Cormorant',serif;font-style:italic;font-size:17px;color:#c9a96e;border-left:1px solid rgba(201,169,110,.5);padding-left:12px}

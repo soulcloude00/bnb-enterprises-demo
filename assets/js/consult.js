@@ -13,25 +13,25 @@ const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': 
 
 /* ------------------------------------------------------------------ questions */
 const Q = [
-  { id: 'type', label: 'Project', title: 'What do you want to <em>build?</em>', sub: 'Choose the closest fit — everything can be refined with our team.', hint: 'Sets the massing of the model.',
-    opts: [['villa', 'Villa', 'Independent luxury home'], ['apartment', 'Apartment building', 'Multi-family residential'], ['commercial', 'Commercial', 'Offices, retail or mixed-use'], ['row', 'Row houses', 'A terrace of homes'], ['farm', 'Farmhouse', 'Weekend or estate living'], ['unsure', 'Not sure yet', 'We’ll help you decide']] },
+  { id: 'type', label: 'Project', title: 'What are you <em>developing?</em>', sub: 'We build communities and high-rises for developers — choose the closest fit.', hint: 'Sets the scale and massing of the model.', note: 'Individual homes? Our upcoming sub-brand for families.',
+    opts: [['villas', 'Gated villa community', 'Villas in streets, clubhouse & gate'], ['rows', 'Row houses / townhouses', 'Terraced homes in a gated layout'], ['midrise', 'Mid-rise apartments', 'G + 4 to G + 12 residential blocks'], ['highrise', 'High-rise towers', 'Up to G + 50 · 1–8 towers on a podium'], ['mixed', 'Mixed-use / commercial', 'Office or retail tower over a podium']] },
   { id: 'variant', label: 'Design', kind: 'variant', title: 'Choose a <em>design</em>', sub: 'Three distinct directions — each with its own silhouette. Materials and finish come next.', hint: 'The whole massing and roofline change.' },
-  { id: 'plot', label: 'Plot', title: 'How large is your <em>plot?</em>', sub: 'Width × depth, in feet.', hint: 'The plot and footprint rescale to match.',
+  { id: 'plot', label: 'Scale', kind: 'scale', title: 'How large is the <em>community?</em>', sub: 'Drag to set the number of homes or towers — the site area follows.', hint: 'The society re-plans itself around the count.',
     opts: [['30x40', '30 × 40', '1,200 sq ft'], ['30x50', '30 × 50', '1,500 sq ft'], ['40x60', '40 × 60', '2,400 sq ft'], ['60x80', '60 × 80', '4,800 sq ft'], ['acre', '1 acre +', '43,560 sq ft and above'], ['custom', 'Custom', 'Enter your dimensions']] },
   { id: 'loc', label: 'Location', title: 'Where in <em>Bangalore?</em>', sub: 'Roughly is fine.', hint: 'The surroundings change around your plot.',
     opts: [['north', 'North', 'Devanahalli · Hebbal · Yelahanka'], ['east', 'East', 'Whitefield · Sarjapur'], ['south', 'South', 'JP Nagar · Kanakapura Rd · E-City'], ['west', 'West', 'Rajajinagar · Mysore Rd'], ['central', 'Central', 'CBD · Indiranagar · Koramangala'], ['outside', 'Outside Bangalore', 'Elsewhere in Karnataka & beyond']] },
   { id: 'floors', label: 'Floors', title: 'How many <em>floors?</em>', sub: 'G = ground floor.', hint: 'Watch it rise floor by floor.',
-    opts: [['g1', 'G + 1', 'Ground + 1 floor'], ['g2', 'G + 2', 'Ground + 2 floors'], ['g3', 'G + 3', 'Ground + 3 floors'], ['hr', 'High-rise', 'G + 10 and above · apartments']] },
+    opts: [['g1', 'G + 1', 'Ground + 1 floor'], ['g2', 'G + 2', 'Ground + 2 floors'], ['g3', 'G + 3', 'Ground + 3 floors']] },
   { id: 'cons', label: 'Construction', title: 'Construction <em>system</em>', sub: 'Our two core systems — or let us recommend.', hint: 'Shows the site set-up: aluminium formwork & crane, or scaffolding & blockwork.',
     opts: [['mivan', 'Mivan', 'Aluminium formwork · monolithic walls & slabs'], ['block', 'Block masonry', 'Supervised masonry crews'], ['advise', 'Advise me', 'We’ll recommend the right fit']] },
   { id: 'tier', label: 'Finish', title: 'Quality & <em>finish</em>', sub: 'The level of specification you have in mind.', hint: 'Glazing size, railings, trims and lighting upgrade.',
     opts: [['standard', 'Standard', 'Durable, well-specified'], ['premium', 'Premium', 'Upgraded finishes & detailing'], ['luxury', 'Luxury', 'Bespoke materials, statement design']] },
   { id: 'style', label: 'Style', title: 'Architectural <em>style</em>', sub: 'How should it look and feel?', hint: 'Facade materials, colours, windows and roof change.',
     opts: [['modern', 'Modern minimal', 'Clean planes, white render, ribbon windows'], ['glass', 'Contemporary glass', 'Full-height glazing, slim frames'], ['classic', 'Classic / colonial', 'Columns, cornices, hipped roof'], ['tropical', 'Tropical', 'Timber, stone, deep overhangs'], ['indian', 'Indian traditional', 'Tiled roofs, chhajjas, warm ochre']] },
-  { id: 'park', label: 'Parking', title: 'Parking', sub: 'How many cars should we plan for?', hint: 'Adds a carport, stilt parking or a basement ramp.',
-    opts: [['none', 'None', 'No dedicated parking'], ['cov', '1–2 cars, covered', 'Carport in the front setback'], ['three', '3+ cars', 'Stilt or multi-bay parking'], ['base', 'Basement', 'Ramp down to basement parking']] },
-  { id: 'extras', label: 'Extras', kind: 'multi', title: 'Anything <em>extra?</em>', sub: 'Select all that apply — or skip.', hint: 'Each extra appears on the model.',
-    opts: [['pool', 'Swimming pool', ''], ['garden', 'Garden & landscaping', ''], ['terrace', 'Terrace garden', ''], ['lift', 'Home lift', ''], ['solar', 'Solar panels', ''], ['rwh', 'Rainwater harvesting', ''], ['theatre', 'Home theatre', ''], ['servant', 'Servant quarters', ''], ['wall', 'Boundary wall & gate', '']] },
+  { id: 'park', label: 'Parking', title: 'Community <em>parking</em>', sub: 'How should residents park?', hint: 'Adds surface bays, a parking podium or basement ramps.',
+    opts: [['surface', 'Surface & driveways', 'Driveways and visitor bays'], ['podium', 'Parking podium', 'Multi-level podium under the towers'], ['base', 'Basement', 'Ramps down to basement parking'], ['none', 'Not decided', 'We’ll plan it with you']] },
+  { id: 'extras', label: 'Amenities', kind: 'multi', title: 'Community <em>amenities</em>', sub: 'Select all that apply — or skip.', hint: 'Each amenity appears on the site.',
+    opts: [['club', 'Clubhouse', ''], ['pool', 'Swimming pool', ''], ['garden', 'Landscaped gardens', ''], ['sports', 'Sports courts', ''], ['jog', 'Jogging track', ''], ['terrace', 'Terrace gardens', ''], ['solar', 'Solar panels', ''], ['rwh', 'Rainwater harvesting', '']] },
   { id: 'plan', label: 'Timeline & budget', kind: 'plan', title: 'Timeline & <em>budget</em>', sub: 'Ranges only — this simply helps us prepare.',
     groups: [['timeline', 'When would you like to start?', [['t3', 'Within 3 months'], ['t6', '3–6 months'], ['t12', '6–12 months'], ['t0', 'Just exploring']]],
              ['budget', 'Approximate budget range', [['b1', 'Under ₹1 Cr'], ['b3', '₹1 – 3 Cr'], ['b10', '₹3 – 10 Cr'], ['b10p', '₹10 Cr +'], ['bx', 'Prefer to discuss']]]] },
@@ -43,19 +43,29 @@ const VARIANTS = {
   apartment: [['tower', 'Glass Tower', 'A slender tower on a glazed podium', 'glass'], ['terraced', 'Terraced Green', 'Stepped floors with planted terraces', 'modern'], ['deco', 'Art Deco', 'Vertical fins and a stepped crown', 'classic']],
   commercial: [['podium', 'Podium & Tower', 'Retail podium with an offset tower', 'glass'], ['campus', 'Low-rise Campus', 'Twin blocks linked by a glass atrium', 'modern'], ['twist', 'Sculpted Twist', 'Floor plates that rotate as they rise', 'glass']],
   row: [['gabled', 'Gabled Terrace', 'Street-facing gables, front porches', 'indian'], ['staggered', 'Staggered Modern', 'Alternating heights and depths', 'modern'], ['sawtooth', 'Sawtooth Mews', 'Mono-pitch roofs and front courts', 'tropical']],
-  farm: [['ranch', 'Long Ranch', 'Long and low with a deep verandah', 'tropical'], ['barn', 'Modern Barn', 'Twin timber barns with glazed gables', 'modern'], ['hacienda', 'Hacienda Courtyard', 'Tiled wings around a fountain court', 'indian']],
+  _farm: [['ranch', 'Long Ranch', 'Long and low with a deep verandah', 'tropical'], ['barn', 'Modern Barn', 'Twin timber barns with glazed gables', 'modern'], ['hacienda', 'Hacienda Courtyard', 'Tiled wings around a fountain court', 'indian']],
   unsure: [['compact', 'Compact', 'One efficient, simple volume', 'modern'], ['spread', 'Spread Out', 'Low, wide and garden-facing', 'tropical'], ['stacked', 'Stacked', 'Offset volumes with more height', 'glass']],
 };
-const variantsOf = t => VARIANTS[t] || [];
+// community types reuse the unit-level design language of the matching building type
+const UT = { villas: 'villa', rows: 'row', midrise: 'apartment', highrise: 'apartment', mixed: 'commercial' };
+const unitType = t => UT[t] || t;
+// count slider per type: [min, max, default, unit noun, step]
+const CN = { villas: [10, 200, 50, 'villas', 2], rows: [10, 200, 40, 'homes', 2], midrise: [1, 8, 3, 'blocks', 1], highrise: [1, 8, 4, 'towers', 1], mixed: [1, 3, 1, 'towers', 1] };
+// floors above ground for towers: [min, max, default]
+const FL = { midrise: [4, 12, 8], highrise: [10, 50, 30], mixed: [5, 50, 24] };
+const isTower = t => !!FL[t];
+const countOf = (st = S) => { const c = CN[st.type]; return c ? clamp(Math.round(+st.count || c[2]), c[0], c[1]) : 0; };
+const floorsN = (st = S) => { const f = FL[st.type]; if (f) { const m = /^n(\d+)$/.exec(st.floors || ''); return clamp(m ? +m[1] : f[2], f[0], f[1]); } return ({ g1: 1, g2: 2, g3: 3 })[st.floors] ?? 2; };
+const variantsOf = t => VARIANTS[unitType(t)] || [];
 const variantRow = (st = S) => variantsOf(st.type).find(v => v[0] === st.variant) || null;
 const LIGHTS = [['day', 'Day'], ['golden', 'Golden hour'], ['night', 'Night']];
 const TIMES = [['morning', 'Morning'], ['afternoon', 'Afternoon'], ['evening', 'Evening'], ['any', 'Any time']];
 const QI = Object.fromEntries(Q.map((q, i) => [q.id, i]));
-const optLabel = (id, v) => { const q = Q[QI[id]]; const o = q && q.opts && q.opts.find(o => o[0] === v); return o ? o[1] : ''; };
+const optLabel = (id, v) => { if (id === 'floors' && /^n\d+$/.test(v || '')) return 'G + ' + v.slice(1); const q = Q[QI[id]]; const o = q && q.opts && q.opts.find(o => o[0] === v); return o ? o[1] : ''; };
 const groupLabel = (g, v) => { const gr = Q[QI.plan].groups.find(x => x[0] === g); const o = gr[2].find(o => o[0] === v); return o ? o[1] : ''; };
 
 /* ------------------------------------------------------------------ state */
-const KEY = 'bnb-consult-v2';
+const KEY = 'bnb-consult-v3';
 let S = { extras: [], light: 'golden' }, step = -1;
 try { const j = JSON.parse(sessionStorage.getItem(KEY) || 'null'); if (j && j.S) { S = Object.assign({ extras: [], light: 'golden' }, j.S); step = clamp(j.step | 0, -1, Q.length); } } catch (e) {}
 const save = () => { try { sessionStorage.setItem(KEY, JSON.stringify({ S, step })); } catch (e) {} };
@@ -65,19 +75,21 @@ function plotFt(st = S) {
   if (st.plot === 'custom') return [clamp(+st.cw || 40, 15, 1500), clamp(+st.cd || 60, 15, 1500)];
   return m[st.plot] || [40, 60];
 }
-function plotLabel() {
+function plotLabel(st = S) {
+  if (CN[st.type]) { const n = countOf(st), a = typeof societyAcres === 'function' ? societyAcres(st) : 0; return `${n} ${CN[st.type][3]}${a ? ` · ≈ ${a < 10 ? a.toFixed(1) : Math.round(a)} acres` : ''}`; }
   if (!S.plot) return '';
   if (S.plot === 'custom') { const [w, d] = plotFt(); return `${w} × ${d} ft (custom)`; }
   if (S.plot === 'acre') return '1 acre +';
   return optLabel('plot', S.plot) + ' ft';
 }
-function floorOpts() { return Q[QI.floors].opts.filter(o => o[0] !== 'hr' || S.type === 'apartment'); }
+function floorOpts() { return isTower(S.type) ? [] : Q[QI.floors].opts; }
 function valid(i) {
   const q = Q[i]; if (!q) return true;
   if (q.kind === 'multi') return true;
   if (q.kind === 'plan') return !!(S.timeline && S.budget);
   if (q.kind === 'contact') return contactErrors().length === 0;
-  if (q.id === 'plot' && S.plot === 'custom') return +S.cw >= 15 && +S.cd >= 15;
+  if (q.kind === 'scale') return !!S.type;
+  if (q.id === 'floors' && isTower(S.type)) return true;
   if (q.kind === 'variant') return !!variantRow();
   return !!S[q.id];
 }
@@ -177,7 +189,7 @@ function onChange(e) {
   const t = e.target; if (!t.name) return;
   if (t.type === 'radio') {
     S[t.name] = t.value;
-    if (t.name === 'type') { if (S.floors === 'hr' && S.type !== 'apartment') S.floors = null; if (!variantRow()) S.variant = null; if (S.styleAuto) { S.style = null; S.styleAuto = false; } }
+    if (t.name === 'type') { S.count = CN[S.type] ? CN[S.type][2] : null; S.floors = isTower(S.type) ? 'n' + FL[S.type][2] : (/^n/.test(S.floors || '') ? null : S.floors); if (!variantRow()) S.variant = null; if (S.styleAuto) { S.style = null; S.styleAuto = false; } }
     if (t.name === 'variant' && S.styleAuto) { S.style = null; S.styleAuto = false; }
     if (t.name === 'style') S.styleAuto = false;
     if (t.name === 'plot') { const c = bodyEl.querySelector('.cx-custom'); if (c) { c.hidden = t.value !== 'custom'; if (t.value === 'custom') c.querySelector('input').focus(); } }
@@ -189,6 +201,12 @@ function onChange(e) {
 }
 function onInput(e) {
   const t = e.target;
+  if (t.name === 'count' || t.name === 'fl') {
+    if (t.name === 'count') S.count = +t.value; else S.floors = 'n' + t.value;
+    const w = t.closest('.cx-range'); w.querySelector('output').textContent = t.value;
+    w.querySelector('.cx-rout').textContent = t.name === 'count' ? plotLabel() : 'G + ' + t.value + (S.type === 'highrise' ? ' · podium & clubhouse included' : '');
+    save(); refreshNav(); renderHud && renderHud(); clearTimeout(onInput.t); onInput.t = setTimeout(() => update3D(true), 160); return;
+  }
   if (t.name === 'cw' || t.name === 'cd') { S[t.name] = t.value.replace(/[^0-9]/g, ''); save(); refreshNav(); clearTimeout(onInput.t); onInput.t = setTimeout(() => update3D(true), 350); }
   if (['name', 'phone', 'email'].includes(t.name)) { S[t.name] = t.value; save(); const f = t.closest('.fld'); if (f) f.classList.remove('bad'); refreshNav(); }
 }
@@ -202,6 +220,9 @@ function onBodyClick(e) {
 }
 
 /* ---------- step rendering */
+function sliderHTML(name, lab, v, a, b, stp, out) {
+  return `<div class="cx-range"><label for="cx-${name}">${lab}</label><div class="cx-rrow"><input id="cx-${name}" name="${name}" type="range" min="${a}" max="${b}" step="${stp}" value="${v}"><output for="cx-${name}">${v}</output></div><p class="cx-rout">${esc(out)}</p><div class="cx-rends" aria-hidden="true"><span>${a}</span><span>${b}</span></div></div>`;
+}
 function cardsHTML(name, opts, type, sel) {
   return opts.map(([v, l, s], i) => {
     const on = type === 'checkbox' ? (sel || []).includes(v) : sel === v;
@@ -227,7 +248,7 @@ function renderStep(noFocus) {
     h = `<div class="cx-intro">
       <p class="eyebrow">Build your vision</p>
       <h2 id="cx-title" tabindex="-1">Shape your project. <em>See it rise.</em></h2>
-      <p class="cx-lead">Answer ${n} short questions and watch a 3D model of your project take shape on its plot — then share the brief with our team.</p>
+      <p class="cx-lead">Answer ${n} short questions and watch a 3D model of your project take shape on site — then share the brief with our team.</p>
       <ul class="cx-feats"><li><b>${n}</b><span>quick questions</span></li><li><b>3D</b><span>live model</span></li><li><b>~3</b><span>minutes</span></li></ul>
       <button class="btn cx-begin" type="button" data-act="begin">Begin <span class="arr"></span></button>
       <p class="cx-fine">Illustrative concept only — not a design, drawing or quotation.</p></div>`;
@@ -254,10 +275,18 @@ function renderStep(noFocus) {
         <div class="fld" data-f="email"><label for="cx-email">Email</label><input id="cx-email" name="email" type="email" autocomplete="email" value="${esc(S.email)}"><div class="err">Please enter a valid email.</div></div>
         <fieldset class="cx-chips"><legend>Preferred time to call</legend><div>${TIMES.map(([v, l]) => `<label class="cx-chip"><input type="radio" name="time" value="${v}"${S.time === v ? ' checked' : ''}><span>${l}</span></label>`).join('')}</div></fieldset>
         <p class="cx-fine">Front-end demo — nothing is submitted or stored on a server.</p></div>`;
+    } else if (q.kind === 'scale') {
+      const c = CN[S.type];
+      if (!c) h += `<p class="cx-sub">Choose what you are developing first.</p>`;
+      else { if (!S.count) S.count = c[2]; h += sliderHTML('count', `Number of ${c[3]}`, countOf(), c[0], c[1], c[4], plotLabel()); }
+    } else if (q.id === 'floors' && isTower(S.type)) {
+      const f = FL[S.type]; if (!/^n\d+$/.test(S.floors || '')) S.floors = 'n' + f[2];
+      h += sliderHTML('fl', 'Floors above ground', floorsN(), f[0], f[1], 1, 'G + ' + floorsN() + (S.type === 'highrise' ? ' · podium & clubhouse included' : ''));
     } else {
       const opts = q.id === 'floors' ? floorOpts() : q.opts;
       if (q.id === 'style' && variantRow()) h += `<p class="cx-suggest"><span>Suggested for ${variantRow()[1]}:</span> ${optLabel('style', variantRow()[3])}</p>`;
       h += `<fieldset class="cx-grid${q.id === 'cons' || q.id === 'tier' ? ' one' : ''}"><legend class="sr">${q.label}</legend>${cardsHTML(q.id, opts, 'radio', S[q.id])}</fieldset>`;
+      if (q.note) h += `<p class="cx-note">${q.note}</p>`;
       if (q.id === 'plot') h += `<div class="cx-custom" ${S.plot === 'custom' ? '' : 'hidden'}><div class="fld"><label for="cx-cw">Width (ft)</label><input id="cx-cw" name="cw" inputmode="numeric" value="${esc(S.cw)}" placeholder="e.g. 50"></div><span aria-hidden="true">×</span><div class="fld"><label for="cx-cd">Depth (ft)</label><input id="cx-cd" name="cd" inputmode="numeric" value="${esc(S.cd)}" placeholder="e.g. 80"></div></div>`;
     }
     if (q.hint) h += `<p class="cx-hintq"><i aria-hidden="true"></i>In 3D — ${q.hint}</p>`;
@@ -287,7 +316,7 @@ function refreshNav() {
 function rows() {
   const ex = (S.extras || []).map(v => optLabel('extras', v));
   return [
-    ['type', 'Build', optLabel('type', S.type)], ['variant', 'Design', (variantRow() || [])[1]], ['plot', 'Plot', plotLabel()], ['loc', 'Location', optLabel('loc', S.loc)],
+    ['type', 'Build', optLabel('type', S.type)], ['variant', 'Design', (variantRow() || [])[1]], ['plot', 'Scale', plotLabel()], ['loc', 'Location', optLabel('loc', S.loc)],
     ['floors', 'Floors', optLabel('floors', S.floors)], ['cons', 'Construction', optLabel('cons', S.cons)], ['tier', 'Finish', optLabel('tier', S.tier)],
     ['style', 'Style', optLabel('style', S.style)], ['park', 'Parking', optLabel('park', S.park)], ['extras', 'Extras', ex.length ? ex.join(', ') : 'None'],
     ['plan', 'Timeline', groupLabel('timeline', S.timeline)], ['plan', 'Budget range', groupLabel('budget', S.budget)],
@@ -556,7 +585,7 @@ function setupScene() {
   for (let i = 0; i < pos.count; i++) {
     const x = pos.getX(i), z = pos.getZ(i), r = Math.hypot(x, z);
     const n = Math.sin(x * .021) * Math.cos(z * .017) + Math.sin((x + z) * .0093) * 1.4 + Math.sin(x * .052 + 1.3) * Math.sin(z * .047) * .35;
-    const f = clamp((r - 160) / 300, 0, 1);
+    const f = clamp((r - 600) / 420, 0, 1);
     pos.setY(i, n * 7 * f * f - 0.03);
     const v = .5 + .5 * Math.sin(x * .05 + Math.cos(z * .04) * 2) * Math.cos(z * .03), k = .78 + v * .3 - clamp(Math.sin(x * .013 + z * .011), 0, 1) * .18;
     tmp.setRGB(k * 1.02, k, k * .9);
@@ -939,6 +968,7 @@ function variantLevels(type, v, W, D, n, P) {
   return { lv, dec };
 }
 function layoutOf(st = S, opt = {}) {
+  if (CN[st.type]) { if (!opt.bare && !opt.unit) return societyLayout(st, opt); const up = UNIT_PLOT[st.type]; st = { ...st, type: unitType(st.type), count: null }; opt = { ...opt, plot: up }; }
   const [W0, D0] = opt.plot || plotFt(st); const pw = W0 * FT, pd = D0 * FT;
   const type = st.type || null, tier = st.tier || 'standard', cons = st.cons || 'advise';
   const vrow = variantRow(st), variant = vrow ? vrow[0] : null;
@@ -947,7 +977,7 @@ function layoutOf(st = S, opt = {}) {
   const ex = new Set(opt.bare ? [] : (st.extras || [])), park = opt.bare ? 'none' : (st.park || 'none');
   const fh = { villa: 3.3, apartment: 3.05, commercial: 4.0, row: 3.2, farm: 3.6, unsure: 3.3 }[type] || 3.2;
   const defF = { villa: 2, apartment: 4, commercial: 3, row: 2, farm: 1, unsure: 2 }[type] || 2;
-  const nF = { g1: 2, g2: 3, g3: 4, hr: 16 }[st.floors] || defF;
+  const nF = /^n\d+$/.test(st.floors || '') ? +st.floors.slice(1) + 1 : ({ g1: 2, g2: 3, g3: 4, hr: 16 }[st.floors] || defF);
   const L = { pw, pd, type, variant, style, tier, cons, ex, park, ghost, fh, nF, levels: [], decor: [], flatZones: [], slopes: [], thumb: !!opt.bare };
   if (!type) { L.H = 0; return L; }
   let side = clamp(pw * .08, .9, 5), front = clamp(pd * .14, 1.5, 10), rear = clamp(pd * .08, 1, 6);
@@ -1049,6 +1079,7 @@ function facade(g, v, l, L, h, W) {
     if (faceBlocked(v, l, nx, nz)) continue;
     const put = (list, c, yc, a, b, off, dep) => { if (nz) list.push([c * nz, yc, nz * (half + off), a, b, dep]); else list.push([nx * (half + off), yc, -c * nx, dep, b, a]); };
     const open = (c, yc, ww, wh, kind) => {
+      if (L.lite) { put(gl, c, yc, ww, wh, .03, .04); return; }
       if (!v.rot && l.vols.length > 1) { const o = half + .35, px = v.x + (nz ? c * nz : nx * o), pz = v.z + (nz ? nz * o : -c * nx); for (const e of [-ww / 2, 0, ww / 2]) { const qx = px + (nz ? e : 0), qz = pz + (nz ? 0 : e); if (l.vols.some(u => u !== v && u.kind !== 'canopy' && inVol(u, qx, qz))) return; } }
       const k = r(), iv = k < .55 ? 0 : k < .8 ? 1 : 2, ft = cfg.ft;
       put(it[iv], c, yc, ww, wh, .012, .02); put(gl, c, yc, ww, wh, .075, .02);
@@ -1691,10 +1722,10 @@ function constructionPart(L) {
   }
   return g;
 }
-function contextPart(loc) {
+function contextPart(loc, ext = 0) {
   const g = new T.Group();
   const P = { north: [26, 6, 22, 150, 330], east: [110, 22, 85, 130, 320], south: [80, 12, 46, 120, 300], west: [55, 8, 30, 140, 320], central: [170, 26, 115, 95, 280], outside: [0, 0, 0, 0, 0] }[loc] || [50, 8, 34, 140, 320];
-  const [n, h0, h1, r0, r1] = P, r = rng(hash('ctx' + loc)), list = [];
+  const [n, h0, h1] = P, r0 = P[3] + ext * 2.4, r1 = P[4] + ext * 2.9, r = rng(hash('ctx' + loc)), list = [];
   for (let k = 0; k < n; k++) {
     const a = r() * Math.PI * 2, rad = r0 + Math.pow(r(), .7) * (r1 - r0), x = Math.cos(a) * rad, z = Math.sin(a) * rad;
     if (Math.abs(z - 20) < 16) continue;
@@ -1703,7 +1734,7 @@ function contextPart(loc) {
   }
   if (list.length) g.add(inst(list, mat.city()));
   const tn = { north: 150, east: 60, south: 80, west: 100, central: 30, outside: 260 }[loc] ?? 90, tl = [];
-  for (let k = 0; k < tn; k++) { const a = r() * Math.PI * 2, rad = 60 + r() * 240, x = Math.cos(a) * rad, z = Math.sin(a) * rad; if (Math.abs(z - 20) < 12) continue; tl.push({ x, z, s: 1.3 + r() * 1.4, k: r() < .12 ? 'palm' : r() < .2 ? 'cypress' : 'broad', y: 0 }); }
+  for (let k = 0; k < tn; k++) { const a = r() * Math.PI * 2, rad = 60 + ext * 1.5 + r() * 240, x = Math.cos(a) * rad, z = Math.sin(a) * rad; if (Math.abs(z - 20) < 12) continue; tl.push({ x, z, s: 1.3 + r() * 1.4, k: r() < .12 ? 'palm' : r() < .2 ? 'cypress' : 'broad', y: 0 }); }
   trees(g, tl, true);
   if (loc === 'outside' || loc === 'north') { const fs = []; for (let k = 0; k < 14; k++) fs.push([-220 + k * 34, .04, -150 - r() * 60, 30, .08, 70 + r() * 40]); g.add(inst(fs, std('field', { color: 0x6a6a3a, roughness: 1 }))); }
   if (loc === 'west' || loc === 'south' || loc === 'outside') {
@@ -1733,6 +1764,203 @@ function placeGrass(pw, pd) {
   grass.instanceMatrix.needsUpdate = true; if (grass.instanceColor) grass.instanceColor.needsUpdate = true;
 }
 
+/* ---------- v7: communities — gated villa societies, row-house layouts, mid / high-rise towers, mixed-use.
+   One unit is modelled in full detail, baked once per material and drawn with InstancedMesh across every lot;
+   repeated tower floors share a single baked floor. Large or low-quality scenes switch to a lite facade. */
+const UNIT_PLOT = { villas: [40, 60], rows: [80, 45], midrise: [120, 90], highrise: [110, 82], mixed: [170, 125] };
+function societyPlan(st) {
+  const type = st.type, n = countOf(st), [uw, ud] = UNIT_PLOT[type], lw = uw * FT, ld = ud * FT, tower = isTower(type);
+  const lots = [], WALL = 2, RING = 7, AM = tower ? 46 : 44;
+  let SW, SD;
+  if (!tower) {
+    const m = type === 'rows' ? Math.ceil(n / 4) : n, STREET = 9, SPINE = 10;
+    let k = Math.max(2, Math.round(Math.sqrt(m * (2 * ld + STREET) / 2 / lw))); if (k % 2) k++;
+    const nb = Math.ceil(m / (2 * k)), half = k / 2, bd = 2 * ld;
+    SW = 2 * (SPINE / 2 + half * lw + RING + WALL);
+    SD = 2 * (WALL + RING) + nb * bd + nb * STREET + AM;
+    const zFront = SD / 2 - WALL - RING - AM - STREET; // front edge of the block nearest the gate
+    let c = 0;
+    for (let b = 0; b < nb && c < m; b++) {
+      const z1 = zFront - b * (bd + STREET);
+      for (const [zc, rot] of [[z1 - ld / 2, 0], [z1 - ld * 1.5, Math.PI]]) for (let i = 0; i < k && c < m; i++) {
+        const side = i % 2 ? 1 : -1, j = Math.floor(i / 2);
+        lots.push({ x: side * (SPINE / 2 + lw * (j + .5)), z: zc, r: rot }); c++;
+      }
+    }
+    Object.assign(st, {}); return { type, n, m, k, nb, lw, ld, SW, SD, AM, lots, street: STREET, spine: SPINE, ring: RING, zFront, bd };
+  }
+  const cols = Math.ceil(Math.sqrt(n)), rows = Math.ceil(n / cols), gx = lw + 18, gz = ld + 18;
+  SW = cols * gx + 2 * (RING + WALL) + 8; SD = rows * gz + AM + 2 * (RING + WALL) + 6;
+  const z0 = SD / 2 - WALL - RING - AM - gz / 2;
+  for (let i = 0; i < n; i++) { const c = i % cols, r = Math.floor(i / cols), inRow = Math.min(cols, n - r * cols); lots.push({ x: (c - (inRow - 1) / 2) * gx, z: z0 - r * gz, r: 0 }); }
+  return { type, n, m: n, cols, rows, lw, ld, gx, gz, SW, SD, AM, lots, ring: RING, z0 };
+}
+function societyAcres(st) { try { const p = societyPlan(st); return p.SW * p.SD / 4046.86; } catch (e) { return 0; } }
+function societyLayout(st, opt) {
+  const P = societyPlan(st), ut = unitType(st.type), tower = isTower(st.type), ex = new Set(st.extras || []);
+  const uex = (st.extras || []).filter(e => e === 'solar' || e === 'terrace');
+  const U = layoutOf({ ...st, type: ut, extras: uex, park: 'none' }, { plot: UNIT_PLOT[st.type], unit: true });
+  const nF = U.levels.length, podH = tower && (st.park === 'podium' || st.type !== 'midrise') ? 6.6 : 0;
+  const lite = quality === 'low' || (mobile && P.m * nF > 90) || P.m * nF > 260;
+  U.lite = lite;
+  const L = { comm: true, type: st.type, unitType: ut, plan: P, unit: U, pw: P.SW, pd: P.SD, H: U.H + podH, podH, lite, style: U.style, tier: U.tier, variant: U.variant, ex, park: st.park || 'none', levels: [], decor: [], nF, area: U.area * (st.type === 'rows' ? P.m : P.m) };
+  return L;
+}
+
+/* ---------- baking: an Object3D tree -> one merged geometry per material (instance colours kept as vertex colours) */
+function vcMat(m) {
+  if (m.vertexColors) return m;
+  const k = 'vc|' + m.uuid; if (M[k]) return M[k];
+  const c = m.clone(); c.vertexColors = true; c.onBeforeCompile = m.onBeforeCompile; c.customProgramCacheKey = m.customProgramCacheKey; return (M[k] = c);
+}
+function bakeObj(obj) {
+  obj.updateMatrixWorld(true);
+  const buckets = new Map(), prepC = new Map(), m4 = new T.Matrix4(), im4 = new T.Matrix4(), col = new T.Color();
+  const prep = geo => {
+    if (prepC.has(geo)) return prepC.get(geo);
+    let g = geo.index ? geo.toNonIndexed() : geo.clone();
+    for (const a of Object.keys(g.attributes)) if (!['position', 'normal', 'uv'].includes(a)) g.deleteAttribute(a);
+    if (!g.attributes.normal) g.computeVertexNormals();
+    if (!g.attributes.uv) g.setAttribute('uv', new T.Float32BufferAttribute(new Float32Array(g.attributes.position.count * 2), 2));
+    g.clearGroups(); prepC.set(geo, g); return g;
+  };
+  obj.traverse(o => {
+    if (!o.isMesh || Array.isArray(o.material)) return;
+    let vis = true; o.traverseAncestors(a => { if (!a.visible) vis = false; }); if (!o.visible || !vis) return;
+    const base = prep(o.geometry), key = o.material;
+    let b = buckets.get(key); if (!b) buckets.set(key, b = { list: [], cast: false });
+    b.cast = b.cast || o.castShadow;
+    const add = (mtx, c) => {
+      const g = base.clone().applyMatrix4(mtx), n = g.attributes.position.count, ca = new Float32Array(n * 3);
+      const r = c ? c.r : 1, gg = c ? c.g : 1, bb = c ? c.b : 1; for (let i = 0; i < n; i++) { ca[i * 3] = r; ca[i * 3 + 1] = gg; ca[i * 3 + 2] = bb; }
+      g.setAttribute('color', new T.BufferAttribute(ca, 3)); b.list.push(g);
+    };
+    if (o.isInstancedMesh) for (let i = 0; i < o.count; i++) { o.getMatrixAt(i, im4); m4.multiplyMatrices(o.matrixWorld, im4); if (o.instanceColor) o.getColorAt(i, col); add(m4, o.instanceColor ? col : null); }
+    else add(o.matrixWorld, null);
+  });
+  const out = [];
+  for (const [m, b] of buckets) { if (!b.list.length) continue; const g = mergeGeometries(b.list, false); b.list.forEach(x => x.dispose()); if (g) { g.computeBoundingSphere(); out.push({ geo: g, mat: vcMat(m), cast: b.cast }); } }
+  prepC.forEach(g => g.dispose());
+  disposeObj(obj);
+  return out;
+}
+function instBaked(baked, mats4, grp) {
+  for (const b of baked) {
+    const im = new T.InstancedMesh(b.geo, b.mat, mats4.length);
+    mats4.forEach((m, i) => im.setMatrixAt(i, m));
+    im.castShadow = b.cast; im.receiveShadow = true; im.computeBoundingSphere(); im.frustumCulled = false; grp.add(im);
+  }
+}
+function lotMatrix(lot, y, yOff = 0) { return new T.Matrix4().makeTranslation(lot.x, y + yOff, lot.z).multiply(new T.Matrix4().makeRotationY(lot.r || 0)); }
+function unitsPart(L) {
+  const U = L.unit, P = L.plan, g = new T.Group(), lots = P.lots;
+  // floors: dedupe identical floor plates (towers repeat one plate dozens of times)
+  const bySig = new Map();
+  U.levels.forEach(l => { const k = sig([l.h, l.stilt, l.lvl === 0, l.vols.map(v => [v.x, v.z, v.w, v.d, v.kind, v.clad, v.rot, v.ribbon, v.fins, v.pil, v.planters, v.bal])]); let e = bySig.get(k); if (!e) bySig.set(k, e = { l, ys: [] }); e.ys.push(l.y); });
+  for (const { l, ys } of bySig.values()) {
+    const part = levelPart(l, U); part.position.y = 0;
+    const mats = []; for (const lot of lots) for (const y of ys) mats.push(lotMatrix(lot, y, L.podH));
+    instBaked(bakeObj(part), mats, g);
+  }
+  // roofs, plinth, crowns, roof extras: once per unit
+  const top = new T.Group(); top.add(plinthPart(U));
+  const roofs = roofsPart(U), info = { slopes: U.slopes, flatZones: U.flatZones }; top.add(roofs);
+  if (U.decor.length) top.add(decorPart(U));
+  if (U.ex.has('terrace')) top.add(terracePart(U, info));
+  if (U.ex.has('solar')) top.add(solarPart(U, info));
+  instBaked(bakeObj(top), lots.map(lot => lotMatrix(lot, 0, L.podH)), g);
+  return g;
+}
+
+/* ---------- society site: lawn, streets, wall + gate, clubhouse, amenities, trees, lamps, podium */
+function societyPart(L) {
+  const g = new T.Group(), P = L.plan, { SW, SD } = P, st = L.style === 'model' ? 'modern' : L.style, r = rng(hash('soc' + L.type + P.n));
+  const asph = mat.asph(), pave = mat.pave(), paveD = mat.paveD(), trim = mat.trim(st), roads = [], kerbs = [], tl = [], lamps = [];
+  g.add(B(SW + 24, .1, SD + 24, mat.lawn(), 0, 0, 0, false, 0)); g.add(lawnPlane(SW, SD, .101));
+  const road = (x, z, w, d) => { roads.push([x, .14, z, w, .06, d]); };
+  const ring = P.ring, iw = SW / 2 - 2, id = SD / 2 - 2;
+  // perimeter ring road just inside the wall
+  road(0, id - ring / 2, SW - 4, ring); road(0, -id + ring / 2, SW - 4, ring); road(-iw + ring / 2, 0, ring, SD - 4); road(iw - ring / 2, 0, ring, SD - 4);
+  const tower = isTower(L.type);
+  if (!tower) {
+    { const za = -id + ring, zb = P.zFront + P.street; road(0, (za + zb) / 2, P.spine, zb - za); } // spine
+    for (let b = 0; b < P.nb; b++) { const zs = P.zFront + P.street / 2 - b * (P.bd + P.street); road(0, zs, SW - 4, P.street); }
+    // per-lot drive + front lawn edge, street trees and lamps on the verges
+    const dr = [], hed = [];
+    for (const lot of P.lots) {
+      const f = Math.cos(lot.r) > 0 ? 1 : -1, zf = lot.z + f * P.ld / 2;
+      dr.push([lot.x - P.lw * .28, .14, zf - f * 2.2, 3, .05, 4.4]);
+      hed.push([lot.x + P.lw / 2 - .25, .12, lot.z, .5, .7, P.ld - 1.2]);
+    }
+    kerbs.push(...dr); g.add(inst(hed, std('hedge', { color: 0x5e7a3e, roughness: .95 }), null, true));
+    for (let b = 0; b < P.nb; b++) { const zs = P.zFront + P.street / 2 - b * (P.bd + P.street); for (let x = -iw + ring + 6; x < iw - ring - 4; x += 16) { if (Math.abs(x) < P.spine / 2 + 3) continue; tl.push({ x, z: zs + (b % 2 ? 1 : -1) * (P.street / 2 - .6) * (x > 0 ? 1 : -1), s: .75 + r() * .3, k: st === 'tropical' || st === 'indian' ? (r() < .5 ? 'palm' : 'broad') : 'broad' }); } for (let x = -iw + ring + 12; x < iw - ring; x += 28) lamps.push([x, zs - P.street / 2 + .4]); }
+  } else {
+    // podium deck and internal drive loop around the towers
+    const ext = (P.cols - 1) * P.gx / 2 + P.lw / 2 + 6, ez = (P.rows - 1) * P.gz / 2 + P.ld / 2 + 6, cz = P.z0 - (P.rows - 1) * P.gz / 2;
+    road(0, cz + ez + 3.5, ext * 2 + 7, 7); road(0, cz - ez - 3.5, ext * 2 + 7, 7); road(-ext - 3.5, cz, 7, ez * 2 + 14); road(ext + 3.5, cz, 7, ez * 2 + 14);
+    road(0, (cz + ez + id - P.AM) / 2 + 2, 8, Math.max(2, id - ring - (cz + ez + 7)) + 2);
+    if (L.podH) {
+      const pm = clad(st, st === 'glass' ? 'concrete' : PAL[st].clad), h = L.podH;
+      g.add(B(ext * 2, h - .3, ez * 2, pm, 0, .12, cz));
+      g.add(B(ext * 2 + .3, .3, ez * 2 + .3, slabMatComm(st), 0, h - .18, cz));
+      const op = []; for (let x = -ext + 3; x < ext - 2; x += 6) for (const s of [-1, 1]) for (const y of [1.6, 4.6]) op.push([x + 2.2, y, cz + s * (ez + .01), 4.2, 1.4, .06]);
+      for (let z = -ez + 3; z < ez - 2; z += 6) for (const s of [-1, 1]) for (const y of [1.6, 4.6]) op.push([s * (ext + .01), y, cz + z + 2.2, .06, 1.4, 4.2]);
+      g.add(inst(op, std('podOpen', { color: 0x1a1c1f, roughness: .9 })));
+      g.add(B(ext * 2 - 2, .06, ez * 2 - 2, mat.lawn(), 0, h, cz, false, 0));
+      const pt = []; for (let k = 0; k < 18; k++) { const x = (r() - .5) * (ext * 2 - 6), z = cz + (r() - .5) * (ez * 2 - 6); if (P.lots.some(l => Math.abs(l.x - x) < P.lw / 2 + 3 && Math.abs(l.z - z) < P.ld / 2 + 3)) continue; pt.push({ x, z, s: .6, k: 'frangipani', y: h }); }
+      trees(g, pt, true);
+    }
+    for (let x = -ext - 7; x <= ext + 7; x += 14) for (const z of [cz + ez + 8.5, cz - ez - 8.5]) tl.push({ x, z, s: .8 + r() * .3, k: 'broad' });
+    for (let x = -ext; x <= ext; x += 22) lamps.push([x, cz + ez + 7.4]);
+  }
+  g.add(inst(roads, asph)); if (kerbs.length) g.add(inst(kerbs, pave));
+  // boundary wall with a gate gap at the front centre
+  const wh = 2.1, gap = 14, wl = [];
+  wl.push([0, wh / 2, -SD / 2 + .2, SW, wh, .35], [-SW / 2 + .2, wh / 2, 0, .35, wh, SD], [SW / 2 - .2, wh / 2, 0, .35, wh, SD]);
+  const seg = (SW - gap) / 2; wl.push([-(gap / 2 + seg / 2), wh / 2, SD / 2 - .2, seg, wh, .35], [gap / 2 + seg / 2, wh / 2, SD / 2 - .2, seg, wh, .35]);
+  g.add(inst(wl, clad(st, st === 'glass' || st === 'modern' ? 'concrete' : 'stone'), null, true));
+  const cap = wl.map(w => [w[0], wh + .06, w[2], w[3] + .1, .12, w[5] + .1]); g.add(inst(cap, trim));
+  // gate: pylons, a canopy beam, guard house
+  const gz = SD / 2 - .2;
+  g.add(B(1.4, 5.2, 1.4, clad(st, 'stone'), -gap / 2 - .4, 0, gz), B(1.4, 5.2, 1.4, clad(st, 'stone'), gap / 2 + .4, 0, gz));
+  g.add(B(gap + 3.6, .7, 2.4, trim, 0, 4.6, gz), B(gap - 2, .05, .1, mat.gold(), 0, 4.9, gz + 1.21, false));
+  g.add(B(3.4, 2.8, 3, clad(st, PAL[st].clad), gap / 2 + 4, 0, gz - 3), B(3.8, .25, 3.4, trim, gap / 2 + 4, 2.8, gz - 3));
+  road(0, gz + 6, gap + 4, 12); g.add(inst([[0, .14, gz + 6, gap + 4, .06, 12]], asph));
+  // amenity zone between gate and homes: clubhouse, pool, gardens, courts, jogging loop
+  const az = SD / 2 - 2 - ring - P.AM / 2, aw = SW - 2 * (ring + 6), big = L.ex.has('club');
+  const cw = Math.min(big ? 34 : 26, aw * .32), cd = Math.min(16, P.AM - 14), cx = -aw / 2 + cw / 2 + 2, ch = big ? 2 : 1;
+  for (let f = 0; f < ch; f++) {
+    const y = .12 + f * 4.2, w = f ? cw * .7 : cw;
+    g.add(B(w, 3.9, cd, f ? clad(st, PAL[st].clad) : mat.glass(), cx - (f ? cw * .12 : 0), y, az));
+    g.add(B(w + .6, .32, cd + .6, trim, cx - (f ? cw * .12 : 0), y + 3.9, az));
+    if (!f) { const mu = []; for (let x = -w / 2 + 1.5; x < w / 2; x += 2.4) mu.push([cx + x, y + 1.95, az + cd / 2 + .02, .12, 3.9, .12]); g.add(inst(mu, mat.frame(st, L.tier), null, true)); g.add(B(w - 1, 3.5, cd - 1, mat.intCore(), cx, y, az, false, 0)); }
+  }
+  g.add(B(cw * .6, .06, 1.2, mat.gold(), cx, .12 + ch * 4.2 + .1, az + cd / 2 - .1, false));
+  const pxs = cx + cw / 2 + 4;
+  if (L.ex.has('pool')) { const pw = Math.min(25, aw * .25), pd = Math.min(12, P.AM - 18); g.add(B(pw + 4, .2, pd + 4, mat.deck(), pxs + pw / 2 + 2, .12, az, false, 0)); g.add(B(pw + .4, .14, pd + .4, paveD, pxs + pw / 2 + 2, .3, az, false)); g.add(B(pw, .05, pd, mat.water(), pxs + pw / 2 + 2, .4, az, false, 0)); }
+  const sx = pxs + (L.ex.has('pool') ? Math.min(25, aw * .25) + 10 : 4);
+  if (L.ex.has('sports')) { const cm = std('court', { color: 0x3d6f5a, roughness: .85 }), lm = std('courtLine', { color: 0xf2efe6, roughness: .8 }); for (let k = 0; k < 2; k++) { const x = sx + 9 + k * 20; if (x + 9 > aw / 2) break; g.add(B(17, .06, 32 > P.AM - 6 ? P.AM - 10 : 32, cm, x, .14, az, false, 0)); g.add(B(.1, .02, (P.AM - 10) * .9, lm, x, .2, az, false, 0), B(15, .02, .1, lm, x, .2, az, false, 0)); g.add(B(16, 1, .04, std('net', { color: 0x222222, roughness: 1, transparent: true, opacity: .5 }), x, .2, az, false)); } }
+  if (L.ex.has('garden') || !L.ex.size) { const hb = []; for (let k = 0; k < 10; k++) { const x = (r() - .5) * aw, z = az + (r() - .5) * (P.AM - 8); if (x < cx + cw / 2 + 2 && x > cx - cw / 2 - 2 && Math.abs(z - az) < cd / 2 + 2) continue; if (L.ex.has('pool') && x > pxs && x < pxs + 30 && Math.abs(z - az) < 9) continue; if (L.ex.has('sports') && x > sx) continue; tl.push({ x, z, s: .7 + r() * .5, k: r() < .3 ? 'frangipani' : 'broad' }); } }
+  if (L.ex.has('jog')) { const jt = std('jog', { color: 0xa0523d, roughness: .9 }), ww = 1.8, J = [], jw = SW - 2 * ring - 9, jd = SD - 2 * ring - 9; J.push([0, .2, jd / 2, jw, .03, ww], [0, .2, -jd / 2, jw, .03, ww], [-jw / 2, .2, 0, ww, .03, jd], [jw / 2, .2, 0, ww, .03, jd]); g.add(inst(J, jt)); }
+  // perimeter trees just inside the wall, landscaped verge
+  for (let x = -SW / 2 + 4; x < SW / 2 - 3; x += 11) { tl.push({ x, z: -SD / 2 + 3.2, s: .9 + r() * .3, k: 'broad' }); if (Math.abs(x) > gap / 2 + 6) tl.push({ x, z: SD / 2 - 3.2, s: .9 + r() * .3, k: st === 'classic' ? 'cypress' : 'broad' }); }
+  for (let z = -SD / 2 + 9; z < SD / 2 - 6; z += 11) { tl.push({ x: -SW / 2 + 3.2, z, s: .9 + r() * .3, k: 'broad' }, { x: SW / 2 - 3.2, z, s: .9 + r() * .3, k: 'broad' }); }
+  trees(g, tl, tl.length > 120);
+  const pole = [], head = []; for (const [x, z] of lamps) { pole.push([x, 2.4, z, .12, 4.8, .12]); head.push([x, 4.85, z, .5, .12, .5]); }
+  for (const s of [-1, 1]) { pole.push([s * (gap / 2 + 2.4), 1.8, gz + 1.6, .14, 3.6, .14]); head.push([s * (gap / 2 + 2.4), 3.7, gz + 1.6, .4, .3, .4]); }
+  if (pole.length) { g.add(inst(pole, mat.steel(), null, true)); g.add(inst(head, mat.lamp())); }
+  return g;
+}
+function slabMatComm(st) { return ['glass', 'modern'].includes(st) ? mat.trim('modern') : mat.trim(st); }
+function societyParts(L) {
+  const s = sig([L.type, L.plan.SW, L.plan.SD, L.plan.n, L.style, L.tier, L.variant, L.unit.levels.length, L.podH, [...L.ex].sort(), L.park, L.lite, L.unit.ex.has('solar'), L.unit.ex.has('terrace')]);
+  return [
+    { key: 'ctx-' + (S.loc || 'default') + '-' + Math.round(Math.max(L.pw, L.pd)), anim: 'rise', dur: 1400, make: () => contextPart(S.loc || 'default', Math.max(L.pw, L.pd) / 2) },
+    { key: 'soc-site' + s, anim: 'grow', dur: 800, make: () => societyPart(L) },
+    { key: 'soc-units' + s, anim: 'rise', d: 200, dur: 1100, make: () => unitsPart(L) },
+  ];
+}
+
 /* ---------- compose + camera framing */
 const sig = o => JSON.stringify(o, (k, v) => typeof v === 'number' ? +v.toFixed(2) : v instanceof Set ? [...v].sort() : v);
 function edges(mesh) { const l = new T.LineSegments(new T.EdgesGeometry(mesh.geometry), mat.edge()); l.position.copy(mesh.position); return l; }
@@ -1741,6 +1969,7 @@ function composeParts(L) {
   parts.push({ key: 'plot' + sig([pw, pd]), anim: 'grow', make: () => plotPart(L), dur: 700 });
   parts.push({ key: 'road' + sig([pw, pd]), instant: true, make: () => roadPart(L) });
   parts.push({ key: 'ctx-' + (S.loc || 'default'), anim: 'rise', dur: 1400, make: () => contextPart(S.loc || 'default') });
+  if (L.comm) return societyParts(L);
   if (!L.type) return parts;
   const look = { st: L.style, g: L.ghost, tier: L.tier, type: L.type, v: L.variant, th: L.ex.has('theatre') };
   const lsig = L.levels.map(l => sig([l.y, l.h, l.stilt, l.vols.map(v => [v.x, v.z, v.w, v.d, v.kind, v.clad, v.rot, v.ribbon, v.fins, v.pil])]));
@@ -1777,12 +2006,12 @@ function frameSun(L) {
 function frame(L, instant) {
   const size = Math.max(L.pw, L.pd), H = L.H || 0, isSum = step >= Q.length;
   const asp = camera.aspect, fit = asp < 1.2 ? 1.2 / asp : 1;
-  const ty = Math.min(H * .4, 40) + .6;
-  let dist = (Math.max(size * 1.25, H * 1.55, 18) * 1.32 + 7) * Math.pow(fit, .8);
+  const ty = L.comm ? Math.max(4, H * .42) : Math.min(H * .4, 40) + .6;
+  let dist = L.comm ? (Math.max(size * 1.1, H * (asp < 1.2 ? 2.1 : 1.65)) * 1.3 + 10) * Math.pow(fit, .7) : (Math.max(size * 1.25, H * 1.55, 18) * 1.32 + 7) * Math.pow(fit, .8);
   if (isSum) dist *= .92;
   frameSun(L);
   scene.fog.near = Math.max(120, dist * 2); scene.fog.far = Math.max(700, dist * 9);
-  controls.maxDistance = dist * 2.6; controls.minDistance = Math.max(5, size * .3);
+  controls.maxDistance = dist * 2.6; controls.minDistance = Math.max(5, Math.min(size * .3, L.comm ? 25 : 1e9));
   const tt = new T.Vector3(0, ty, 0);
   const fs = sig([size, H, isSum, asp > 1.2]);
   if (instant || reduce) {

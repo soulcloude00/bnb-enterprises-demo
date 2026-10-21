@@ -363,10 +363,10 @@ function constructionPart(L) {
   }
   return g;
 }
-function contextPart(loc) {
+function contextPart(loc, ext = 0) {
   const g = new T.Group();
   const P = { north: [26, 6, 22, 150, 330], east: [110, 22, 85, 130, 320], south: [80, 12, 46, 120, 300], west: [55, 8, 30, 140, 320], central: [170, 26, 115, 95, 280], outside: [0, 0, 0, 0, 0] }[loc] || [50, 8, 34, 140, 320];
-  const [n, h0, h1, r0, r1] = P, r = rng(hash('ctx' + loc)), list = [];
+  const [n, h0, h1] = P, r0 = P[3] + ext * 2.4, r1 = P[4] + ext * 2.9, r = rng(hash('ctx' + loc)), list = [];
   for (let k = 0; k < n; k++) {
     const a = r() * Math.PI * 2, rad = r0 + Math.pow(r(), .7) * (r1 - r0), x = Math.cos(a) * rad, z = Math.sin(a) * rad;
     if (Math.abs(z - 20) < 16) continue;
@@ -375,7 +375,7 @@ function contextPart(loc) {
   }
   if (list.length) g.add(inst(list, mat.city()));
   const tn = { north: 150, east: 60, south: 80, west: 100, central: 30, outside: 260 }[loc] ?? 90, tl = [];
-  for (let k = 0; k < tn; k++) { const a = r() * Math.PI * 2, rad = 60 + r() * 240, x = Math.cos(a) * rad, z = Math.sin(a) * rad; if (Math.abs(z - 20) < 12) continue; tl.push({ x, z, s: 1.3 + r() * 1.4, k: r() < .12 ? 'palm' : r() < .2 ? 'cypress' : 'broad', y: 0 }); }
+  for (let k = 0; k < tn; k++) { const a = r() * Math.PI * 2, rad = 60 + ext * 1.5 + r() * 240, x = Math.cos(a) * rad, z = Math.sin(a) * rad; if (Math.abs(z - 20) < 12) continue; tl.push({ x, z, s: 1.3 + r() * 1.4, k: r() < .12 ? 'palm' : r() < .2 ? 'cypress' : 'broad', y: 0 }); }
   trees(g, tl, true);
   if (loc === 'outside' || loc === 'north') { const fs = []; for (let k = 0; k < 14; k++) fs.push([-220 + k * 34, .04, -150 - r() * 60, 30, .08, 70 + r() * 40]); g.add(inst(fs, std('field', { color: 0x6a6a3a, roughness: 1 }))); }
   if (loc === 'west' || loc === 'south' || loc === 'outside') {

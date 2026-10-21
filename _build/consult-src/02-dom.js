@@ -87,7 +87,7 @@ function onChange(e) {
   const t = e.target; if (!t.name) return;
   if (t.type === 'radio') {
     S[t.name] = t.value;
-    if (t.name === 'type') { if (S.floors === 'hr' && S.type !== 'apartment') S.floors = null; if (!variantRow()) S.variant = null; if (S.styleAuto) { S.style = null; S.styleAuto = false; } }
+    if (t.name === 'type') { S.count = CN[S.type] ? CN[S.type][2] : null; S.floors = isTower(S.type) ? 'n' + FL[S.type][2] : (/^n/.test(S.floors || '') ? null : S.floors); if (!variantRow()) S.variant = null; if (S.styleAuto) { S.style = null; S.styleAuto = false; } }
     if (t.name === 'variant' && S.styleAuto) { S.style = null; S.styleAuto = false; }
     if (t.name === 'style') S.styleAuto = false;
     if (t.name === 'plot') { const c = bodyEl.querySelector('.cx-custom'); if (c) { c.hidden = t.value !== 'custom'; if (t.value === 'custom') c.querySelector('input').focus(); } }
@@ -99,6 +99,12 @@ function onChange(e) {
 }
 function onInput(e) {
   const t = e.target;
+  if (t.name === 'count' || t.name === 'fl') {
+    if (t.name === 'count') S.count = +t.value; else S.floors = 'n' + t.value;
+    const w = t.closest('.cx-range'); w.querySelector('output').textContent = t.value;
+    w.querySelector('.cx-rout').textContent = t.name === 'count' ? plotLabel() : 'G + ' + t.value + (S.type === 'highrise' ? ' · podium & clubhouse included' : '');
+    save(); refreshNav(); renderHud && renderHud(); clearTimeout(onInput.t); onInput.t = setTimeout(() => update3D(true), 160); return;
+  }
   if (t.name === 'cw' || t.name === 'cd') { S[t.name] = t.value.replace(/[^0-9]/g, ''); save(); refreshNav(); clearTimeout(onInput.t); onInput.t = setTimeout(() => update3D(true), 350); }
   if (['name', 'phone', 'email'].includes(t.name)) { S[t.name] = t.value; save(); const f = t.closest('.fld'); if (f) f.classList.remove('bad'); refreshNav(); }
 }
@@ -112,6 +118,9 @@ function onBodyClick(e) {
 }
 
 /* ---------- step rendering */
+function sliderHTML(name, lab, v, a, b, stp, out) {
+  return `<div class="cx-range"><label for="cx-${name}">${lab}</label><div class="cx-rrow"><input id="cx-${name}" name="${name}" type="range" min="${a}" max="${b}" step="${stp}" value="${v}"><output for="cx-${name}">${v}</output></div><p class="cx-rout">${esc(out)}</p><div class="cx-rends" aria-hidden="true"><span>${a}</span><span>${b}</span></div></div>`;
+}
 function cardsHTML(name, opts, type, sel) {
   return opts.map(([v, l, s], i) => {
     const on = type === 'checkbox' ? (sel || []).includes(v) : sel === v;
@@ -137,7 +146,7 @@ function renderStep(noFocus) {
     h = `<div class="cx-intro">
       <p class="eyebrow">Build your vision</p>
       <h2 id="cx-title" tabindex="-1">Shape your project. <em>See it rise.</em></h2>
-      <p class="cx-lead">Answer ${n} short questions and watch a 3D model of your project take shape on its plot — then share the brief with our team.</p>
+      <p class="cx-lead">Answer ${n} short questions and watch a 3D model of your project take shape on site — then share the brief with our team.</p>
       <ul class="cx-feats"><li><b>${n}</b><span>quick questions</span></li><li><b>3D</b><span>live model</span></li><li><b>~3</b><span>minutes</span></li></ul>
       <button class="btn cx-begin" type="button" data-act="begin">Begin <span class="arr"></span></button>
       <p class="cx-fine">Illustrative concept only — not a design, drawing or quotation.</p></div>`;
@@ -164,10 +173,18 @@ function renderStep(noFocus) {
         <div class="fld" data-f="email"><label for="cx-email">Email</label><input id="cx-email" name="email" type="email" autocomplete="email" value="${esc(S.email)}"><div class="err">Please enter a valid email.</div></div>
         <fieldset class="cx-chips"><legend>Preferred time to call</legend><div>${TIMES.map(([v, l]) => `<label class="cx-chip"><input type="radio" name="time" value="${v}"${S.time === v ? ' checked' : ''}><span>${l}</span></label>`).join('')}</div></fieldset>
         <p class="cx-fine">Front-end demo — nothing is submitted or stored on a server.</p></div>`;
+    } else if (q.kind === 'scale') {
+      const c = CN[S.type];
+      if (!c) h += `<p class="cx-sub">Choose what you are developing first.</p>`;
+      else { if (!S.count) S.count = c[2]; h += sliderHTML('count', `Number of ${c[3]}`, countOf(), c[0], c[1], c[4], plotLabel()); }
+    } else if (q.id === 'floors' && isTower(S.type)) {
+      const f = FL[S.type]; if (!/^n\d+$/.test(S.floors || '')) S.floors = 'n' + f[2];
+      h += sliderHTML('fl', 'Floors above ground', floorsN(), f[0], f[1], 1, 'G + ' + floorsN() + (S.type === 'highrise' ? ' · podium & clubhouse included' : ''));
     } else {
       const opts = q.id === 'floors' ? floorOpts() : q.opts;
       if (q.id === 'style' && variantRow()) h += `<p class="cx-suggest"><span>Suggested for ${variantRow()[1]}:</span> ${optLabel('style', variantRow()[3])}</p>`;
       h += `<fieldset class="cx-grid${q.id === 'cons' || q.id === 'tier' ? ' one' : ''}"><legend class="sr">${q.label}</legend>${cardsHTML(q.id, opts, 'radio', S[q.id])}</fieldset>`;
+      if (q.note) h += `<p class="cx-note">${q.note}</p>`;
       if (q.id === 'plot') h += `<div class="cx-custom" ${S.plot === 'custom' ? '' : 'hidden'}><div class="fld"><label for="cx-cw">Width (ft)</label><input id="cx-cw" name="cw" inputmode="numeric" value="${esc(S.cw)}" placeholder="e.g. 50"></div><span aria-hidden="true">×</span><div class="fld"><label for="cx-cd">Depth (ft)</label><input id="cx-cd" name="cd" inputmode="numeric" value="${esc(S.cd)}" placeholder="e.g. 80"></div></div>`;
     }
     if (q.hint) h += `<p class="cx-hintq"><i aria-hidden="true"></i>In 3D — ${q.hint}</p>`;
@@ -197,7 +214,7 @@ function refreshNav() {
 function rows() {
   const ex = (S.extras || []).map(v => optLabel('extras', v));
   return [
-    ['type', 'Build', optLabel('type', S.type)], ['variant', 'Design', (variantRow() || [])[1]], ['plot', 'Plot', plotLabel()], ['loc', 'Location', optLabel('loc', S.loc)],
+    ['type', 'Build', optLabel('type', S.type)], ['variant', 'Design', (variantRow() || [])[1]], ['plot', 'Scale', plotLabel()], ['loc', 'Location', optLabel('loc', S.loc)],
     ['floors', 'Floors', optLabel('floors', S.floors)], ['cons', 'Construction', optLabel('cons', S.cons)], ['tier', 'Finish', optLabel('tier', S.tier)],
     ['style', 'Style', optLabel('style', S.style)], ['park', 'Parking', optLabel('park', S.park)], ['extras', 'Extras', ex.length ? ex.join(', ') : 'None'],
     ['plan', 'Timeline', groupLabel('timeline', S.timeline)], ['plan', 'Budget range', groupLabel('budget', S.budget)],

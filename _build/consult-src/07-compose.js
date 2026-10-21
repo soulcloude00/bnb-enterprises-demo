@@ -7,6 +7,7 @@ function composeParts(L) {
   parts.push({ key: 'plot' + sig([pw, pd]), anim: 'grow', make: () => plotPart(L), dur: 700 });
   parts.push({ key: 'road' + sig([pw, pd]), instant: true, make: () => roadPart(L) });
   parts.push({ key: 'ctx-' + (S.loc || 'default'), anim: 'rise', dur: 1400, make: () => contextPart(S.loc || 'default') });
+  if (L.comm) return societyParts(L);
   if (!L.type) return parts;
   const look = { st: L.style, g: L.ghost, tier: L.tier, type: L.type, v: L.variant, th: L.ex.has('theatre') };
   const lsig = L.levels.map(l => sig([l.y, l.h, l.stilt, l.vols.map(v => [v.x, v.z, v.w, v.d, v.kind, v.clad, v.rot, v.ribbon, v.fins, v.pil])]));
@@ -43,12 +44,12 @@ function frameSun(L) {
 function frame(L, instant) {
   const size = Math.max(L.pw, L.pd), H = L.H || 0, isSum = step >= Q.length;
   const asp = camera.aspect, fit = asp < 1.2 ? 1.2 / asp : 1;
-  const ty = Math.min(H * .4, 40) + .6;
-  let dist = (Math.max(size * 1.25, H * 1.55, 18) * 1.32 + 7) * Math.pow(fit, .8);
+  const ty = L.comm ? Math.max(4, H * .42) : Math.min(H * .4, 40) + .6;
+  let dist = L.comm ? (Math.max(size * 1.1, H * (asp < 1.2 ? 2.1 : 1.65)) * 1.3 + 10) * Math.pow(fit, .7) : (Math.max(size * 1.25, H * 1.55, 18) * 1.32 + 7) * Math.pow(fit, .8);
   if (isSum) dist *= .92;
   frameSun(L);
   scene.fog.near = Math.max(120, dist * 2); scene.fog.far = Math.max(700, dist * 9);
-  controls.maxDistance = dist * 2.6; controls.minDistance = Math.max(5, size * .3);
+  controls.maxDistance = dist * 2.6; controls.minDistance = Math.max(5, Math.min(size * .3, L.comm ? 25 : 1e9));
   const tt = new T.Vector3(0, ty, 0);
   const fs = sig([size, H, isSum, asp > 1.2]);
   if (instant || reduce) {

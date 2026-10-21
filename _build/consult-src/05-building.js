@@ -24,6 +24,7 @@ function facade(g, v, l, L, h, W) {
     if (faceBlocked(v, l, nx, nz)) continue;
     const put = (list, c, yc, a, b, off, dep) => { if (nz) list.push([c * nz, yc, nz * (half + off), a, b, dep]); else list.push([nx * (half + off), yc, -c * nx, dep, b, a]); };
     const open = (c, yc, ww, wh, kind) => {
+      if (L.lite) { put(gl, c, yc, ww, wh, .03, .04); return; }
       if (!v.rot && l.vols.length > 1) { const o = half + .35, px = v.x + (nz ? c * nz : nx * o), pz = v.z + (nz ? nz * o : -c * nx); for (const e of [-ww / 2, 0, ww / 2]) { const qx = px + (nz ? e : 0), qz = pz + (nz ? 0 : e); if (l.vols.some(u => u !== v && u.kind !== 'canopy' && inVol(u, qx, qz))) return; } }
       const k = r(), iv = k < .55 ? 0 : k < .8 ? 1 : 2, ft = cfg.ft;
       put(it[iv], c, yc, ww, wh, .012, .02); put(gl, c, yc, ww, wh, .075, .02);
